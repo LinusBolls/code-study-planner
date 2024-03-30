@@ -1,53 +1,48 @@
 import { Droppable } from "@hello-pangea/dnd";
-import { Button, Empty, Flex, Typography } from "antd";
+import { Button, Flex, FlexProps, Typography } from "antd";
 import ModulesListItem from "./ModulesListItem";
 import { PlusOutlined } from "@ant-design/icons";
-import { Module } from "@/app/useSemesters";
-import { useChatSelection } from "@/useChatSelection";
 import { theme } from "@/data/theme";
+import { SemesterModule } from "@/app/useSemesters";
+import { memo } from "react";
 
-export interface ModulesListSectionProps {
-  title?: string;
-  onAddItem?: () => void;
-  modules: Module[];
+export interface ModulesListSectionProps extends Omit<FlexProps, "children"> {
+  modules: SemesterModule[];
   droppableId: string;
-  showAddItemButton?: boolean;
+  title?: string;
   disabled?: boolean;
+  showAddItemButton?: boolean;
+  isHovered?: boolean;
+  isDragInProgress?: boolean;
+
+  onAddItem?: () => void;
 }
-export default function ModulesListSection({
-  disabled = false,
+function ModulesListSection({
   title,
-  onAddItem,
   modules,
   droppableId,
+  disabled = false,
   showAddItemButton = true,
-}: ModulesListSectionProps) {
-  const {
-    hoveredInboxId,
-    isDraggingChats,
-    actions: { setMouseUpInboxId, setHoveredInboxId },
-  } = useChatSelection();
+  isHovered = false,
+  isDragInProgress = false,
 
-  const isDragTarget =
-    hoveredInboxId === droppableId && isDraggingChats && !disabled;
+  onAddItem,
+  ...rest
+}: ModulesListSectionProps) {
+  console.log("rendering modules list section:", droppableId);
+
+  const isDragTarget = isHovered && isDragInProgress && !disabled;
 
   return (
-    <Droppable
-      droppableId={droppableId}
-      isDropDisabled={hoveredInboxId !== droppableId || !isDragTarget}
-      // ignoreContainerClipping={false}
-      // isCombineEnabled={false}
-    >
+    <Droppable droppableId={droppableId} isDropDisabled={!isDragTarget}>
       {(provided) => (
         <Flex
+          {...rest}
           vertical
           ref={provided.innerRef}
           {...provided.droppableProps}
-          onMouseUp={() => setMouseUpInboxId(droppableId)}
-          onMouseEnter={() => setHoveredInboxId(droppableId)}
-          onMouseLeave={() => setHoveredInboxId(null)}
           style={
-            disabled
+            disabled && isDragInProgress
               ? {
                   cursor: "not-allowed",
                 }
@@ -63,7 +58,7 @@ export default function ModulesListSection({
           >
             <Typography.Title
               level={5}
-              disabled={disabled}
+              disabled={isDragInProgress && disabled}
               style={{
                 transition: "color 200ms",
                 color: isDragTarget ? theme.palette.dndHighlight : undefined,
@@ -108,7 +103,8 @@ export default function ModulesListSection({
             {modules.map((module, index) => (
               <ModulesListItem
                 key={module.id}
-                module={module}
+                module={module.module}
+                assessment={module.assessment}
                 index={index}
                 draggableId={"draggable:semester-module:" + module.id}
               />
@@ -119,3 +115,4 @@ export default function ModulesListSection({
     </Droppable>
   );
 }
+export default memo(ModulesListSection);

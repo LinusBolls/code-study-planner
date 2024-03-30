@@ -60,20 +60,68 @@ const useChatSelectionStore = create<ChatSelectionStore>((set) => ({
  * then, when the drag action is completed, we use the drop target which last fired this event as the drop target.
  */
 export const useChatSelection = () => {
-  const value = useChatSelectionStore();
+  const store = useChatSelectionStore();
 
   const mouseUpInboxChangedRecently =
-    Date.now() - (value.mouseUpInboxIdChangedUnix ?? 0) <
+    Date.now() - (store.mouseUpInboxIdChangedUnix ?? 0) <
     DROP_TARGET_GRACE_PERIOD_MS;
 
   const dropTargetInboxId = mouseUpInboxChangedRecently
-    ? value.mouseUpInboxId
+    ? store.mouseUpInboxId
     : null;
 
-  const isDraggingChats = value.draggedModules.length > 0;
+  const isDraggingChats = store.draggedModules.length > 0;
 
   return {
-    ...value,
+    draggedModules: store.draggedModules,
+    sourceInboxId: store.sourceInboxId,
+    hoveredInboxId: store.hoveredInboxId,
+
+    startDraggingChats: store.actions.startDraggingChats,
+    stopDraggingChats: store.actions.stopDraggingChats,
+
+    setHoveredInboxId: store.actions.setHoveredInboxId,
+    setMouseUpInboxId: store.actions.setMouseUpInboxId,
+    /**
+     * whether the user is currently dragging one or multiple chats
+     */
+    isDraggingChats,
+    /**
+     * which inbox to move dropped chats to while dragging one or multiple chats
+     */
+    dropTargetInboxId,
+  };
+};
+
+export const useIsDraggingChats = () => {
+  const draggedModules = useChatSelectionStore((store) => store.draggedModules);
+
+  return draggedModules.length > 0;
+};
+
+export const getChatSelectionState = () => {
+  const store = useChatSelectionStore.getState();
+
+  const mouseUpInboxChangedRecently =
+    Date.now() - (store.mouseUpInboxIdChangedUnix ?? 0) <
+    DROP_TARGET_GRACE_PERIOD_MS;
+
+  const dropTargetInboxId = mouseUpInboxChangedRecently
+    ? store.mouseUpInboxId
+    : null;
+
+  const isDraggingChats = store.draggedModules.length > 0;
+
+  return {
+    draggedModules: store.draggedModules,
+    sourceInboxId: store.sourceInboxId,
+    hoveredInboxId: store.hoveredInboxId,
+
+    startDraggingChats: store.actions.startDraggingChats,
+    stopDraggingChats: store.actions.stopDraggingChats,
+
+    setHoveredInboxId: store.actions.setHoveredInboxId,
+    setMouseUpInboxId: store.actions.setMouseUpInboxId,
     /**
      * whether the user is currently dragging one or multiple chats
      */
