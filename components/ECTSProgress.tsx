@@ -1,15 +1,18 @@
 import { Flex, Tooltip, Typography } from "antd";
 
+export interface ECTSProgressStep {
+  id: string;
+  title: string;
+  value: number;
+  color: string;
+  isWeak?: boolean;
+}
+
 export interface ECTSProgressProps {
   title: string;
   trackColor?: string;
   max: number;
-  steps: {
-    id: string;
-    title: string;
-    value: number;
-    color: string;
-  }[];
+  steps: ECTSProgressStep[];
 }
 export default function ECTSProgress({
   title,
@@ -46,6 +49,7 @@ export default function ECTSProgress({
                 width: 100 / (max / step.value) + "%",
                 height: "100%",
                 backgroundColor: step.color,
+                opacity: step.isWeak ? 0.5 : 1,
               }}
             ></div>
           </Tooltip>
