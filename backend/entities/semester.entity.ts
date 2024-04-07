@@ -22,7 +22,7 @@ export class Semester {
   @UpdateDateColumn({ select: false })
   updatedAt!: Date;
 
-  @Column()
+  @Column({ nullable: true })
   lpId!: string;
 
   @Column()
@@ -33,4 +33,7 @@ export class Semester {
 
   @OneToMany(() => SemesterModule, (semesterModule) => semesterModule.semester)
   semesterModules!: Relation<SemesterModule>[];
+
+  @Column()
+  startDate!: Date;
 }

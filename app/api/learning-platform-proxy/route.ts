@@ -1,13 +1,28 @@
+import { connectToDatabase } from "@/backend/datasource";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-  const body = await req.json();
+  await connectToDatabase();
 
-  const { url, init } = body as unknown as { url: string; init: RequestInit };
+  const body: { url: string; init: RequestInit } = await req.json();
 
-  const res = await fetch(url, init);
+  const { url: rawUrl, init } = body;
 
-  const data = await res.json();
+  const url = new URL(rawUrl);
 
-  return NextResponse.json(data, { status: res.status });
+  if (url.protocol !== "https:" || url.hostname !== "api.app.code.berlin") {
+    return NextResponse.json(
+      { message: "invalid url: must start with 'https://api.app.code.berlin'" },
+      { status: 400 }
+    );
+  }
+  const fetchRes = await fetch(url, init);
+
+  const data = await fetchRes.json();
+
+  const res = NextResponse.json(data, { status: fetchRes.status });
+
+  res.headers.set("cache-control", "max-age=300, private");
+
+  return res;
 }

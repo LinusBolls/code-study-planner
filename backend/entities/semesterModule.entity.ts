@@ -6,10 +6,12 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   type Relation,
+  Unique,
 } from "typeorm";
 import { Semester } from "./semester.entity";
 import { Module } from "./module.entity";
 
+// @Unique("my_unique_constraint", ["semesterId", "assessmentType", "index", "userId"])
 @Entity()
 export class SemesterModule {
   @PrimaryGeneratedColumn("uuid")
@@ -24,7 +26,7 @@ export class SemesterModule {
   @Column()
   semesterId!: string;
 
-  @Column()
+  @Column({ nullable: true })
   moduleId!: string;
 
   @Column({
@@ -40,6 +42,6 @@ export class SemesterModule {
   @ManyToOne(() => Semester, (semester) => semester.semesterModules)
   semester!: Relation<Semester>;
 
-  @ManyToOne(() => Module, (module) => module.id)
+  @ManyToOne(() => Module, (module) => module.id, { nullable: true })
   module!: Relation<Module>;
 }

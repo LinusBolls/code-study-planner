@@ -14,4 +14,12 @@ export const env = {
     username: assertString(process.env.DB_USERNAME, "DB_USERNAME"),
     password: assertString(process.env.DB_PASSWORD, "DB_PASSWORD"),
   },
+  auth: {
+    accessToken: {
+      secret: assertString(
+        process.env.ACCESS_TOKEN_SECRET,
+        "ACCESS_TOKEN_SECRET"
+      ),
+    },
+  },
 };

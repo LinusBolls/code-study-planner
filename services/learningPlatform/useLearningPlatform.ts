@@ -47,7 +47,7 @@ export interface AsyncStorage {
 }
 
 export interface UseLearningPlatformOptions {
-  /** defaults to learningPlatform:session */
+  /** defaults to learning-platform:session */
   storageKey?: string;
   /** defaults to 'expo-secure-store' */
   asyncStorage?: AsyncStorage;
@@ -65,7 +65,7 @@ export const useLearningPlatform = () => {
       localStorage.setItem(key, value),
     deleteItemAsync: (key: string) => localStorage.removeItem(key),
   };
-  const storageKey = "learningPlatform:session";
+  const storageKey = "learning-platform:session";
 
   const store = useLearningPlatformStore();
 

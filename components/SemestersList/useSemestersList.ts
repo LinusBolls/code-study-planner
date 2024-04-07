@@ -7,12 +7,12 @@ import {
 import { useLearningPlatformModules } from "@/services/learningPlatform/hooks/useLearningPlatformModules";
 import { useLearningPlatformCurrentUser } from "@/services/learningPlatform/hooks/useLearningPlatformCurrentUser";
 import { useLearningPlatformSemesterModules } from "@/services/learningPlatform/hooks/useLearningPlatformSemesterModules";
-import { useLearningPlatformMySemesterList } from "@/services/learningPlatform/hooks/useLearningPlatformMySemesterList";
 import { toModule } from "@/services/learningPlatform/mapping";
-import { useLearningPlatformSemesters } from "@/services/learningPlatform/hooks/useLearningPlatformSemesters";
-import { Semester } from "@/app/useSemesters";
+import { Semester, SemesterModule } from "@/app/useSemesters";
 import dayjs from "dayjs";
-import { getGradeInfo } from "@/services/learningPlatform/util/getLevelFromGrade";
+import { getGradeInfo } from "@/services/learningPlatform/util/getGradeInfo";
+import { useStudyPlan } from "@/services/apiClient/hooks/useStudyPlan";
+import { ApiSemesterModule } from "@/services/apiClient";
 
 const getSemesterName = (startDate?: dayjs.Dayjs | null) => {
   if (!startDate) return "Unknown Semester";
@@ -76,64 +76,38 @@ export function useSemestersList(): SemestersListProps {
     (i) => i.assessments?.map((j) => ({ ...j, module: i })) ?? []
   );
 
-  const mySemesterListQuery = useLearningPlatformMySemesterList(100, 0);
+  const studyPlan = useStudyPlan();
 
-  const myCurrentModules =
-    mySemesterListQuery.data?.mySemesterModules?.filter(isDefined) ?? [];
+  const toPlannedModule = (i: ApiSemesterModule): SemesterModule => ({
+    type: "planned",
+    id: i.moduleId,
 
-  const allSemestersQuery = useLearningPlatformSemesters();
-
-  const allSemesters = (allSemestersQuery.data?.semesters ?? []).toReversed();
-
-  const indexOfFirstSemesterWithAssessments =
-    myPastAssessments
-      .map((i) => allSemesters.findIndex((j) => j.id === i.semester!.id))
-      .toSorted((a, b) => a - b)[0] ?? 0;
-
-  const semestersInScope = allSemesters.slice(
-    indexOfFirstSemesterWithAssessments
-  );
-
-  const lastSemesterStartDate = dayjs(
-    semestersInScope[semestersInScope.length - 1]?.startDate
-  );
-
-  const virtualSemesters = Array.from({
-    length: Math.max(0, 10 - semestersInScope.length),
-  }).map((_, idx) => {
-    const startDate = lastSemesterStartDate?.add((idx + 1) * 6, "months");
-
-    return {
-      id: "dummy:" + idx,
-      title: getSemesterName(startDate),
-      modules: {
-        earlyAssessments: [],
-        standartAssessments: [],
-        alternativeAssessments: [],
-        reassessments: [],
-      },
-    };
+    module: modules.find((j) => j.id === i.moduleId)!,
+    assessment: null,
   });
 
-  const semesters = semestersInScope
-    .map<Semester>((semester) => {
+  const semesters =
+    studyPlan.data?.semesters?.map<Semester>((semester) => {
       return {
         id: semester.id,
-        title: semester.name,
+        lpId: semester.lpId,
+        title: getSemesterName(dayjs(semester.startDate)),
         modules: {
-          earlyAssessments: [],
-          standartAssessments: [],
-          alternativeAssessments: [],
-          reassessments: [],
+          earlyAssessments:
+            semester.modules.earlyAssessments.map(toPlannedModule),
+          standartAssessments:
+            semester.modules.standartAssessments.map(toPlannedModule),
+          alternativeAssessments:
+            semester.modules.alternativeAssessments.map(toPlannedModule),
+          reassessments: semester.modules.reassessments.map(toPlannedModule),
         },
       };
-    })
-    .concat(virtualSemesters);
+    }) ?? [];
 
   const { modules } = useModulesInScope();
 
   for (const i of myPastAssessments) {
-    const semester = semesters.find((j) => j.id === i.semester!.id);
+    const semester = semesters.find((j) => j.lpId === i.semester!.id);
 
     if (!semester) continue;
 

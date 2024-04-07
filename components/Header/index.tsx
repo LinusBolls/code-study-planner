@@ -1,4 +1,8 @@
-import { SettingOutlined, UserOutlined } from "@ant-design/icons";
+import {
+  PoweroffOutlined,
+  SettingOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 import { Avatar, Button, Dropdown, Layout, Typography } from "antd";
 import Link from "antd/es/typography/Link";
 
@@ -30,6 +34,26 @@ export default function Header({}: HeaderProps) {
               key: "2",
               label: <Link href="/settings">Settings</Link>,
               icon: <SettingOutlined />,
+            },
+            {
+              type: "divider",
+            },
+            {
+              key: "3",
+              label: (
+                <Button
+                  type="link"
+                  onClick={() => {
+                    localStorage.removeItem("learning-platform:session");
+                    localStorage.removeItem("study-planner:session");
+
+                    location.reload();
+                  }}
+                >
+                  Logout
+                </Button>
+              ),
+              icon: <PoweroffOutlined />,
             },
           ],
         }}

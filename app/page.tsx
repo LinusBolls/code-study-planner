@@ -5,7 +5,7 @@ import {
   OnDragEndResponder,
   OnDragStartResponder,
 } from "@hello-pangea/dnd";
-import { SemesterModule, useSemesters } from "./useSemesters";
+import { SemesterModule } from "./useSemesters";
 import { PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import { getChatSelectionState } from "@/useChatSelection";
 import { useLearningPlatform } from "@/services/learningPlatform/useLearningPlatform";
@@ -21,8 +21,6 @@ import Header from "@/components/Header";
 
 export default function Page() {
   console.log("rendering page");
-
-  const { addModuleToSemester, removeModuleFromSemester } = useSemesters();
 
   const { signInWithAccessToken, isAuthenticated } = useLearningPlatform();
 
@@ -58,12 +56,8 @@ export default function Page() {
       const [___, ____, sourceSemesterId, sourceCategory] =
         sourceInboxId!.split(":");
 
-      addModuleToSemester(targetSemester, targetCategory, draggedModules[0].id);
-      removeModuleFromSemester(
-        sourceSemesterId,
-        sourceCategory,
-        draggedModules[0].id
-      );
+      // addModuleToSemester(targetSemester, targetCategory, draggedModules[0].id);
+      // removeModuleFromSemester(sourceSemesterId, sourceCategory, draggedModules[0].id);
     } else {
       console.log(
         "[debug] onDragEnd not executed:",
@@ -80,6 +74,21 @@ export default function Page() {
   const { isSidebarCollapsed } = useLayoutStore();
 
   async function signIn(learningPlatformAccessToken: string) {
+    const res = await fetch("/api/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ learningPlatformAccessToken }),
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to sign in");
+    }
+    const data = await res.json();
+
+    localStorage.setItem("study-planner:session", data.accessToken);
+
     await signInWithAccessToken(learningPlatformAccessToken);
   }
 
