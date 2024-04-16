@@ -1,7 +1,10 @@
 import { StudyPlannerApiClient } from ".";
 
 export default function useSession() {
-  const sessionToken = localStorage.getItem("study-planner:session")!;
+  const sessionToken =
+    typeof localStorage === "undefined"
+      ? null
+      : localStorage.getItem("study-planner:session")!;
 
   const enabled = sessionToken != null;
 
