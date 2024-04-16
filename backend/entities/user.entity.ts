@@ -24,6 +24,8 @@ export class User {
   @Column({
     comment:
       "the id of the corresponding resource of the CODE learning platform.",
+
+    unique: true,
   })
   lpId!: string;
 

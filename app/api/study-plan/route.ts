@@ -1,8 +1,6 @@
 import { AppDataSource } from "@/backend/datasource";
 import { Semester } from "@/backend/entities/semester.entity";
 import { SemesterModule } from "@/backend/entities/semesterModule.entity";
-import { StudyPlan } from "@/backend/entities/studyPlan.entity";
-import { User } from "@/backend/entities/user.entity";
 import { getUser } from "@/backend/getUser";
 import dayjs from "dayjs";
 import { NextRequest, NextResponse } from "next/server";
@@ -19,8 +17,6 @@ export async function GET(req: NextRequest) {
   }
 
   const semesterRepository = AppDataSource.getRepository(Semester);
-  const studyPlanRepository = AppDataSource.getRepository(StudyPlan);
-  const userRepository = AppDataSource.getRepository(User);
 
   const semesters = await semesterRepository.find({
     where: {

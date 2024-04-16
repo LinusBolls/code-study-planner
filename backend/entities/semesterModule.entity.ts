@@ -8,6 +8,7 @@ import {
   type Relation,
   JoinColumn,
   OneToOne,
+  Unique,
 } from "typeorm";
 import { Semester } from "./semester.entity";
 import { Module } from "./module.entity";
@@ -19,7 +20,11 @@ export enum AssessmentType {
   Reassessment = "reassessments",
 }
 
-// @Unique("my_unique_constraint", ["semesterId", "assessmentType", "index", "userId"])
+@Unique("studyPlan_and_semester_and_assessmentType_and_index", [
+  "semesterId",
+  "assessmentType",
+  "index",
+])
 @Entity({ name: "semester_modules" })
 export class SemesterModule {
   @PrimaryGeneratedColumn("uuid")
@@ -40,7 +45,7 @@ export class SemesterModule {
     type: "enum",
     enum: AssessmentType,
   })
-  assessmentType!: string;
+  assessmentType!: AssessmentType;
 
   @Column()
   semesterId!: string;

@@ -8,10 +8,13 @@ import {
   UpdateDateColumn,
   type Relation,
   JoinColumn,
+  Unique,
 } from "typeorm";
 import { SemesterModule } from "./semesterModule.entity";
 import { StudyPlan } from "./studyPlan.entity";
 
+@Unique("studyPlan_and_startDate", ["studyPlanId", "startDate"])
+@Unique("studyPlan_and_lpId", ["studyPlanId", "lpId"])
 @Entity({ name: "semesters" })
 export class Semester {
   @PrimaryGeneratedColumn("uuid")
