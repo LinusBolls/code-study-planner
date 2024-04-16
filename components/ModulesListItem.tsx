@@ -2,7 +2,7 @@ import { Assessment, Module } from "@/app/useSemesters";
 import { getDepartment } from "@/data/departments";
 import { useIsDraggingChats } from "@/useChatSelection";
 import { HolderOutlined } from "@ant-design/icons";
-import { Draggable } from "@hello-pangea/dnd";
+import { Draggable, DraggableProvided } from "@hello-pangea/dnd";
 import {
   Card,
   CardProps,
@@ -80,236 +80,272 @@ export default function ModulesListItem({
       trigger="hover"
       open={isHovered && !isDragHandleHovered && !isDraggingChats}
     >
-      <Draggable
-        index={index}
-        draggableId={draggableId}
-        isDragDisabled={assessment != null}
+      {assessment != null ? (
+        <InnerModulesListItem
+          isHovered={isHovered}
+          isDragHandleHovered={isDragHandleHovered}
+          setIsHovered={setIsHovered}
+          setIsDragHandleHovered={setIsDragHandleHovered}
+          module={module}
+          departmentColor={departmentColor}
+          assessment={assessment}
+          isDragging={false}
+          isDraggingChats={isDraggingChats}
+        />
+      ) : (
+        <Draggable index={index} draggableId={draggableId}>
+          {(provided, { isDragging }) => (
+            <InnerModulesListItem
+              isDragging={isDragging}
+              isHovered={isHovered}
+              isDragHandleHovered={isDragHandleHovered}
+              setIsHovered={setIsHovered}
+              setIsDragHandleHovered={setIsDragHandleHovered}
+              module={module}
+              departmentColor={departmentColor}
+              assessment={assessment}
+              isDraggingChats={isDraggingChats}
+              provided={provided}
+            />
+          )}
+        </Draggable>
+      )}
+    </Popover>
+  );
+}
+
+function InnerModulesListItem({
+  provided,
+  isDragging,
+  isHovered,
+  assessment,
+  isDraggingChats,
+  isDragHandleHovered,
+  module,
+  departmentColor,
+
+  setIsHovered,
+  setIsDragHandleHovered,
+}: {
+  isDragging: boolean;
+  isHovered: boolean;
+  isDragHandleHovered: boolean;
+  module: Module;
+  departmentColor: string;
+  assessment?: Assessment | null;
+  isDraggingChats: boolean;
+  provided?: DraggableProvided;
+
+  setIsHovered: (value: boolean) => void;
+  setIsDragHandleHovered: (value: boolean) => void;
+}) {
+  return (
+    <Flex
+      {...provided?.draggableProps}
+      ref={provided?.innerRef}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <Card
+        style={{
+          width: "100%",
+          borderRadius: "0.25rem",
+          transform: isDragging ? "rotate(-2deg)" : undefined,
+          opacity: isDragging ? 0.8 : 1,
+        }}
+        styles={{
+          body: {
+            background:
+              isHovered && assessment == null && !isDraggingChats
+                ? isDragHandleHovered
+                  ? "rgba(24, 144, 255, 0.05)"
+                  : "rgba(0, 0, 0, 0.02)"
+                : undefined,
+            padding: "0.5rem 0.75rem",
+          },
+        }}
+        size="small"
       >
-        {(provided, snapshot) => {
-          return (
-            <Flex
-              {...provided.draggableProps}
-              ref={provided.innerRef}
-              onMouseEnter={() => setIsHovered(true)}
-              onMouseLeave={() => setIsHovered(false)}
+        <Flex>
+          <Flex
+            vertical
+            gap="0.25rem"
+            style={{
+              overflow: "hidden",
+              width: "100%",
+            }}
+          >
+            <Typography.Text
+              type="secondary"
+              style={{
+                overflow: "ellipsis",
+                whiteSpace: "nowrap",
+              }}
             >
-              <Card
-                {...rest}
+              <Tag
+                color={departmentColor}
                 style={{
-                  width: "100%",
-                  ...rest.style,
-                  // borderLeft: "0.25rem solid #FF4473",
-                  borderRadius: "0.25rem",
-                  transform: snapshot.isDragging ? "rotate(-2deg)" : undefined,
-                  opacity: snapshot.isDragging ? 0.8 : 1,
+                  padding: "0 0.25rem",
+
+                  border: "none",
                 }}
-                styles={{
-                  body: {
-                    background:
-                      isHovered && assessment == null && !isDraggingChats
-                        ? isDragHandleHovered
-                          ? "rgba(24, 144, 255, 0.05)"
-                          : "rgba(0, 0, 0, 0.02)"
-                        : undefined,
-                    padding: "0.5rem 0.75rem",
-                  },
-                }}
-                size="small"
               >
-                <Flex>
-                  <Flex
-                    vertical
-                    gap="0.25rem"
-                    style={{
-                      overflow: "hidden",
-                      width: "100%",
-                    }}
-                  >
-                    <Typography.Text
-                      type="secondary"
+                {module.shortCode}
+              </Tag>
+              <Link target="_blank" href={module.url}>
+                {module.title}
+              </Link>
+            </Typography.Text>
+
+            <Flex gap="small" align="center">
+              <Typography.Text
+                type="secondary"
+                style={{ overflow: "ellipsis", whiteSpace: "nowrap" }}
+              >
+                <Link target="_blank" href={module.coordinatorUrl}>
+                  {module.coordinatorName}
+                </Link>
+              </Typography.Text>
+              <Typography.Text
+                type="secondary"
+                style={{ overflow: "ellipsis", whiteSpace: "nowrap" }}
+              >
+                {module.ects} ECTS
+              </Typography.Text>
+              {module.isMandatory && (
+                <Typography.Text
+                  strong
+                  style={{ overflow: "ellipsis", whiteSpace: "nowrap" }}
+                >
+                  mandatory
+                </Typography.Text>
+              )}
+              {module.isCompulsoryElective && (
+                <Typography.Text
+                  strong
+                  style={{ overflow: "ellipsis", whiteSpace: "nowrap" }}
+                >
+                  compulsory elective
+                </Typography.Text>
+              )}
+              <Flex gap="0.25rem">
+                {module.allowEarlyAssessment && (
+                  <Tooltip title="Allows early assessment">
+                    <span
+                      title="Allows early assessment"
                       style={{
-                        overflow: "ellipsis",
-                        whiteSpace: "nowrap",
+                        width: "fit-content",
+                        padding: "0 0.25rem",
+                        margin: 0,
+
+                        border: "none",
+                        background: "#E6E6E6",
+                        color: "#5D5D5D",
+
+                        fontSize: "0.625rem",
+                        lineHeight: "0.875rem",
+                        height: "0.875rem",
+                        fontWeight: "bold",
+
+                        borderRadius: "0.125rem",
                       }}
                     >
-                      <Tag
-                        color={departmentColor}
-                        style={{
-                          padding: "0 0.25rem",
+                      E
+                    </span>
+                  </Tooltip>
+                )}
+                {module.allowAlternativeAssessment && (
+                  <Tooltip title="Allows alternative assessment">
+                    <span
+                      title="Allows alternative assessment"
+                      style={{
+                        width: "fit-content",
+                        padding: "0 0.25rem",
+                        margin: 0,
 
-                          border: "none",
-                        }}
-                      >
-                        {module.shortCode}
-                      </Tag>
-                      <Link
-                        target="_blank"
-                        href={module.url}
-                        style={
-                          {
-                            // color,
-                          }
-                        }
-                      >
-                        {module.title}
-                      </Link>
-                    </Typography.Text>
+                        border: "none",
+                        background: "#E6E6E6",
+                        color: "#5D5D5D",
 
-                    <Flex gap="small" align="center">
-                      <Typography.Text
-                        type="secondary"
-                        style={{ overflow: "ellipsis", whiteSpace: "nowrap" }}
-                      >
-                        <Link target="_blank" href={module.coordinatorUrl}>
-                          {module.coordinatorName}
-                        </Link>
-                      </Typography.Text>
-                      <Typography.Text
-                        type="secondary"
-                        style={{ overflow: "ellipsis", whiteSpace: "nowrap" }}
-                      >
-                        {module.ects} ECTS
-                      </Typography.Text>
-                      {module.isMandatory && (
-                        <Typography.Text
-                          strong
-                          style={{ overflow: "ellipsis", whiteSpace: "nowrap" }}
-                        >
-                          mandatory
-                        </Typography.Text>
-                      )}
-                      {module.isCompulsoryElective && (
-                        <Typography.Text
-                          strong
-                          style={{ overflow: "ellipsis", whiteSpace: "nowrap" }}
-                        >
-                          compulsory elective
-                        </Typography.Text>
-                      )}
-                      <Flex gap="0.25rem">
-                        {module.allowEarlyAssessment && (
-                          <Tooltip title="Allows early assessment">
-                            <span
-                              title="Allows early assessment"
-                              style={{
-                                width: "fit-content",
-                                padding: "0 0.25rem",
-                                margin: 0,
+                        fontSize: "0.625rem",
+                        lineHeight: "0.875rem",
+                        height: "0.875rem",
+                        fontWeight: "bold",
 
-                                border: "none",
-                                background: "#E6E6E6",
-                                color: "#5D5D5D",
-
-                                fontSize: "0.625rem",
-                                lineHeight: "0.875rem",
-                                height: "0.875rem",
-                                fontWeight: "bold",
-
-                                borderRadius: "0.125rem",
-                              }}
-                            >
-                              E
-                            </span>
-                          </Tooltip>
-                        )}
-                        {module.allowAlternativeAssessment && (
-                          <Tooltip title="Allows alternative assessment">
-                            <span
-                              title="Allows alternative assessment"
-                              style={{
-                                width: "fit-content",
-                                padding: "0 0.25rem",
-                                margin: 0,
-
-                                border: "none",
-                                background: "#E6E6E6",
-                                color: "#5D5D5D",
-
-                                fontSize: "0.625rem",
-                                lineHeight: "0.875rem",
-                                height: "0.875rem",
-                                fontWeight: "bold",
-
-                                borderRadius: "0.125rem",
-                              }}
-                            >
-                              A
-                            </span>
-                          </Tooltip>
-                        )}
-                      </Flex>
-                    </Flex>
-                  </Flex>
-                  <Flex
-                    align="center"
-                    justify="end"
-                    style={{
-                      height: "3rem",
-                      paddingLeft: "0.5rem",
-                      paddingRight: "0.5rem",
-                    }}
-                    onMouseEnter={() => setIsDragHandleHovered(true)}
-                    onMouseLeave={() => setIsDragHandleHovered(false)}
-                    {...provided.dragHandleProps}
-                  >
-                    {assessment != null ? (
-                      <Flex
-                        vertical
-                        align="end"
-                        justify="space-between"
-                        style={{
-                          height: "100%",
-                        }}
-                      >
-                        <Typography.Text
-                          type="secondary"
-                          style={{
-                            overflow: "ellipsis",
-                            whiteSpace: "nowrap",
-                            fontSize: "0.75rem",
-                          }}
-                        >
-                          <Link target="_blank" href={assessment.assessorUrl}>
-                            {assessment.assessorName}
-                          </Link>
-                        </Typography.Text>
-                        <Tag
-                          color={assessment.passed ? "green" : "red"}
-                          style={{
-                            padding: "0 0.25rem",
-
-                            border: "none",
-                            width: "fit-content",
-
-                            margin: 0,
-                          }}
-                        >
-                          {module.isGraded
-                            ? assessment.passed
-                              ? `Level ${assessment.level}, Grade ${assessment.grade}`
-                              : `Failed, Grade ${assessment.grade}`
-                            : assessment.passed
-                            ? "Passed"
-                            : "Failed"}
-                        </Tag>
-                      </Flex>
-                    ) : (
-                      <HolderOutlined
-                        style={{
-                          fontSize: "1.5rem",
-                          color: isDragHandleHovered
-                            ? "#1890FF"
-                            : "rgba(0, 0, 0, 0.3)",
-                        }}
-                      />
-                    )}
-                  </Flex>
-                </Flex>
-              </Card>
+                        borderRadius: "0.125rem",
+                      }}
+                    >
+                      A
+                    </span>
+                  </Tooltip>
+                )}
+              </Flex>
             </Flex>
-          );
-        }}
-      </Draggable>
-    </Popover>
+          </Flex>
+          <Flex
+            align="center"
+            justify="end"
+            style={{
+              height: "3rem",
+              paddingLeft: "0.5rem",
+              paddingRight: "0.5rem",
+            }}
+            onMouseEnter={() => setIsDragHandleHovered(true)}
+            onMouseLeave={() => setIsDragHandleHovered(false)}
+            {...provided?.dragHandleProps}
+          >
+            {assessment != null ? (
+              <Flex
+                vertical
+                align="end"
+                justify="space-between"
+                style={{
+                  height: "100%",
+                }}
+              >
+                <Typography.Text
+                  type="secondary"
+                  style={{
+                    overflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                    fontSize: "0.75rem",
+                  }}
+                >
+                  <Link target="_blank" href={assessment.assessorUrl}>
+                    {assessment.assessorName}
+                  </Link>
+                </Typography.Text>
+                <Tag
+                  color={assessment.passed ? "green" : "red"}
+                  style={{
+                    padding: "0 0.25rem",
+
+                    border: "none",
+                    width: "fit-content",
+
+                    margin: 0,
+                  }}
+                >
+                  {module.isGraded
+                    ? assessment.passed
+                      ? `Level ${assessment.level}, Grade ${assessment.grade}`
+                      : `Failed, Grade ${assessment.grade}`
+                    : assessment.passed
+                    ? "Passed"
+                    : "Failed"}
+                </Tag>
+              </Flex>
+            ) : (
+              <HolderOutlined
+                style={{
+                  fontSize: "1.5rem",
+                  color: isDragHandleHovered ? "#1890FF" : "rgba(0, 0, 0, 0.3)",
+                }}
+              />
+            )}
+          </Flex>
+        </Flex>
+      </Card>
+    </Flex>
   );
 }

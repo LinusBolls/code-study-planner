@@ -33,7 +33,6 @@ export interface SemesterProps {
   offsetToCurrentSemester?: number;
   hoveredSection?: string | null;
 
-  isDraggingChats: boolean;
   draggedModules: Module[];
 
   setMouseUpInboxId: (inboxId: string | null) => void;
@@ -43,7 +42,6 @@ function SemesterCard({
   semester,
   offsetToCurrentSemester = 0,
   hoveredSection,
-  isDraggingChats,
   draggedModules,
   setMouseUpInboxId,
   setHoveredInboxId,
@@ -51,6 +49,8 @@ function SemesterCard({
   const [isHovered, setIsHovered] = useState(false);
 
   const isPastSemester = offsetToCurrentSemester < 0;
+
+  const isDraggingChats = draggedModules.length > 0;
 
   const showActions = isHovered && !isDraggingChats && !isPastSemester;
 

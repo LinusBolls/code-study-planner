@@ -190,17 +190,14 @@ export default function ModulesSearch({
             {isLoading && (
               <>
                 <ModulesListItem
-                  module={null as any}
                   index={0}
                   draggableId={"draggable:semester-module:" + module.id}
                 />
                 <ModulesListItem
-                  module={null as any}
                   index={1}
                   draggableId={"draggable:semester-module:" + module.id}
                 />
                 <ModulesListItem
-                  module={null as any}
                   index={2}
                   draggableId={"draggable:semester-module:" + module.id}
                 />

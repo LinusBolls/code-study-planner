@@ -88,7 +88,6 @@ export default function SemestersList({
                     ]
                   : null
               }
-              isDraggingChats={isDraggingChats}
               draggedModules={draggedModules}
               setMouseUpInboxId={setMouseUpInboxId}
               setHoveredInboxId={setHoveredInboxId}

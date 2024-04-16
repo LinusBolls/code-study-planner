@@ -26,8 +26,6 @@ import {
 } from "@/services/apiClient";
 
 export default function Page() {
-  console.log("rendering page");
-
   const { signInWithAccessToken, isAuthenticated } = useLearningPlatform();
 
   const { modules } = useModulesInScope();
