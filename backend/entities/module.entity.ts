@@ -6,7 +6,7 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 
-@Entity()
+@Entity({ name: "modules" })
 export class Module {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
@@ -17,9 +17,21 @@ export class Module {
   @UpdateDateColumn({ select: false })
   updatedAt!: Date;
 
-  @Column()
+  @Column({
+    comment:
+      "the id of the corresponding resource of the CODE learning platform.",
+  })
   lpId!: string;
 
-  @Column()
+  @Column({
+    comment:
+      "an integer between 0 and 4 indicating how demanding the module requirements are for students. this is based on feedback by CODE students and professors.",
+  })
   proficiency!: number;
+
+  @Column({
+    comment:
+      "if true, the module information might be outdated and should be manually checked / updated by a study plan admin.",
+  })
+  possiblyOutdated!: boolean;
 }

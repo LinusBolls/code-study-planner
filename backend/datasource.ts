@@ -7,6 +7,7 @@ import { Module } from "./entities/module.entity";
 import { Semester } from "./entities/semester.entity";
 import { SemesterModule } from "./entities/semesterModule.entity";
 import { User } from "./entities/user.entity";
+import { StudyPlan } from "./entities/studyPlan.entity";
 
 const dataSourceOptions: DataSourceOptions = {
   type: "postgres",
@@ -17,16 +18,12 @@ const dataSourceOptions: DataSourceOptions = {
   database: env.db.name,
   synchronize: env.isDevelopment,
   logging: true,
-  entities: [Module, Semester, SemesterModule, User],
+  entities: [Module, Semester, SemesterModule, User, StudyPlan],
   subscribers: [],
   migrations: [],
 };
 
-console.log("before source");
-
 export const AppDataSource = new DataSource(dataSourceOptions);
-
-console.log("after source");
 
 export const connectToDatabase = async () => {
   if (AppDataSource.isInitialized) return;

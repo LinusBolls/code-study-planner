@@ -7,11 +7,12 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   type Relation,
+  JoinColumn,
 } from "typeorm";
-import { User } from "./user.entity";
 import { SemesterModule } from "./semesterModule.entity";
+import { StudyPlan } from "./studyPlan.entity";
 
-@Entity()
+@Entity({ name: "semesters" })
 export class Semester {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
@@ -22,18 +23,29 @@ export class Semester {
   @UpdateDateColumn({ select: false })
   updatedAt!: Date;
 
-  @Column({ nullable: true })
+  @Column({
+    nullable: true,
+    comment:
+      "the id of the corresponding resource of the CODE learning platform. for semesters that don't yet exist on the learning platform because they are too far in the future, this is null.",
+  })
   lpId!: string;
 
-  @Column()
-  userId!: string;
-
-  @ManyToOne(() => User, (user) => user.semesters)
-  user!: Relation<User>;
-
-  @OneToMany(() => SemesterModule, (semesterModule) => semesterModule.semester)
+  @OneToMany(
+    () => SemesterModule,
+    (semesterModule) => semesterModule.semester,
+    {
+      cascade: ["remove"],
+    }
+  )
   semesterModules!: Relation<SemesterModule>[];
 
-  @Column()
+  @Column({ comment: "the starting date of the semester." })
   startDate!: Date;
+
+  @Column()
+  studyPlanId!: string;
+
+  @ManyToOne(() => StudyPlan, (studyPlan) => studyPlan.semesters)
+  @JoinColumn({ name: "studyPlanId" })
+  studyPlan!: Relation<StudyPlan>;
 }

@@ -7,6 +7,7 @@ import { env } from "@/backend/env";
 import { Semester } from "@/backend/entities/semester.entity";
 import { isDefined } from "@/services/learningPlatform/util/isDefined";
 import dayjs from "dayjs";
+import { StudyPlan } from "@/backend/entities/studyPlan.entity";
 
 export async function POST(req: NextRequest) {
   await connectToDatabase();
@@ -36,6 +37,7 @@ export async function POST(req: NextRequest) {
   }`);
 
   const userRepository = AppDataSource.getRepository(User);
+  const studyPlanRepository = AppDataSource.getRepository(StudyPlan);
 
   const existingUser = await userRepository.findOneBy({
     lpId: learningPlatformUser.me.id,
@@ -49,6 +51,12 @@ export async function POST(req: NextRequest) {
     newUser = new User();
 
     newUser.lpId = learningPlatformUser.me.id;
+
+    const studyPlan = new StudyPlan();
+
+    const newStudyPlan = await studyPlanRepository.save(studyPlan);
+
+    newUser.studyPlanId = newStudyPlan.id;
 
     await userRepository.save(newUser);
 
@@ -183,7 +191,7 @@ export async function POST(req: NextRequest) {
       const newSemester = new Semester();
 
       newSemester.lpId = semester.id;
-      newSemester.userId = newUser.id;
+      newSemester.studyPlanId = newStudyPlan.id;
       newSemester.startDate = semester.startDate;
 
       await semesterRepository.save(newSemester);
@@ -192,7 +200,7 @@ export async function POST(req: NextRequest) {
     for (let i = 0; i < numVirtualSemesters; i++) {
       const newSemester = new Semester();
 
-      newSemester.userId = newUser.id;
+      newSemester.studyPlanId = newStudyPlan.id;
       newSemester.startDate = lastExistingSemesterDate
         .add((i + 1) * 6, "months")
         .toDate();

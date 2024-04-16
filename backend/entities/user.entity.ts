@@ -2,14 +2,15 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  OneToMany,
   CreateDateColumn,
   UpdateDateColumn,
   type Relation,
+  OneToOne,
+  JoinColumn,
 } from "typeorm";
-import { Semester } from "./semester.entity";
+import { StudyPlan } from "./studyPlan.entity";
 
-@Entity()
+@Entity({ name: "users" })
 export class User {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
@@ -20,9 +21,18 @@ export class User {
   @UpdateDateColumn({ select: false })
   updatedAt!: Date;
 
-  @Column()
+  @Column({
+    comment:
+      "the id of the corresponding resource of the CODE learning platform.",
+  })
   lpId!: string;
 
-  @OneToMany(() => Semester, (semester) => semester.user)
-  semesters!: Relation<Semester>[];
+  @Column()
+  studyPlanId!: string;
+
+  @OneToOne(() => StudyPlan, (studyPlan) => studyPlan.user, {
+    cascade: ["remove"],
+  })
+  @JoinColumn({ name: "studyPlanId" })
+  studyPlan!: Relation<StudyPlan>;
 }

@@ -43,10 +43,13 @@ export async function PUT(req: NextRequest) {
 
   const semestersCount = await AppDataSource.getRepository(Semester)
     .createQueryBuilder("semester")
-    .where("semester.id IN (:...semesterIds) and semester.userId = :userId", {
-      semesterIds,
-      userId: user.id,
-    })
+    .where(
+      "semester.id IN (:...semesterIds) and semester.studyPlanId = :studyPlanId",
+      {
+        semesterIds,
+        studyPlanId: user.studyPlanId,
+      }
+    )
     .getCount();
 
   if (semestersCount !== semesterIds.length) {
@@ -65,9 +68,9 @@ export async function PUT(req: NextRequest) {
       .leftJoin("semesterModule.semester", "semester")
       .select("semesterModule.id")
       .where(
-        "semester.userId = :userId AND semesterModule.semesterId IN (:...semesterIds)",
+        "semester.studyPlanId = :studyPlanId AND semesterModule.semesterId IN (:...semesterIds)",
         {
-          userId: user.id,
+          studyPlanId: user.studyPlanId,
           semesterIds,
         }
       )
@@ -106,6 +109,7 @@ export async function PUT(req: NextRequest) {
         const newModule = new Module();
         newModule.lpId = unknownModuleId;
         newModule.proficiency = 0;
+        newModule.possiblyOutdated = true;
         await transaction.getRepository(Module).save(newModule);
       }
 
@@ -123,15 +127,9 @@ export async function PUT(req: NextRequest) {
           for (const [idx, semesterModule] of category.entries()) {
             const newModule = new SemesterModule();
 
-            const dbModule = knownModules2.find(
+            newModule.module = knownModules2.find(
               (i) => i.lpId === semesterModule.moduleId
-            );
-
-            console.log("dbModule", semesterModule.moduleId, dbModule);
-
-            newModule.moduleId = knownModules2.find(
-              (i) => i.lpId === semesterModule.moduleId
-            )?.id!;
+            )!;
             newModule.semesterId = semesterId;
             newModule.assessmentType = categoryId;
             newModule.index = idx;
