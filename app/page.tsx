@@ -50,6 +50,8 @@ export default function Page() {
   const studyPlan = useStudyPlan();
 
   const onDragEnd: OnDragEndResponder = () => {
+    if (!studyPlan.isSuccess) return;
+
     const {
       draggedModules,
       dropTargetInboxId,
@@ -59,14 +61,12 @@ export default function Page() {
       stopDraggingChats,
     } = getChatSelectionState();
 
-    if (dropTargetInboxId && isDraggingChats) {
+    if (isDraggingChats) {
       const [_, __, targetSemester, targetCategory] =
-        dropTargetInboxId.split(":");
+        dropTargetInboxId?.split(":") ?? [];
 
-      const [___, ____, sourceSemesterId, sourceCategory] =
-        sourceInboxId!.split(":");
-
-      if (!studyPlan.isSuccess) return;
+      const [___, ____, sourceSemester, sourceCategory] =
+        sourceInboxId?.split(":") ?? [];
 
       const body = studyPlan.data.semesters.reduce<UpdateSemesterModuleInput>(
         (acc, i) => {
@@ -77,26 +77,27 @@ export default function Page() {
               moduleId: draggedModules[0].id,
             });
           }
+          if (i.id === sourceSemester) {
+            acc[i.id]![sourceCategory as SemesterModuleCategory] = acc[i.id]![
+              sourceCategory as SemesterModuleCategory
+            ]!.filter((i) => i.moduleId !== draggedModules[0].id);
+          }
           return acc;
         },
         {}
       );
-      console.log(
+      console.info(
         "[onDragEnd]",
         targetSemester,
         targetCategory,
-        sourceSemesterId,
+        sourceSemester,
         sourceCategory,
         studyPlan.data.semesters,
         body
       );
       updateSemesterModule.mutate(body);
     } else {
-      console.log(
-        "[debug] onDragEnd not executed:",
-        dropTargetInboxId,
-        isDraggingChats
-      );
+      console.warn("[onDragEnd] not executed");
     }
     stopDraggingChats();
   };

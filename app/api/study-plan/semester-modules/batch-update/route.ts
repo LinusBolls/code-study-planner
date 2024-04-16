@@ -88,54 +88,56 @@ export async function PUT(req: NextRequest) {
       )
     );
 
-    const knownModules = await transaction
-      .getRepository(Module)
-      .createQueryBuilder("module")
-      .select()
-      .where("module.lpId IN (:...moduleIds)", {
-        moduleIds,
-      })
-      .getMany();
+    if (moduleIds.length) {
+      const knownModules = await transaction
+        .getRepository(Module)
+        .createQueryBuilder("module")
+        .select()
+        .where("module.lpId IN (:...moduleIds)", {
+          moduleIds,
+        })
+        .getMany();
 
-    const unknownModules = moduleIds.filter(
-      (moduleId) => !knownModules.some((module) => module.lpId === moduleId)
-    );
+      const unknownModules = moduleIds.filter(
+        (moduleId) => !knownModules.some((module) => module.lpId === moduleId)
+      );
 
-    for (const unknownModuleId of unknownModules) {
-      const newModule = new Module();
-      newModule.lpId = unknownModuleId;
-      newModule.proficiency = 0;
-      await transaction.getRepository(Module).save(newModule);
-    }
+      for (const unknownModuleId of unknownModules) {
+        const newModule = new Module();
+        newModule.lpId = unknownModuleId;
+        newModule.proficiency = 0;
+        await transaction.getRepository(Module).save(newModule);
+      }
 
-    const knownModules2 = await transaction
-      .getRepository(Module)
-      .createQueryBuilder("module")
-      .select()
-      .where("module.lpId IN (:...moduleIds)", {
-        moduleIds,
-      })
-      .getMany();
+      const knownModules2 = await transaction
+        .getRepository(Module)
+        .createQueryBuilder("module")
+        .select()
+        .where("module.lpId IN (:...moduleIds)", {
+          moduleIds,
+        })
+        .getMany();
 
-    for (const [semesterId, semester] of Object.entries(body)) {
-      for (const [categoryId, category] of Object.entries(semester)) {
-        for (const [idx, semesterModule] of category.entries()) {
-          const newModule = new SemesterModule();
+      for (const [semesterId, semester] of Object.entries(body)) {
+        for (const [categoryId, category] of Object.entries(semester)) {
+          for (const [idx, semesterModule] of category.entries()) {
+            const newModule = new SemesterModule();
 
-          const dbModule = knownModules2.find(
-            (i) => i.lpId === semesterModule.moduleId
-          );
+            const dbModule = knownModules2.find(
+              (i) => i.lpId === semesterModule.moduleId
+            );
 
-          console.log("dbModule", semesterModule.moduleId, dbModule);
+            console.log("dbModule", semesterModule.moduleId, dbModule);
 
-          newModule.moduleId = knownModules2.find(
-            (i) => i.lpId === semesterModule.moduleId
-          )?.id!;
-          newModule.semesterId = semesterId;
-          newModule.assessmentType = categoryId;
-          newModule.index = idx;
+            newModule.moduleId = knownModules2.find(
+              (i) => i.lpId === semesterModule.moduleId
+            )?.id!;
+            newModule.semesterId = semesterId;
+            newModule.assessmentType = categoryId;
+            newModule.index = idx;
 
-          await transaction.getRepository(SemesterModule).save(newModule);
+            await transaction.getRepository(SemesterModule).save(newModule);
+          }
         }
       }
     }
