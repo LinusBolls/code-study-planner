@@ -80,8 +80,6 @@ export default function ModulesSearch({
   ];
   const activeTab = modulesTabs.find((tab) => tab.value === modulesTab);
 
-  console.log("rendering ModulesSearch");
-
   return (
     <Flex
       vertical

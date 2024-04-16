@@ -29,8 +29,6 @@ function ModulesListSection({
   onAddItem,
   ...rest
 }: ModulesListSectionProps) {
-  console.log("rendering modules list section:", droppableId);
-
   const isDragTarget = isHovered && isDragInProgress && !disabled;
 
   return (

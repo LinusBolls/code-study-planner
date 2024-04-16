@@ -1,9 +1,10 @@
 import { Flex } from "antd";
 import { Panel } from "react-resizable-panels";
 import SemestersListSkeletonLoader from "./SemestersListSkeletonLoader";
-import { Module, Semester } from "@/app/useSemesters";
+import { Semester } from "@/app/useSemesters";
 import SemesterCard from "../Semester";
 import { useRef } from "react";
+import { useChatSelection } from "@/useChatSelection";
 
 export interface SemestersListProps {
   semestersQuery: {
@@ -32,6 +33,14 @@ export default function SemestersList({
     childRef.current?.scrollWidth,
     scaleFactor
   );
+
+  const {
+    hoveredInboxId,
+    isDraggingChats,
+    draggedModules,
+    setMouseUpInboxId,
+    setHoveredInboxId,
+  } = useChatSelection();
 
   return (
     <Panel>
@@ -71,7 +80,18 @@ export default function SemestersList({
             <SemesterCard
               key={semester.id}
               semester={semester}
-              offsetToCurrentSemester={idx - 4}
+              offsetToCurrentSemester={idx - 5}
+              hoveredSection={
+                hoveredInboxId?.includes(semester.id)
+                  ? hoveredInboxId.split(":")[
+                      hoveredInboxId.split(":").length - 1
+                    ]
+                  : null
+              }
+              isDraggingChats={isDraggingChats}
+              draggedModules={draggedModules}
+              setMouseUpInboxId={setMouseUpInboxId}
+              setHoveredInboxId={setHoveredInboxId}
             />
           ))}
         </Flex>

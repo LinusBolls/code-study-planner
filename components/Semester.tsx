@@ -1,9 +1,8 @@
 import { Module, Semester } from "@/app/useSemesters";
 import { Flex, Typography } from "antd";
 import ModulesListSection from "./ModulesListSection";
-import { useState } from "react";
+import { memo, useState } from "react";
 import { Droppable } from "@hello-pangea/dnd";
-import { useChatSelection } from "@/useChatSelection";
 
 const getOffsetText = (offset: number) => {
   if (offset === 0) {
@@ -32,22 +31,24 @@ const getOffsetText = (offset: number) => {
 export interface SemesterProps {
   semester: Semester;
   offsetToCurrentSemester?: number;
+  hoveredSection?: string | null;
+
+  isDraggingChats: boolean;
+  draggedModules: Module[];
+
+  setMouseUpInboxId: (inboxId: string | null) => void;
+  setHoveredInboxId: (inboxId: string | null) => void;
 }
-export default function SemesterCard({
+function SemesterCard({
   semester,
   offsetToCurrentSemester = 0,
+  hoveredSection,
+  isDraggingChats,
+  draggedModules,
+  setMouseUpInboxId,
+  setHoveredInboxId,
 }: SemesterProps) {
   const [isHovered, setIsHovered] = useState(false);
-
-  console.log("rendering semester:", semester.id);
-
-  const {
-    hoveredInboxId,
-    isDraggingChats,
-    draggedModules,
-    setMouseUpInboxId,
-    setHoveredInboxId,
-  } = useChatSelection();
 
   const isPastSemester = offsetToCurrentSemester < 0;
 
@@ -122,10 +123,7 @@ export default function SemesterCard({
           )
         }
         onMouseLeave={() => setHoveredInboxId(null)}
-        isHovered={
-          hoveredInboxId ===
-          `droppable:semester:${semester.id}:earlyAssessments`
-        }
+        isHovered={hoveredSection === "earlyAssessments"}
         isDragInProgress={isDraggingChats}
         title="Early Assessments"
         modules={semester.modules.earlyAssessments}
@@ -145,10 +143,7 @@ export default function SemesterCard({
           )
         }
         onMouseLeave={() => setHoveredInboxId(null)}
-        isHovered={
-          hoveredInboxId ===
-          `droppable:semester:${semester.id}:standartAssessments`
-        }
+        isHovered={hoveredSection === "standartAssessments"}
         isDragInProgress={isDraggingChats}
         title="Standart Assessments"
         modules={semester.modules.standartAssessments}
@@ -174,10 +169,7 @@ export default function SemesterCard({
           )
         }
         onMouseLeave={() => setHoveredInboxId(null)}
-        isHovered={
-          hoveredInboxId ===
-          `droppable:semester:${semester.id}:alternativeAssessments`
-        }
+        isHovered={hoveredSection === "alternativeAssessments"}
         isDragInProgress={isDraggingChats}
         title="Alternative Assessments"
         modules={semester.modules.alternativeAssessments}
@@ -193,9 +185,7 @@ export default function SemesterCard({
           setHoveredInboxId(`droppable:semester:${semester.id}:reassessments`)
         }
         onMouseLeave={() => setHoveredInboxId(null)}
-        isHovered={
-          hoveredInboxId === `droppable:semester:${semester.id}:reassessments`
-        }
+        isHovered={hoveredSection === "reassessments"}
         isDragInProgress={isDraggingChats}
         title="Reassessments"
         modules={semester.modules.reassessments}
@@ -232,3 +222,4 @@ export default function SemesterCard({
     </Flex>
   );
 }
+export default memo(SemesterCard);
