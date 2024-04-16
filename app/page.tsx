@@ -18,6 +18,12 @@ import {
   useSemestersList,
 } from "@/components/SemestersList/useSemestersList";
 import Header from "@/components/Header";
+import { useUpdateSemesterModule } from "@/services/apiClient/hooks/useUpdateSemesterModules";
+import { useStudyPlan } from "@/services/apiClient/hooks/useStudyPlan";
+import {
+  SemesterModuleCategory,
+  UpdateSemesterModuleInput,
+} from "@/services/apiClient";
 
 export default function Page() {
   console.log("rendering page");
@@ -39,6 +45,10 @@ export default function Page() {
     startDraggingChats([draggedModule!], e.source.droppableId);
   };
 
+  const updateSemesterModule = useUpdateSemesterModule();
+
+  const studyPlan = useStudyPlan();
+
   const onDragEnd: OnDragEndResponder = () => {
     const {
       draggedModules,
@@ -56,8 +66,31 @@ export default function Page() {
       const [___, ____, sourceSemesterId, sourceCategory] =
         sourceInboxId!.split(":");
 
-      // addModuleToSemester(targetSemester, targetCategory, draggedModules[0].id);
-      // removeModuleFromSemester(sourceSemesterId, sourceCategory, draggedModules[0].id);
+      if (!studyPlan.isSuccess) return;
+
+      const body = studyPlan.data.semesters.reduce<UpdateSemesterModuleInput>(
+        (acc, i) => {
+          acc[i.id] = i.modules;
+
+          if (i.id === targetSemester) {
+            acc[i.id]![targetCategory as SemesterModuleCategory]!.push({
+              moduleId: draggedModules[0].id,
+            });
+          }
+          return acc;
+        },
+        {}
+      );
+      console.log(
+        "[onDragEnd]",
+        targetSemester,
+        targetCategory,
+        sourceSemesterId,
+        sourceCategory,
+        studyPlan.data.semesters,
+        body
+      );
+      updateSemesterModule.mutate(body);
     } else {
       console.log(
         "[debug] onDragEnd not executed:",

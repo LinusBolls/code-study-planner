@@ -46,7 +46,7 @@ export class StudyPlannerApiClient {
           "Content-Type": "application/json",
           Authorization: this.accessToken,
         },
-        method: "POST",
+        method: "PUT",
         body: JSON.stringify(body),
       }
     );
@@ -65,3 +65,9 @@ export type UpdateSemesterModuleInput = Record<
     reassessments: ApiSemesterModule[];
   }
 >;
+
+export type SemesterModuleCategory =
+  | "earlyAssessments"
+  | "standartAssessments"
+  | "alternativeAssessments"
+  | "reassessments";

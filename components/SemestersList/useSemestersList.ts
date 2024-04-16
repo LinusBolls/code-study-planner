@@ -78,6 +78,8 @@ export function useSemestersList(): SemestersListProps {
 
   const studyPlan = useStudyPlan();
 
+  const { modules } = useModulesInScope();
+
   const toPlannedModule = (i: ApiSemesterModule): SemesterModule => ({
     type: "planned",
     id: i.moduleId,
@@ -103,8 +105,6 @@ export function useSemestersList(): SemestersListProps {
         },
       };
     }) ?? [];
-
-  const { modules } = useModulesInScope();
 
   for (const i of myPastAssessments) {
     const semester = semesters.find((j) => j.lpId === i.semester!.id);

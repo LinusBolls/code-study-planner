@@ -1,4 +1,5 @@
 import { AppDataSource, connectToDatabase } from "@/backend/datasource";
+import { Module } from "@/backend/entities/module.entity";
 import { Semester } from "@/backend/entities/semester.entity";
 import { SemesterModule } from "@/backend/entities/semesterModule.entity";
 import { getUser } from "@/backend/getUser";
@@ -58,25 +59,78 @@ export async function PUT(req: NextRequest) {
   }
 
   await AppDataSource.transaction(async (transaction) => {
-    await transaction
+    const idsToDelete = await transaction
       .getRepository(SemesterModule)
       .createQueryBuilder("semesterModule")
+      .leftJoin("semesterModule.semester", "semester")
+      .select("semesterModule.id")
       .where(
-        "semesterModule.semesterId IN (:...semesterIds) and semester.userId = :userId",
+        "semester.userId = :userId AND semesterModule.semesterId IN (:...semesterIds)",
         {
-          semesterIds,
           userId: user.id,
+          semesterIds,
         }
       )
-      .delete()
-      .execute();
+      .getMany();
+
+    if (idsToDelete.length) {
+      await transaction
+        .getRepository(SemesterModule)
+        .createQueryBuilder()
+        .delete()
+        .where("id IN (:...ids)", { ids: idsToDelete.map((sm) => sm.id) })
+        .execute();
+    }
+
+    const moduleIds = Object.values(body).flatMap((semester) =>
+      Object.values(semester).flatMap((modules) =>
+        modules.map((i) => i.moduleId)
+      )
+    );
+
+    const knownModules = await transaction
+      .getRepository(Module)
+      .createQueryBuilder("module")
+      .select()
+      .where("module.lpId IN (:...moduleIds)", {
+        moduleIds,
+      })
+      .getMany();
+
+    const unknownModules = moduleIds.filter(
+      (moduleId) => !knownModules.some((module) => module.lpId === moduleId)
+    );
+
+    for (const unknownModuleId of unknownModules) {
+      const newModule = new Module();
+      newModule.lpId = unknownModuleId;
+      newModule.proficiency = 0;
+      await transaction.getRepository(Module).save(newModule);
+    }
+
+    const knownModules2 = await transaction
+      .getRepository(Module)
+      .createQueryBuilder("module")
+      .select()
+      .where("module.lpId IN (:...moduleIds)", {
+        moduleIds,
+      })
+      .getMany();
 
     for (const [semesterId, semester] of Object.entries(body)) {
       for (const [categoryId, category] of Object.entries(semester)) {
         for (const [idx, semesterModule] of category.entries()) {
           const newModule = new SemesterModule();
 
-          newModule.moduleId = semesterModule.moduleId;
+          const dbModule = knownModules2.find(
+            (i) => i.lpId === semesterModule.moduleId
+          );
+
+          console.log("dbModule", semesterModule.moduleId, dbModule);
+
+          newModule.moduleId = knownModules2.find(
+            (i) => i.lpId === semesterModule.moduleId
+          )?.id!;
           newModule.semesterId = semesterId;
           newModule.assessmentType = categoryId;
           newModule.index = idx;

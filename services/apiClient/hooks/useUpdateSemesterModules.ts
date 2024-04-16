@@ -8,7 +8,9 @@ export const useUpdateSemesterModule = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: api.updateSemesterModules,
+    mutationFn: api.updateSemesterModules.bind(
+      api
+    ) as (typeof api)["updateSemesterModules"],
     mutationKey: ["studyPlanner", "studyPlan"],
     onMutate(variables) {
       const prev: StudyPlan = queryClient.getQueryData([

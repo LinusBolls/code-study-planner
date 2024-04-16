@@ -7,7 +7,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 const byIndex = (a: SemesterModule, b: SemesterModule) => a.index - b.index;
 
-const toModule = (module: SemesterModule) => ({ moduleId: module.moduleId });
+const toModule = (module: SemesterModule) => ({ moduleId: module.module.lpId });
 
 export async function GET(req: NextRequest) {
   const user = await getUser(req);
@@ -22,9 +22,7 @@ export async function GET(req: NextRequest) {
     where: {
       userId: user.id,
     },
-    relations: {
-      semesterModules: true,
-    },
+    relations: ["semesterModules", "semesterModules.module"],
   });
 
   const mappedSemesters = semesters
@@ -36,21 +34,21 @@ export async function GET(req: NextRequest) {
         startDate: semester.startDate,
         modules: {
           earlyAssessments: semester.semesterModules
-            .filter((module) => module.assessmentType === "earlyAssessment")
+            .filter((module) => module.assessmentType === "earlyAssessments")
             .sort(byIndex)
             .map(toModule),
           standartAssessments: semester.semesterModules
-            .filter((module) => module.assessmentType === "standartAssessment")
+            .filter((module) => module.assessmentType === "standartAssessments")
             .sort(byIndex)
             .map(toModule),
           alternativeAssessments: semester.semesterModules
             .filter(
-              (module) => module.assessmentType === "alternativeAssessment"
+              (module) => module.assessmentType === "alternativeAssessments"
             )
             .sort(byIndex)
             .map(toModule),
           reassessments: semester.semesterModules
-            .filter((module) => module.assessmentType === "reassessment")
+            .filter((module) => module.assessmentType === "reassessments")
             .sort(byIndex)
             .map(toModule),
         },
