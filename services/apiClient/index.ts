@@ -2,17 +2,19 @@ export interface ApiSemesterModule {
   moduleId: string;
 }
 
+interface ModulesRecord {
+  earlyAssessments: ApiSemesterModule[];
+  standartAssessments: ApiSemesterModule[];
+  alternativeAssessments: ApiSemesterModule[];
+  reassessments: ApiSemesterModule[];
+}
+
 export interface StudyPlan {
   semesters: {
     id: string;
     lpId: string;
     startDate: string;
-    modules: {
-      earlyAssessments: ApiSemesterModule[];
-      standartAssessments: ApiSemesterModule[];
-      alternativeAssessments: ApiSemesterModule[];
-      reassessments: ApiSemesterModule[];
-    };
+    modules: ModulesRecord;
   }[];
 }
 
@@ -56,15 +58,7 @@ export class StudyPlannerApiClient {
   }
 }
 
-export type UpdateSemesterModuleInput = Record<
-  string,
-  {
-    earlyAssessments: ApiSemesterModule[];
-    standartAssessments: ApiSemesterModule[];
-    alternativeAssessments: ApiSemesterModule[];
-    reassessments: ApiSemesterModule[];
-  }
->;
+export type UpdateSemesterModuleInput = Record<string, ModulesRecord>;
 
 export type SemesterModuleCategory =
   | "earlyAssessments"

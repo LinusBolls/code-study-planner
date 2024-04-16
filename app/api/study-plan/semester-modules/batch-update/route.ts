@@ -1,7 +1,10 @@
 import { AppDataSource, connectToDatabase } from "@/backend/datasource";
 import { Module } from "@/backend/entities/module.entity";
 import { Semester } from "@/backend/entities/semester.entity";
-import { SemesterModule } from "@/backend/entities/semesterModule.entity";
+import {
+  AssessmentType,
+  SemesterModule,
+} from "@/backend/entities/semesterModule.entity";
 import { getUser } from "@/backend/getUser";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
@@ -19,12 +22,11 @@ export async function PUT(req: NextRequest) {
   const moduleSchema = z.object({
     moduleId: z.string(),
   });
-  const semesterSchema = z.object({
-    earlyAssessments: z.array(moduleSchema),
-    standartAssessments: z.array(moduleSchema),
-    alternativeAssessments: z.array(moduleSchema),
-    reassessments: z.array(moduleSchema),
-  });
+
+  const semesterSchema = z.record(
+    z.enum(Object.values(AssessmentType) as [string, ...string[]]),
+    z.array(moduleSchema)
+  );
   const bodySchema = z.record(semesterSchema);
 
   let body: z.infer<typeof bodySchema>;
@@ -131,7 +133,7 @@ export async function PUT(req: NextRequest) {
               (i) => i.lpId === semesterModule.moduleId
             )!;
             newModule.semesterId = semesterId;
-            newModule.assessmentType = categoryId;
+            newModule.assessmentType = categoryId as AssessmentType;
             newModule.index = idx;
 
             await transaction.getRepository(SemesterModule).save(newModule);
