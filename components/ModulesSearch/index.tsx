@@ -1,15 +1,10 @@
+import { AutoSizer, List, ListRowRenderer } from "react-virtualized";
 import { Droppable } from "@hello-pangea/dnd";
-import {
-  AutoComplete,
-  Checkbox,
-  Flex,
-  Input,
-  Segmented,
-  Typography,
-} from "antd";
+import { AutoComplete, Checkbox, Flex, Segmented, Typography } from "antd";
 import ModulesListItem from "../ModulesListItem";
 import { Module } from "@/app/useSemesters";
 import { SegmentedLabeledOption, SegmentedOptions } from "antd/es/segmented";
+import { LegacyRef } from "react";
 
 export interface ModulesSearchProps {
   modules: Module[];
@@ -80,140 +75,175 @@ export default function ModulesSearch({
   ];
   const activeTab = modulesTabs.find((tab) => tab.value === modulesTab);
 
-  return (
-    <Flex
-      vertical
-      gap="middle"
-      style={{
-        height: "calc(100vh - 10rem)",
-        padding: "1rem 1.5rem 0 1.5rem",
-        overflowY: "scroll",
-      }}
-    >
-      <Flex vertical gap="small">
-        <Segmented
-          options={modulesTabs as SegmentedOptions<string>}
-          block
-          onChange={onModulesTabChange}
-          value={modulesTab}
-        />
-        {activeTab?.description && (
-          <Typography.Text type="secondary">
-            {activeTab.description}
-          </Typography.Text>
-        )}
-      </Flex>
-      <AutoComplete
-        placeholder="Search by name, study program, or professor"
-        value={searchQuery}
-        onChange={(value) => onSearchQueryChange?.(value)}
-        allowClear
-        options={[
-          {
-            label: "Some things you could search for:",
-            options: [
-              {
-                value: "se 10 ects",
-                label: "se 10 ects",
-              },
-              {
-                value: "fatma meawad",
-                label: "fatma meawad",
-              },
-              {
-                value: "requires project",
-                label: "requires project",
-              },
-              {
-                value: "mandatory",
-                label: "mandatory",
-              },
-              {
-                value: "level 0",
-                label: "level 0",
-              },
-            ],
-          },
-        ]}
-      />
-      <Checkbox
-        checked={onlyMandaryOrCompulsoryElective}
-        onChange={() =>
-          onOnlyMandaryOrCompulsoryElectiveChange(
-            !onlyMandaryOrCompulsoryElective
-          )
-        }
-      >
-        Mandatory/Compulsory Elective
-      </Checkbox>
-      <Checkbox
-        checked={onlyAlternativeAssessment}
-        onChange={() =>
-          onOnlyAlternativeAssessmentChange(!onlyAlternativeAssessment)
-        }
-      >
-        Allows alternative assessment
-      </Checkbox>
-      <Checkbox
-        checked={onlyEarlyAssessment}
-        onChange={() => onOnlyEarlyAssessmentChange(!onlyEarlyAssessment)}
-      >
-        Allows early assessment
-      </Checkbox>
-      {!isLoading && modules.length === 0 && (
-        <Flex align="center" justify="center" style={{ height: "4rem" }}>
-          <Typography.Text
-            type="secondary"
-            style={{
-              whiteSpace: "pre",
-              textAlign: "center",
-            }}
-          >
-            {activeTab?.emptyText && currentTabIsEmpty
-              ? activeTab?.emptyText
-              : "No modules found."}
-          </Typography.Text>
-        </Flex>
-      )}
-      <Droppable droppableId="droppable:modules-list">
-        {(provided) => (
-          <Flex
-            gap="small"
-            vertical
-            ref={provided.innerRef}
-            {...provided.droppableProps}
-            style={{
-              paddingBottom: "1rem",
-              // boxShadow: "inner rgba(29, 35, 41, 0.05) 0px 2px 8px 0px",
-            }}
-          >
-            {isLoading && (
-              <>
-                <ModulesListItem
-                  index={0}
-                  draggableId={"draggable:semester-module:" + module.id}
-                />
-                <ModulesListItem
-                  index={1}
-                  draggableId={"draggable:semester-module:" + module.id}
-                />
-                <ModulesListItem
-                  index={2}
-                  draggableId={"draggable:semester-module:" + module.id}
-                />
-              </>
+  const rowRenderer: ListRowRenderer = ({ key, index, style }) => {
+    if (index === 0) {
+      return (
+        <Flex vertical gap="middle">
+          <Flex vertical gap="small">
+            <Segmented
+              options={modulesTabs as SegmentedOptions<string>}
+              block
+              onChange={onModulesTabChange}
+              value={modulesTab}
+            />
+            {activeTab?.description && (
+              <Typography.Text type="secondary">
+                {activeTab.description}
+              </Typography.Text>
             )}
-            {modules.map((module, idx) => (
-              <ModulesListItem
-                draggableId={"draggable:module:" + module.id}
-                key={module.id}
-                index={idx}
-                module={module}
-              />
-            ))}
           </Flex>
+          <AutoComplete
+            placeholder="Search by name, study program, or professor"
+            value={searchQuery}
+            onChange={(value) => onSearchQueryChange?.(value)}
+            allowClear
+            options={[
+              {
+                label: "Some things you could search for:",
+                options: [
+                  {
+                    value: "se 10 ects",
+                    label: "se 10 ects",
+                  },
+                  {
+                    value: "fatma meawad",
+                    label: "fatma meawad",
+                  },
+                  {
+                    value: "requires project",
+                    label: "requires project",
+                  },
+                  {
+                    value: "mandatory",
+                    label: "mandatory",
+                  },
+                  {
+                    value: "level 0",
+                    label: "level 0",
+                  },
+                ],
+              },
+            ]}
+          />
+          <Checkbox
+            checked={onlyMandaryOrCompulsoryElective}
+            onChange={() =>
+              onOnlyMandaryOrCompulsoryElectiveChange(
+                !onlyMandaryOrCompulsoryElective
+              )
+            }
+          >
+            Mandatory/Compulsory Elective
+          </Checkbox>
+          <Checkbox
+            checked={onlyAlternativeAssessment}
+            onChange={() =>
+              onOnlyAlternativeAssessmentChange(!onlyAlternativeAssessment)
+            }
+          >
+            Allows alternative assessment
+          </Checkbox>
+          <Checkbox
+            checked={onlyEarlyAssessment}
+            onChange={() => onOnlyEarlyAssessmentChange(!onlyEarlyAssessment)}
+          >
+            Allows early assessment
+          </Checkbox>
+          {!isLoading && modules.length === 0 && (
+            <Flex align="center" justify="center" style={{ height: "4rem" }}>
+              <Typography.Text
+                type="secondary"
+                style={{
+                  whiteSpace: "pre",
+                  textAlign: "center",
+                }}
+              >
+                {activeTab?.emptyText && currentTabIsEmpty
+                  ? activeTab?.emptyText
+                  : "No modules found."}
+              </Typography.Text>
+            </Flex>
+          )}
+        </Flex>
+      );
+    }
+    const rowModule = modules[index];
+
+    return (
+      <ModulesListItem
+        key={key}
+        draggableId={"draggable:module:" + rowModule.id}
+        index={index}
+        module={rowModule}
+        style={style}
+      />
+    );
+  };
+
+  return (
+    <div style={{ height: "calc(100vh - 10rem)" }}>
+      <AutoSizer>
+        {({ width, height }) => (
+          <Droppable droppableId="droppable:modules-list" mode="virtual">
+            {(provided) => (
+              <Flex
+                gap="small"
+                vertical
+                style={{
+                  paddingBottom: "1rem",
+                }}
+              >
+                {isLoading && (
+                  <>
+                    <ModulesListItem
+                      draggableId="draggable:semester-module:0"
+                      index={0}
+                    />
+                    <ModulesListItem
+                      draggableId="draggable:semester-module:1"
+                      index={1}
+                    />
+                    <ModulesListItem
+                      draggableId="draggable:semester-module:2"
+                      index={2}
+                    />
+                  </>
+                )}
+                <List
+                  /** we use the key to rerender the <List /> component when modulesTab changes, to prevent the rowHeight callback from going stale */
+                  key={modulesTab}
+                  // ref={provided.innerRef as LegacyRef<List>}
+                  id="flamingo-messenger-chat-list"
+                  ref={() => {
+                    const listEl = document.querySelector<HTMLDivElement>(
+                      "#flamingo-messenger-chat-list"
+                    );
+                    provided.innerRef(listEl!);
+                  }}
+                  rowCount={modules.length}
+                  rowHeight={({ index }) => {
+                    const isFirstRow = index === 0;
+                    const isLastRow = index === modules.length - 1;
+
+                    if (isFirstRow)
+                      return 194 + 16 + (modulesTab === "all" ? 0 : 30);
+                    // if (isLastRow) return 64;
+
+                    return 64 + 8;
+                  }}
+                  rowRenderer={rowRenderer}
+                  /** react-virtualized requires absolute values for the width and height of the <List /> component */
+                  width={width}
+                  height={height}
+                  style={{
+                    padding: "1rem 1.5rem",
+                  }}
+                />
+              </Flex>
+            )}
+          </Droppable>
         )}
-      </Droppable>
-    </Flex>
+      </AutoSizer>
+    </div>
   );
 }

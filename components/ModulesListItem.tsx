@@ -81,34 +81,40 @@ export default function ModulesListItem({
       open={isHovered && !isDragHandleHovered && !isDraggingChats}
     >
       {assessment != null ? (
-        <InnerModulesListItem
-          isHovered={isHovered}
-          isDragHandleHovered={isDragHandleHovered}
-          setIsHovered={setIsHovered}
-          setIsDragHandleHovered={setIsDragHandleHovered}
-          module={module}
-          departmentColor={departmentColor}
-          assessment={assessment}
-          isDragging={false}
-          isDraggingChats={isDraggingChats}
-        />
+        <div>
+          <InnerModulesListItem
+            isHovered={isHovered}
+            isDragHandleHovered={isDragHandleHovered}
+            setIsHovered={setIsHovered}
+            setIsDragHandleHovered={setIsDragHandleHovered}
+            module={module}
+            departmentColor={departmentColor}
+            assessment={assessment}
+            isDragging={false}
+            isDraggingChats={isDraggingChats}
+            {...rest}
+          />
+        </div>
       ) : (
-        <Draggable index={index} draggableId={draggableId}>
-          {(provided, { isDragging }) => (
-            <InnerModulesListItem
-              isDragging={isDragging}
-              isHovered={isHovered}
-              isDragHandleHovered={isDragHandleHovered}
-              setIsHovered={setIsHovered}
-              setIsDragHandleHovered={setIsDragHandleHovered}
-              module={module}
-              departmentColor={departmentColor}
-              assessment={assessment}
-              isDraggingChats={isDraggingChats}
-              provided={provided}
-            />
-          )}
-        </Draggable>
+        <div>
+          <Draggable index={index} draggableId={draggableId}>
+            {(provided, { isDragging }) => (
+              <InnerModulesListItem
+                isDragging={isDragging}
+                isHovered={isHovered}
+                isDragHandleHovered={isDragHandleHovered}
+                setIsHovered={setIsHovered}
+                setIsDragHandleHovered={setIsDragHandleHovered}
+                module={module}
+                departmentColor={departmentColor}
+                assessment={assessment}
+                isDraggingChats={isDraggingChats}
+                provided={provided}
+                {...rest}
+              />
+            )}
+          </Draggable>
+        </div>
       )}
     </Popover>
   );
@@ -126,6 +132,7 @@ function InnerModulesListItem({
 
   setIsHovered,
   setIsDragHandleHovered,
+  ...rest
 }: {
   isDragging: boolean;
   isHovered: boolean;
@@ -145,6 +152,11 @@ function InnerModulesListItem({
       ref={provided?.innerRef}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      {...rest}
+      style={{
+        ...(rest.style ?? {}),
+        paddingBottom: "0.5rem",
+      }}
     >
       <Card
         style={{
