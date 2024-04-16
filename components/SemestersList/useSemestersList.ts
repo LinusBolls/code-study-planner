@@ -13,6 +13,7 @@ import dayjs from "dayjs";
 import { getGradeInfo } from "@/services/learningPlatform/util/getGradeInfo";
 import { useStudyPlan } from "@/services/apiClient/hooks/useStudyPlan";
 import { ApiSemesterModule } from "@/services/apiClient";
+import { useLearningPlatformAssessmentTable } from "@/services/learningPlatform/hooks/useLearningPlatformAssessmentTable";
 
 const getSemesterName = (startDate?: dayjs.Dayjs | null) => {
   if (!startDate) return "Unknown Semester";
@@ -68,17 +69,11 @@ export function useModulesInScope() {
 }
 
 export function useSemestersList(): SemestersListProps {
-  const myStudiesQuery = useLearningPlatformMyStudies();
-
-  const myPastModules = myStudiesQuery.data?.myStudies?.filter(isDefined) ?? [];
-
-  const myPastAssessments = myPastModules.flatMap(
-    (i) => i.assessments?.map((j) => ({ ...j, module: i })) ?? []
-  );
-
   const studyPlan = useStudyPlan();
 
   const { modules } = useModulesInScope();
+
+  const assessmentTableQuery = useLearningPlatformAssessmentTable();
 
   const toPlannedModule = (i: ApiSemesterModule): SemesterModule => ({
     type: "planned",
@@ -106,7 +101,7 @@ export function useSemestersList(): SemestersListProps {
       };
     }) ?? [];
 
-  for (const i of myPastAssessments) {
+  for (const i of assessmentTableQuery.data?.myAssessments ?? []) {
     const semester = semesters.find((j) => j.lpId === i.semester!.id);
 
     if (!semester) continue;
@@ -124,34 +119,47 @@ export function useSemestersList(): SemestersListProps {
       return semester.modules.standartAssessments;
     })();
 
-    const highestGrade = i.grade ?? null;
-
     const assessedModule = modules.find((j) => j.id === i.semesterModule!.id)!;
 
-    const gradeInfo = getGradeInfo(highestGrade);
+    if (i.published) {
+      const highestGrade = i.grade ?? null;
 
-    category.push({
-      type: "past",
-      id: i.id,
-      assessment: {
+      const assessedModule = modules.find(
+        (j) => j.id === i.semesterModule!.id
+      )!;
+
+      const gradeInfo = getGradeInfo(highestGrade);
+
+      category.push({
+        type: "past",
         id: i.id,
-        grade: highestGrade,
-        passed: gradeInfo.passed,
-        level: gradeInfo.level,
-        url: "#",
-        date: i.submittedOn,
-        assessorName: i.assessor?.name!,
-        assessorUrl:
-          "https://app.code.berlin/users/" +
-          i.assessor?.id! +
-          "?table=projects",
-      },
-      module: assessedModule,
-    });
+        assessment: {
+          id: i.id,
+          grade: highestGrade,
+          passed: gradeInfo.passed,
+          level: gradeInfo.level,
+          url: "#",
+          date: i.submittedOn,
+          assessorName: i.assessor?.name!,
+          assessorUrl:
+            "https://app.code.berlin/users/" +
+            i.assessor?.id! +
+            "?table=projects",
+        },
+        module: assessedModule,
+      });
+    } else {
+      category.push({
+        type: "planned",
+        id: i.id,
+        assessment: null,
+        module: assessedModule,
+      });
+    }
   }
 
   return {
     semesters,
-    semestersQuery: myStudiesQuery,
+    semestersQuery: assessmentTableQuery,
   };
 }

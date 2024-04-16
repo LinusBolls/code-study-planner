@@ -10,12 +10,6 @@ export const useLearningPlatformModules = () => {
 
   return useQuery<QueryRes<"currentSemesterModules">>({
     queryFn: async () => {
-      const sachen = await learningPlatform!.raw.query<"modules">(`query {
-          modules(filter: { passed: true, failed: true }) {
-            moduleIdentifier
-          }
-    }`);
-
       const { currentSemesterModulesCount } = await learningPlatform!.raw
         .query<"currentSemesterModulesCount">(`
         query {
