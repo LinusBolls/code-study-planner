@@ -5,7 +5,7 @@ export const useStudyPlan = () => {
   const { api, enabled } = useSession();
 
   return useQuery({
-    queryFn: api.getStudyPlan.bind(api),
+    queryFn: api?.getStudyPlan.bind(api),
     queryKey: ["studyPlanner", "studyPlan"],
     enabled,
   });

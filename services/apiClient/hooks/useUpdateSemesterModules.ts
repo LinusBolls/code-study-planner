@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useSession from "../useSession";
-import { StudyPlan } from "..";
+import { StudyPlan, StudyPlannerApiClient } from "..";
 
 export const useUpdateSemesterModule = () => {
   const { api } = useSession();
@@ -8,9 +8,10 @@ export const useUpdateSemesterModule = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: api.updateSemesterModules.bind(
-      api
-    ) as (typeof api)["updateSemesterModules"],
+    mutationFn:
+      api?.updateSemesterModules.bind<
+        StudyPlannerApiClient["updateSemesterModules"]
+      >(api),
     mutationKey: ["studyPlanner", "studyPlan"],
     onMutate(variables) {
       const prev: StudyPlan = queryClient.getQueryData([
