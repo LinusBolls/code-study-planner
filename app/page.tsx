@@ -24,8 +24,9 @@ import {
   SemesterModuleCategory,
   UpdateSemesterModuleInput,
 } from "@/services/apiClient";
+import withProviders from "@/components/withProviders";
 
-export default function Page() {
+function Page() {
   const { signInWithAccessToken, isAuthenticated } = useLearningPlatform();
 
   const { modules } = useModulesInScope();
@@ -147,3 +148,5 @@ export default function Page() {
     </>
   );
 }
+
+export default withProviders(Page);
