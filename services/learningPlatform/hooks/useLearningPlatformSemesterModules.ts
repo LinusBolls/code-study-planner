@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { LP } from "code-university";
 import { useLearningPlatform } from "../useLearningPlatform";
+import { readFromCache } from "@/services/caching";
 
 export const useLearningPlatformSemesterModules = (
   semesterModuleIds: string[]
@@ -26,6 +27,11 @@ export const useLearningPlatformSemesterModules = (
       semesterModuleIds.join("+"),
     ],
     enabled,
+    initialData: readFromCache([
+      "learningPlatform",
+      "semesterModules",
+      semesterModuleIds.join("+"),
+    ]),
   });
 };
 

@@ -230,7 +230,7 @@ type JwtPayload = {
   learningPlatformUserId: string;
 };
 
-export async function issueAccessToken(user: User): Promise<string> {
+async function issueAccessToken(user: User): Promise<string> {
   const secret = new TextEncoder().encode(env.auth.accessToken.secret);
 
   const payload: JwtPayload = {

@@ -4,6 +4,7 @@ import { QueryRes } from "code-university";
 import { isDefined } from "../util/isDefined";
 import consumePaginatedQuery from "../consumePaginatedQuery";
 import { useLearningPlatform } from "../useLearningPlatform";
+import { readFromCache } from "@/services/caching";
 
 export const useLearningPlatformModules = () => {
   const { learningPlatform, enabled } = useLearningPlatform();
@@ -37,6 +38,7 @@ export const useLearningPlatformModules = () => {
     },
     queryKey: ["learningPlatform", "modules"],
     enabled,
+    initialData: readFromCache(["learningPlatform", "modules"]),
   });
 };
 

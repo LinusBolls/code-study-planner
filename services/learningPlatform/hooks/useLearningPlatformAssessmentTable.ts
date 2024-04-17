@@ -3,6 +3,7 @@ import { QueryRes } from "code-university";
 
 import consumePaginatedQuery from "../consumePaginatedQuery";
 import { useLearningPlatform } from "../useLearningPlatform";
+import { readFromCache } from "@/services/caching";
 
 export const useLearningPlatformAssessmentTable = () => {
   const { learningPlatform, enabled } = useLearningPlatform();
@@ -26,6 +27,7 @@ export const useLearningPlatformAssessmentTable = () => {
     },
     queryKey: ["learningPlatform", "assessmentTable"],
     enabled,
+    initialData: readFromCache(["learningPlatform", "assessmentTable"]),
   });
 };
 
@@ -66,6 +68,9 @@ students {
 }
 
 fragment AssessmentTableEntry on Assessment {
+    # this is new
+proposedDate
+# / this is new
 id
 published
 readyForPublishing
