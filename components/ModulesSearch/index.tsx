@@ -1,15 +1,15 @@
 import { Droppable } from "@hello-pangea/dnd";
-import {
-  AutoComplete,
-  Checkbox,
-  Flex,
-  Input,
-  Segmented,
-  Typography,
-} from "antd";
+import { AutoComplete, Checkbox, Flex, Segmented, Typography } from "antd";
 import ModulesListItem from "../ModulesListItem";
 import { Module } from "@/app/useSemesters";
 import { SegmentedLabeledOption, SegmentedOptions } from "antd/es/segmented";
+
+const getOptions = (values: string[]) => {
+  return values.map((i) => ({
+    value: i,
+    label: i,
+  }));
+};
 
 export interface ModulesSearchProps {
   modules: Module[];
@@ -108,33 +108,13 @@ export default function ModulesSearch({
         value={searchQuery}
         onChange={(value) => onSearchQueryChange?.(value)}
         allowClear
-        options={[
-          {
-            label: "Some things you could search for:",
-            options: [
-              {
-                value: "se 10 ects",
-                label: "se 10 ects",
-              },
-              {
-                value: "fatma meawad",
-                label: "fatma meawad",
-              },
-              {
-                value: "requires project",
-                label: "requires project",
-              },
-              {
-                value: "mandatory",
-                label: "mandatory",
-              },
-              {
-                value: "level 0",
-                label: "level 0",
-              },
-            ],
-          },
-        ]}
+        options={getOptions([
+          "se 10 ects",
+          "fatma meawad",
+          "requires project",
+          "mandatory",
+          "level 0",
+        ])}
       />
       <Checkbox
         checked={onlyMandaryOrCompulsoryElective}
