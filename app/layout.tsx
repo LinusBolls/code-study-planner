@@ -5,7 +5,7 @@ import { Metadata } from "next";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "CODE Study Planner",
+  title: "Study Planner for CODE",
   description: "Comfortably plan out your remaining semesters at CODE",
 };
 
