@@ -119,43 +119,32 @@ export function useSemestersList(): SemestersListProps {
       return semester.modules.standartAssessments;
     })();
 
+    const highestGrade = i.grade ?? null;
+
     const assessedModule = modules.find((j) => j.id === i.semesterModule!.id)!;
 
-    if (i.published) {
-      const highestGrade = i.grade ?? null;
+    const gradeInfo = getGradeInfo(highestGrade);
 
-      const assessedModule = modules.find(
-        (j) => j.id === i.semesterModule!.id
-      )!;
-
-      const gradeInfo = getGradeInfo(highestGrade);
-
-      category.push({
-        type: "past",
+    category.push({
+      type: "past",
+      id: i.id,
+      assessment: {
+        proposedDate: i.proposedDate,
         id: i.id,
-        assessment: {
-          id: i.id,
-          grade: highestGrade,
-          passed: gradeInfo.passed,
-          level: gradeInfo.level,
-          url: "#",
-          date: i.submittedOn,
-          assessorName: i.assessor?.name!,
-          assessorUrl:
-            "https://app.code.berlin/users/" +
-            i.assessor?.id! +
-            "?table=projects",
-        },
-        module: assessedModule,
-      });
-    } else {
-      category.push({
-        type: "planned",
-        id: i.id,
-        assessment: null,
-        module: assessedModule,
-      });
-    }
+        published: i.published === true,
+        grade: highestGrade,
+        passed: gradeInfo.passed,
+        level: gradeInfo.level,
+        url: "#",
+        date: i.submittedOn,
+        assessorName: i.assessor?.name!,
+        assessorUrl:
+          "https://app.code.berlin/users/" +
+          i.assessor?.id! +
+          "?table=projects",
+      },
+      module: assessedModule,
+    });
   }
 
   return {

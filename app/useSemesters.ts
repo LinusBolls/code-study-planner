@@ -1,8 +1,8 @@
-import { useUpdateSemesterModule } from "@/services/apiClient/hooks/useUpdateSemesterModules";
-
 export interface Assessment {
+  proposedDate: any;
   id: string;
   date: number;
+  published: boolean;
   assessorName: string;
   assessorUrl: string;
   grade: number | null;

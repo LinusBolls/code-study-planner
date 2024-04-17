@@ -27,13 +27,6 @@ export default function SemestersList({
     (containerRef.current?.offsetWidth ?? 0) /
     (childRef.current?.scrollWidth ?? 0);
 
-  console.log(
-    "scale",
-    containerRef.current?.offsetWidth,
-    childRef.current?.scrollWidth,
-    scaleFactor
-  );
-
   const {
     hoveredInboxId,
     isDraggingChats,

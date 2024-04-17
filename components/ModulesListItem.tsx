@@ -14,7 +14,7 @@ import {
   Typography,
 } from "antd";
 import Link from "next/link";
-import { useState } from "react";
+import { memo, useState } from "react";
 
 export interface ModulesListItemProps extends CardProps {
   module?: Module | null;
@@ -22,7 +22,7 @@ export interface ModulesListItemProps extends CardProps {
   index?: number;
   assessment?: Assessment | null;
 }
-export default function ModulesListItem({
+function ModulesListItem({
   module,
   draggableId = "",
   index = 0,
@@ -295,46 +295,83 @@ function InnerModulesListItem({
             {...provided?.dragHandleProps}
           >
             {assessment != null ? (
-              <Flex
-                vertical
-                align="end"
-                justify="space-between"
-                style={{
-                  height: "100%",
-                }}
-              >
-                <Typography.Text
-                  type="secondary"
+              assessment.published ? (
+                <Flex
+                  vertical
+                  align="end"
+                  justify="space-between"
                   style={{
-                    overflow: "ellipsis",
-                    whiteSpace: "nowrap",
-                    fontSize: "0.75rem",
+                    height: "100%",
                   }}
                 >
-                  <Link target="_blank" href={assessment.assessorUrl}>
-                    {assessment.assessorName}
-                  </Link>
-                </Typography.Text>
-                <Tag
-                  color={assessment.passed ? "green" : "red"}
+                  <Typography.Text
+                    type="secondary"
+                    style={{
+                      overflow: "ellipsis",
+                      whiteSpace: "nowrap",
+                      fontSize: "0.75rem",
+                    }}
+                  >
+                    <Link target="_blank" href={assessment.assessorUrl}>
+                      {assessment.assessorName}
+                    </Link>
+                  </Typography.Text>
+                  <Tag
+                    color={assessment.passed ? "green" : "red"}
+                    style={{
+                      padding: "0 0.25rem",
+
+                      border: "none",
+                      width: "fit-content",
+
+                      margin: 0,
+                    }}
+                  >
+                    {module.isGraded
+                      ? assessment.passed
+                        ? `Level ${assessment.level}, Grade ${assessment.grade}`
+                        : `Failed, Grade ${assessment.grade}`
+                      : assessment.passed
+                      ? "Passed"
+                      : "Failed"}
+                  </Tag>
+                </Flex>
+              ) : (
+                <Flex
+                  vertical
+                  align="end"
+                  justify="space-between"
                   style={{
-                    padding: "0 0.25rem",
-
-                    border: "none",
-                    width: "fit-content",
-
-                    margin: 0,
+                    height: "100%",
                   }}
                 >
-                  {module.isGraded
-                    ? assessment.passed
-                      ? `Level ${assessment.level}, Grade ${assessment.grade}`
-                      : `Failed, Grade ${assessment.grade}`
-                    : assessment.passed
-                    ? "Passed"
-                    : "Failed"}
-                </Tag>
-              </Flex>
+                  <Typography.Text
+                    type="secondary"
+                    style={{
+                      overflow: "ellipsis",
+                      whiteSpace: "nowrap",
+                      fontSize: "0.75rem",
+                    }}
+                  >
+                    <Link target="_blank" href={assessment.assessorUrl}>
+                      {assessment.assessorName}
+                    </Link>
+                  </Typography.Text>
+                  <Tag
+                    color="gray"
+                    style={{
+                      padding: "0 0.25rem",
+
+                      border: "none",
+                      width: "fit-content",
+
+                      margin: 0,
+                    }}
+                  >
+                    Upcoming
+                  </Tag>
+                </Flex>
+              )
             ) : (
               <HolderOutlined
                 style={{
@@ -349,3 +386,4 @@ function InnerModulesListItem({
     </Flex>
   );
 }
+export default memo(ModulesListItem);
