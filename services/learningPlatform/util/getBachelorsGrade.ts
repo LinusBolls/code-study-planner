@@ -1,7 +1,10 @@
 interface GradeInputModule {
   ects: number;
   /** optional to handle pass/fail modules */
-  highestGrade?: number | null;
+  grade?: number | null;
+
+  isCapstone?: boolean;
+  isThesis?: boolean;
 }
 
 export const CAPSTONE_ECTS = 15;
@@ -14,21 +17,16 @@ export const THESIS_ECTS = 15;
  *
  * @see https://www.notion.so/codeuniversitywiki/Determination-of-Final-Grade-8e0be16695934a44bf3ba0a4c4c0bedd
  */
-export const getBachelorsGrade = (
-  modules: GradeInputModule[],
-  capstoneGrade: number,
-  thesisGrade: number
-): number => {
-  const CAPSTONE_WEIGHT = CAPSTONE_ECTS * 3;
-  const THESIS_WEIGHT = THESIS_ECTS * 3;
-
-  let grades = capstoneGrade * CAPSTONE_WEIGHT + thesisGrade * THESIS_WEIGHT;
-  let ects = CAPSTONE_WEIGHT + THESIS_WEIGHT;
+export const getBachelorsGrade = (modules: GradeInputModule[]): number => {
+  let grades = 0;
+  let ects = 0;
 
   for (const i of modules) {
-    if (i.highestGrade != null) {
-      grades += i.highestGrade * i.ects;
-      ects += i.ects;
+    if (i.grade != null) {
+      const multiplier = i.isCapstone || i.isThesis ? 3 : 1;
+
+      grades += i.grade * i.ects * multiplier;
+      ects += i.ects * multiplier;
     }
   }
   const grade = grades / ects;

@@ -1,4 +1,4 @@
-import { Flex, Typography } from "antd";
+import { Divider, Flex, Statistic, Typography } from "antd";
 import ECTSProgress, { ECTSProgressStep } from "./ECTSProgress";
 import { SemesterModule } from "@/app/useSemesters";
 import { getDepartment } from "@/data/departments";
@@ -23,8 +23,9 @@ const toStep = (module: SemesterModule): ECTSProgressStep => {
 
 export interface ECTSPanelProps {
   modules: SemesterModule[];
+  averageGrade: number;
 }
-export default function ECTSPanel({ modules }: ECTSPanelProps) {
+export default function ECTSPanel({ modules, averageGrade }: ECTSPanelProps) {
   return (
     <Flex
       vertical
@@ -165,6 +166,16 @@ export default function ECTSPanel({ modules }: ECTSPanelProps) {
       />
       <ECTSProgress title="Thesis" steps={[]} max={15} />
       <ECTSProgress title="Capstone Project" steps={[]} max={15} />
+      <Divider />
+      <Statistic
+        title="Average grade based on your modules"
+        value={averageGrade}
+        precision={1}
+      />
+      <Typography>
+        Please keep in mind that your thesis and capstone combined make up
+        around half of your final bachelor&apos;s grade.
+      </Typography>
     </Flex>
   );
 }

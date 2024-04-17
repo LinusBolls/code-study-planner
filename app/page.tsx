@@ -17,12 +17,6 @@ function Page() {
 
   const { onDragStart, onDragEnd } = useDragDropContext();
 
-  const { semesters } = useSemestersList();
-
-  const modulesTakenByUser = semesters.flatMap((i) =>
-    Object.values(i.modules).flat()
-  );
-
   const { isSidebarCollapsed } = useLayoutStore();
 
   async function signIn(learningPlatformAccessToken: string) {
@@ -58,7 +52,7 @@ function Page() {
                   isZoomedOut={isSidebarCollapsed}
                 />
                 <PanelResizeHandle />
-                <Sidebar modulesTakenByUser={modulesTakenByUser} />
+                <Sidebar />
               </PanelGroup>
             </div>
           </DragDropContext>

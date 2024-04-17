@@ -14,6 +14,7 @@ import { getGradeInfo } from "@/services/learningPlatform/util/getGradeInfo";
 import { useStudyPlan } from "@/services/apiClient/hooks/useStudyPlan";
 import { ApiSemesterModule } from "@/services/apiClient";
 import { useLearningPlatformAssessmentTable } from "@/services/learningPlatform/hooks/useLearningPlatformAssessmentTable";
+import { getBachelorsGrade } from "@/services/learningPlatform/util/getBachelorsGrade";
 
 const getSemesterName = (startDate?: dayjs.Dayjs | null) => {
   if (!startDate) return "Unknown Semester";
@@ -101,7 +102,9 @@ export function useSemestersList(): SemestersListProps {
       };
     }) ?? [];
 
-  for (const i of assessmentTableQuery.data?.myAssessments ?? []) {
+  const myAssessments = assessmentTableQuery.data?.myAssessments ?? [];
+
+  for (const i of myAssessments) {
     const semester = semesters.find((j) => j.lpId === i.semester!.id);
 
     if (!semester) continue;
@@ -121,7 +124,9 @@ export function useSemestersList(): SemestersListProps {
 
     const highestGrade = i.grade ?? null;
 
-    const assessedModule = modules.find((j) => j.id === i.semesterModule!.id)!;
+    const assessedModule = modules.find((j) => j.id === i.semesterModule!.id);
+
+    if (!assessedModule) continue;
 
     const gradeInfo = getGradeInfo(highestGrade);
 

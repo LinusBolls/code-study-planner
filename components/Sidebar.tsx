@@ -7,9 +7,9 @@ import ModulesSearch from "./ModulesSearch";
 import { useModulesSearch } from "./ModulesSearch/useModulesSearch";
 import { DoubleLeftOutlined, DoubleRightOutlined } from "@ant-design/icons";
 import Link from "antd/es/typography/Link";
-import { SemesterModule } from "@/app/useSemesters";
 import { urlParams } from "@/services/learningPlatform/util/urlParams";
 import { create } from "zustand";
+import { useECTSPanel } from "./ECTSPanel/useECTSPanel";
 
 const isBrowser = typeof window !== "undefined";
 
@@ -74,10 +74,8 @@ const suggestions: Suggestion[] = [
   },
 ];
 
-export interface SidebarProps {
-  modulesTakenByUser: SemesterModule[];
-}
-export default function Sidebar({ modulesTakenByUser }: SidebarProps) {
+export interface SidebarProps {}
+export default function Sidebar({}: SidebarProps) {
   const sidebarRef = useRef<ImperativePanelHandle>(null);
 
   const {
@@ -117,7 +115,7 @@ export default function Sidebar({ modulesTakenByUser }: SidebarProps) {
     {
       key: "ects",
       label: "ECTS",
-      children: <ECTSPanel modules={modulesTakenByUser} />,
+      children: <ECTSPanel {...useECTSPanel()} />,
     },
   ];
 
