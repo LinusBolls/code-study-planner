@@ -98,6 +98,7 @@ function ModulesListSection({
                 : {}),
             }}
           >
+            {provided.placeholder}
             {modules.map((module, index) => (
               <ModulesListItem
                 key={module.id}

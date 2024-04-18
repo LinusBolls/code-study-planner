@@ -69,39 +69,42 @@ function SemesterCard({
       >
         {(provided) => {
           return (
-            <Flex
-              vertical
-              style={{ height: "3.75rem !important" }}
-              justify="flex-end"
-            >
-              <Typography.Text
-                type="secondary"
-                style={{ lineHeight: "0.75rem", fontSize: "0.75rem" }}
+            <>
+              {provided.placeholder}
+              <Flex
+                vertical
+                style={{ height: "3.75rem !important" }}
+                justify="flex-end"
               >
-                {getOffsetText(offsetToCurrentSemester)}
-              </Typography.Text>
-              <Typography.Title
-                ref={provided.innerRef}
-                {...provided.droppableProps}
-                level={4}
-                style={{
-                  marginTop: 0,
-                }}
-                onMouseUp={() =>
-                  setMouseUpInboxId(
-                    `droppable:semester:${semester.id}:standartAssessments`
-                  )
-                }
-                onMouseEnter={() =>
-                  setHoveredInboxId(
-                    `droppable:semester:${semester.id}:standartAssessments`
-                  )
-                }
-                onMouseLeave={() => setHoveredInboxId(null)}
-              >
-                {semester.title}
-              </Typography.Title>
-            </Flex>
+                <Typography.Text
+                  type="secondary"
+                  style={{ lineHeight: "0.75rem", fontSize: "0.75rem" }}
+                >
+                  {getOffsetText(offsetToCurrentSemester)}
+                </Typography.Text>
+                <Typography.Title
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                  level={4}
+                  style={{
+                    marginTop: 0,
+                  }}
+                  onMouseUp={() =>
+                    setMouseUpInboxId(
+                      `droppable:semester:${semester.id}:standartAssessments`
+                    )
+                  }
+                  onMouseEnter={() =>
+                    setHoveredInboxId(
+                      `droppable:semester:${semester.id}:standartAssessments`
+                    )
+                  }
+                  onMouseLeave={() => setHoveredInboxId(null)}
+                >
+                  {semester.title}
+                </Typography.Title>
+              </Flex>
+            </>
           );
         }}
       </Droppable>
@@ -200,22 +203,25 @@ function SemesterCard({
       >
         {(provided) => {
           return (
-            <div
-              ref={provided.innerRef}
-              {...provided.droppableProps}
-              style={{ height: "100%" }}
-              onMouseUp={() =>
-                setMouseUpInboxId(
-                  `droppable:semester:${semester.id}:standartAssessments`
-                )
-              }
-              onMouseEnter={() =>
-                setHoveredInboxId(
-                  `droppable:semester:${semester.id}:standartAssessments`
-                )
-              }
-              onMouseLeave={() => setHoveredInboxId(null)}
-            />
+            <>
+              {provided.placeholder}
+              <div
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+                style={{ height: "100%" }}
+                onMouseUp={() =>
+                  setMouseUpInboxId(
+                    `droppable:semester:${semester.id}:standartAssessments`
+                  )
+                }
+                onMouseEnter={() =>
+                  setHoveredInboxId(
+                    `droppable:semester:${semester.id}:standartAssessments`
+                  )
+                }
+                onMouseLeave={() => setHoveredInboxId(null)}
+              />
+            </>
           );
         }}
       </Droppable>

@@ -175,21 +175,14 @@ export default function ModulesSearch({
           <Droppable
             droppableId="droppable:modules-list"
             mode="virtual"
-            renderClone={(provided) => {
+            renderClone={(provided, _, rubric) => {
               return (
-                <div
+                <ModulesListItem
+                  module={modules[rubric.source.index]}
+                  style={provided.draggableProps.style}
+                  showPopoverOn="hover"
                   {...provided.dragHandleProps}
                   {...provided.draggableProps}
-                  ref={provided.innerRef}
-                  style={{
-                    width: "20rem",
-                    height: "4rem",
-
-                    background: "red",
-                    borderRadius: "0.25rem",
-
-                    ...provided.draggableProps.style,
-                  }}
                 />
               );
             }}
