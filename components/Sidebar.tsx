@@ -16,14 +16,18 @@ const isBrowser = typeof window !== "undefined";
 interface LayoutStore {
   isSidebarCollapsed: boolean;
   actions: {
-    setIsSidebarCollapsed: (isCollapsed: boolean) => void;
+    setIsSidebarCollapsed: (isSidebarCollapsed: boolean) => void;
   };
 }
 export const useLayoutStore = create<LayoutStore>((set) => ({
   isSidebarCollapsed: false,
   actions: {
-    setIsSidebarCollapsed: (isCollapsed) =>
-      set({ isSidebarCollapsed: isCollapsed }),
+    setIsSidebarCollapsed: (isSidebarCollapsed) =>
+      set((state) =>
+        state.isSidebarCollapsed === isSidebarCollapsed
+          ? state
+          : { isSidebarCollapsed }
+      ),
   },
 }));
 
@@ -83,9 +87,7 @@ export default function Sidebar({}: SidebarProps) {
     actions: { setIsSidebarCollapsed },
   } = useLayoutStore();
 
-  const rem = isBrowser
-    ? (100 / window.innerWidth) * 16
-    : (100 / window.innerWidth) * 16;
+  const rem = isBrowser ? (100 / window.innerWidth) * 16 : 0;
 
   const sidebarMinWidth = 26 * rem;
   const sidebarCollapsedWidth = 3 * rem;
