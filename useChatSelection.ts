@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { Module } from "./app/useSemesters";
+import { SemesterModuleCategory } from "./services/apiClient";
 
 const DROP_TARGET_GRACE_PERIOD_MS = 500;
 
@@ -112,7 +113,18 @@ export const getChatSelectionState = () => {
 
   const isDraggingChats = store.draggedModules.length > 0;
 
+  const [_, __, targetSemester, targetCategory] =
+    dropTargetInboxId?.split(":") ?? [];
+
+  const [___, ____, sourceSemester, sourceCategory] =
+    store.sourceInboxId?.split(":") ?? [];
+
   return {
+    targetSemester,
+    targetCategory: targetCategory as SemesterModuleCategory,
+    sourceSemester,
+    sourceCategory: sourceCategory as SemesterModuleCategory,
+
     draggedModules: store.draggedModules,
     sourceInboxId: store.sourceInboxId,
     hoveredInboxId: store.hoveredInboxId,

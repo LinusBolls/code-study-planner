@@ -7,23 +7,27 @@ import ModulesSearch from "./ModulesSearch";
 import { useModulesSearch } from "./ModulesSearch/useModulesSearch";
 import { DoubleLeftOutlined, DoubleRightOutlined } from "@ant-design/icons";
 import Link from "antd/es/typography/Link";
-import { SemesterModule } from "@/app/useSemesters";
 import { urlParams } from "@/services/learningPlatform/util/urlParams";
 import { create } from "zustand";
+import { useECTSPanel } from "./ECTSPanel/useECTSPanel";
 
 const isBrowser = typeof window !== "undefined";
 
 interface LayoutStore {
   isSidebarCollapsed: boolean;
   actions: {
-    setIsSidebarCollapsed: (isCollapsed: boolean) => void;
+    setIsSidebarCollapsed: (isSidebarCollapsed: boolean) => void;
   };
 }
 export const useLayoutStore = create<LayoutStore>((set) => ({
   isSidebarCollapsed: false,
   actions: {
-    setIsSidebarCollapsed: (isCollapsed) =>
-      set({ isSidebarCollapsed: isCollapsed }),
+    setIsSidebarCollapsed: (isSidebarCollapsed) =>
+      set((state) =>
+        state.isSidebarCollapsed === isSidebarCollapsed
+          ? state
+          : { isSidebarCollapsed }
+      ),
   },
 }));
 
@@ -74,10 +78,8 @@ const suggestions: Suggestion[] = [
   },
 ];
 
-export interface SidebarProps {
-  modulesTakenByUser: SemesterModule[];
-}
-export default function Sidebar({ modulesTakenByUser }: SidebarProps) {
+export interface SidebarProps {}
+export default function Sidebar({}: SidebarProps) {
   const sidebarRef = useRef<ImperativePanelHandle>(null);
 
   const {
@@ -85,9 +87,7 @@ export default function Sidebar({ modulesTakenByUser }: SidebarProps) {
     actions: { setIsSidebarCollapsed },
   } = useLayoutStore();
 
-  const rem = isBrowser
-    ? (100 / window.innerWidth) * 16
-    : (100 / window.innerWidth) * 16;
+  const rem = isBrowser ? (100 / window.innerWidth) * 16 : 0;
 
   const sidebarMinWidth = 26 * rem;
   const sidebarCollapsedWidth = 3 * rem;
@@ -117,7 +117,7 @@ export default function Sidebar({ modulesTakenByUser }: SidebarProps) {
     {
       key: "ects",
       label: "ECTS",
-      children: <ECTSPanel modules={modulesTakenByUser} />,
+      children: <ECTSPanel {...useECTSPanel()} />,
     },
   ];
 

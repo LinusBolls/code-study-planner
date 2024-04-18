@@ -1,32 +1,36 @@
 import { Assessment, Module } from "@/app/useSemesters";
 import { getDepartment } from "@/data/departments";
 import { useIsDraggingChats } from "@/useChatSelection";
-import { HolderOutlined } from "@ant-design/icons";
+import { HolderOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import { Draggable, DraggableProvided } from "@hello-pangea/dnd";
 import {
+  Button,
   Card,
   CardProps,
   Flex,
   Popover,
+  Row,
   Skeleton,
   Tag,
   Tooltip,
   Typography,
 } from "antd";
 import Link from "next/link";
-import { useState } from "react";
+import { memo, useState } from "react";
 
 export interface ModulesListItemProps extends CardProps {
   module?: Module | null;
   draggableId?: string;
   index?: number;
   assessment?: Assessment | null;
+  showPopoverOn?: "info-icon" | "hover";
 }
-export default function ModulesListItem({
+function ModulesListItem({
   module,
   draggableId = "",
   index = 0,
   assessment,
+  showPopoverOn,
   ...rest
 }: ModulesListItemProps) {
   const isDraggingChats = useIsDraggingChats();
@@ -68,55 +72,53 @@ export default function ModulesListItem({
     getDepartment(module.departmentId)?.color ?? "#000000";
 
   return (
-    <Popover
-      placement="leftTop"
-      style={{ width: 512 }}
-      content={
-        <div>
-          <Link href={module.registerUrl}>Register</Link>
-        </div>
-      }
-      title={module.shortCode + " " + module.title}
-      trigger="hover"
-      open={isHovered && !isDragHandleHovered && !isDraggingChats}
-    >
-      {assessment != null ? (
-        <div>
-          <InnerModulesListItem
-            isHovered={isHovered}
-            isDragHandleHovered={isDragHandleHovered}
-            setIsHovered={setIsHovered}
-            setIsDragHandleHovered={setIsDragHandleHovered}
-            module={module}
-            departmentColor={departmentColor}
-            assessment={assessment}
-            isDragging={false}
-            isDraggingChats={isDraggingChats}
-            {...rest}
-          />
-        </div>
-      ) : (
-        <div>
-          <Draggable index={index} draggableId={draggableId}>
-            {(provided, { isDragging }) => (
-              <InnerModulesListItem
-                isDragging={isDragging}
-                isHovered={isHovered}
-                isDragHandleHovered={isDragHandleHovered}
-                setIsHovered={setIsHovered}
-                setIsDragHandleHovered={setIsDragHandleHovered}
-                module={module}
-                departmentColor={departmentColor}
-                assessment={assessment}
-                isDraggingChats={isDraggingChats}
-                provided={provided}
-                {...rest}
-              />
-            )}
-          </Draggable>
-        </div>
-      )}
-    </Popover>
+    <div {...rest}>
+      <Popover
+        placement="leftTop"
+        content={<ModulePopoverContent module={module} />}
+        title={module.shortCode + " " + module.title}
+        mouseEnterDelay={0}
+        mouseLeaveDelay={0}
+        open={isDraggingChats || showPopoverOn !== "hover" ? false : undefined}
+      >
+        {assessment != null ? (
+          <div>
+            <InnerModulesListItem
+              isHovered={isHovered}
+              isDragHandleHovered={isDragHandleHovered}
+              setIsHovered={setIsHovered}
+              setIsDragHandleHovered={setIsDragHandleHovered}
+              module={module}
+              departmentColor={departmentColor}
+              assessment={assessment}
+              isDragging={false}
+              isDraggingChats={isDraggingChats}
+              showPopoverOn={showPopoverOn}
+            />
+          </div>
+        ) : (
+          <div>
+            <Draggable index={index} draggableId={draggableId}>
+              {(provided, { isDragging }) => (
+                <InnerModulesListItem
+                  isDragging={isDragging}
+                  isHovered={isHovered}
+                  isDragHandleHovered={isDragHandleHovered}
+                  setIsHovered={setIsHovered}
+                  setIsDragHandleHovered={setIsDragHandleHovered}
+                  module={module}
+                  departmentColor={departmentColor}
+                  assessment={assessment}
+                  isDraggingChats={isDraggingChats}
+                  provided={provided}
+                  showPopoverOn={showPopoverOn}
+                />
+              )}
+            </Draggable>
+          </div>
+        )}
+      </Popover>
+    </div>
   );
 }
 
@@ -129,6 +131,7 @@ function InnerModulesListItem({
   isDragHandleHovered,
   module,
   departmentColor,
+  showPopoverOn,
 
   setIsHovered,
   setIsDragHandleHovered,
@@ -142,6 +145,7 @@ function InnerModulesListItem({
   assessment?: Assessment | null;
   isDraggingChats: boolean;
   provided?: DraggableProvided;
+  showPopoverOn?: "info-icon" | "hover";
 
   setIsHovered: (value: boolean) => void;
   setIsDragHandleHovered: (value: boolean) => void;
@@ -181,19 +185,20 @@ function InnerModulesListItem({
         <Flex>
           <Flex
             vertical
-            gap="0.25rem"
+            gap="0.125rem"
             style={{
               overflow: "hidden",
               width: "100%",
             }}
           >
-            <Typography.Text
+            <Row align="middle">
+              {/* <Typography.Text
               type="secondary"
               style={{
                 overflow: "ellipsis",
                 whiteSpace: "nowrap",
               }}
-            >
+            > */}
               <Tag
                 color={departmentColor}
                 style={{
@@ -204,10 +209,38 @@ function InnerModulesListItem({
               >
                 {module.shortCode}
               </Tag>
-              <Link target="_blank" href={module.url}>
-                {module.title}
-              </Link>
-            </Typography.Text>
+
+              <Typography.Text
+                type="secondary"
+                style={{
+                  overflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                <Link target="_blank" href={module.url}>
+                  {module.title}
+                </Link>
+              </Typography.Text>
+              {showPopoverOn === "info-icon" && (
+                <Popover
+                  placement="leftTop"
+                  content={<ModulePopoverContent module={module} />}
+                  title={module.shortCode + " " + module.title}
+                  mouseEnterDelay={0}
+                  mouseLeaveDelay={0}
+                >
+                  <div>
+                    <Button
+                      size="small"
+                      type="text"
+                      shape="circle"
+                      icon={<InfoCircleOutlined />}
+                    />
+                  </div>
+                </Popover>
+              )}
+            </Row>
+            {/* </Typography.Text> */}
 
             <Flex gap="small" align="center">
               <Typography.Text
@@ -323,29 +356,45 @@ function InnerModulesListItem({
                     fontSize: "0.75rem",
                   }}
                 >
-                  <Link target="_blank" href={assessment.assessorUrl}>
-                    {assessment.assessorName}
-                  </Link>
+                  {/* <Link target="_blank" href={assessment.assessorUrl}>
+                      {assessment.assessorName}
+                    </Link> */}
                 </Typography.Text>
-                <Tag
-                  color={assessment.passed ? "green" : "red"}
-                  style={{
-                    padding: "0 0.25rem",
+                {assessment.published ? (
+                  <Tag
+                    color={assessment.passed ? "green" : "red"}
+                    style={{
+                      padding: "0 0.25rem",
 
-                    border: "none",
-                    width: "fit-content",
+                      border: "none",
+                      width: "fit-content",
 
-                    margin: 0,
-                  }}
-                >
-                  {module.isGraded
-                    ? assessment.passed
-                      ? `Level ${assessment.level}, Grade ${assessment.grade}`
-                      : `Failed, Grade ${assessment.grade}`
-                    : assessment.passed
-                    ? "Passed"
-                    : "Failed"}
-                </Tag>
+                      margin: 0,
+                    }}
+                  >
+                    {module.isGraded
+                      ? assessment.passed
+                        ? `Level ${assessment.level}, Grade ${assessment.grade}`
+                        : `Failed, Grade ${assessment.grade}`
+                      : assessment.passed
+                      ? "Passed"
+                      : "Failed"}
+                  </Tag>
+                ) : (
+                  <Tag
+                    color="gray"
+                    style={{
+                      padding: "0 0.25rem",
+
+                      border: "none",
+                      width: "fit-content",
+
+                      margin: 0,
+                    }}
+                  >
+                    Upcoming
+                  </Tag>
+                )}
               </Flex>
             ) : (
               <HolderOutlined
@@ -359,5 +408,25 @@ function InnerModulesListItem({
         </Flex>
       </Card>
     </Flex>
+  );
+}
+export default memo(ModulesListItem);
+
+function ModulePopoverContent({ module }: { module: Module }) {
+  return (
+    <div style={{ width: "20rem" }}>
+      <Link href={module.registerUrl}>Register</Link>
+      <Typography>
+        It is a long established fact that a reader will be distracted by the
+        readable content of a page when looking at its layout. The point of
+        using Lorem Ipsum is that it has a more-or-less normal distribution of
+        letters, as opposed to using Content here, content here, making it look
+        like readable English. Many desktop publishing packages and web page
+        editors now use Lorem Ipsum as their default model text, and a search
+        for lorem ipsum will uncover many web sites still in their infancy.
+        Various versions have evolved over the years, sometimes by accident,
+        sometimes on purpose (injected humour and the like).
+      </Typography>
+    </div>
   );
 }

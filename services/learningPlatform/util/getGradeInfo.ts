@@ -4,10 +4,10 @@
 export const getGradeInfo = (grade?: number | null) => {
   if (grade == null || grade > 4) return { passed: false, level: null };
 
-  if (grade <= 4) return { passed: true, level: 0 };
-  if (grade <= 2.3) return { passed: true, level: 1 };
-  if (grade <= 1.7) return { passed: true, level: 2 };
   if (grade == 1) return { passed: true, level: 3 };
+  if (grade <= 1.7) return { passed: true, level: 2 };
+  if (grade <= 2.3) return { passed: true, level: 1 };
+  if (grade <= 4) return { passed: true, level: 0 };
 
   return { passed: false, level: null };
 };

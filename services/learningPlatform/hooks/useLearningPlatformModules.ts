@@ -4,18 +4,13 @@ import { QueryRes } from "code-university";
 import { isDefined } from "../util/isDefined";
 import consumePaginatedQuery from "../consumePaginatedQuery";
 import { useLearningPlatform } from "../useLearningPlatform";
+import { readFromCache } from "@/services/caching";
 
 export const useLearningPlatformModules = () => {
   const { learningPlatform, enabled } = useLearningPlatform();
 
   return useQuery<QueryRes<"currentSemesterModules">>({
     queryFn: async () => {
-      const sachen = await learningPlatform!.raw.query<"modules">(`query {
-          modules(filter: { passed: true, failed: true }) {
-            moduleIdentifier
-          }
-    }`);
-
       const { currentSemesterModulesCount } = await learningPlatform!.raw
         .query<"currentSemesterModulesCount">(`
         query {
@@ -43,6 +38,7 @@ export const useLearningPlatformModules = () => {
     },
     queryKey: ["learningPlatform", "modules"],
     enabled,
+    initialData: readFromCache(["learningPlatform", "modules"]),
   });
 };
 

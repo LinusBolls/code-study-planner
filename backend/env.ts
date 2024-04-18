@@ -7,6 +7,7 @@ const assertString = (value: unknown, name: string) => {
 
 export const env = {
   isDevelopment: process.env.NODE_ENV === "development",
+  publicAppUrl: assertString(process.env.PUBLIC_APP_URL, "PUBLIC_APP_URL"),
   db: {
     host: assertString(process.env.DB_HOST, "DB_HOST"),
     port: parseInt(assertString(process.env.DB_PORT, "DB_PORT"), 10),

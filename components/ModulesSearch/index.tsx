@@ -6,6 +6,13 @@ import { Module } from "@/app/useSemesters";
 import { SegmentedLabeledOption, SegmentedOptions } from "antd/es/segmented";
 import { LegacyRef } from "react";
 
+const getOptions = (values: string[]) => {
+  return values.map((i) => ({
+    value: i,
+    label: i,
+  }));
+};
+
 export interface ModulesSearchProps {
   modules: Module[];
 
@@ -97,33 +104,13 @@ export default function ModulesSearch({
             value={searchQuery}
             onChange={(value) => onSearchQueryChange?.(value)}
             allowClear
-            options={[
-              {
-                label: "Some things you could search for:",
-                options: [
-                  {
-                    value: "se 10 ects",
-                    label: "se 10 ects",
-                  },
-                  {
-                    value: "fatma meawad",
-                    label: "fatma meawad",
-                  },
-                  {
-                    value: "requires project",
-                    label: "requires project",
-                  },
-                  {
-                    value: "mandatory",
-                    label: "mandatory",
-                  },
-                  {
-                    value: "level 0",
-                    label: "level 0",
-                  },
-                ],
-              },
-            ]}
+            options={getOptions([
+              "se 10 ects",
+              "fatma meawad",
+              "requires project",
+              "mandatory",
+              "level 0",
+            ])}
           />
           <Checkbox
             checked={onlyMandaryOrCompulsoryElective}
@@ -176,6 +163,7 @@ export default function ModulesSearch({
         index={index}
         module={rowModule}
         style={style}
+        showPopoverOn="hover"
       />
     );
   };
@@ -184,7 +172,28 @@ export default function ModulesSearch({
     <div style={{ height: "calc(100vh - 10rem)" }}>
       <AutoSizer>
         {({ width, height }) => (
-          <Droppable droppableId="droppable:modules-list" mode="virtual">
+          <Droppable
+            droppableId="droppable:modules-list"
+            mode="virtual"
+            renderClone={(provided) => {
+              return (
+                <div
+                  {...provided.dragHandleProps}
+                  {...provided.draggableProps}
+                  ref={provided.innerRef}
+                  style={{
+                    width: "20rem",
+                    height: "4rem",
+
+                    background: "red",
+                    borderRadius: "0.25rem",
+
+                    ...provided.draggableProps.style,
+                  }}
+                />
+              );
+            }}
+          >
             {(provided) => (
               <Flex
                 gap="small"

@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { QueryRes } from "code-university";
 import { useLearningPlatform } from "../useLearningPlatform";
+import { readFromCache } from "@/services/caching";
 
 /**
  * used by the `My Studies` tab on the `Modules` tab of the Learning Platform
@@ -17,6 +18,7 @@ export const useLearningPlatformMyStudies = () => {
     },
     queryKey: ["learningPlatform", "myStudies"],
     enabled,
+    initialData: readFromCache(["learningPlatform", "myStudies"]),
   });
 };
 
