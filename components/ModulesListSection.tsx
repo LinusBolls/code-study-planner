@@ -105,6 +105,7 @@ function ModulesListSection({
                 assessment={module.assessment}
                 index={index}
                 draggableId={"draggable:semester-module:" + module.id}
+                showPopoverOn="info-icon"
               />
             ))}
           </div>

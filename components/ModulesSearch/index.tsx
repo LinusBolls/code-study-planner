@@ -189,6 +189,7 @@ export default function ModulesSearch({
                 key={module.id}
                 index={idx}
                 module={module}
+                showPopoverOn="hover"
               />
             ))}
           </Flex>

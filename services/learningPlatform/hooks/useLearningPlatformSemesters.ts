@@ -28,5 +28,7 @@ export const useLearningPlatformSemestersQuery = `query allSemesters($pagination
       id
       name
       startDate
+      isActive
+      moduleStandardRegistrationEndDate
   }
 }`;

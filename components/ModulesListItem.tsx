@@ -1,13 +1,15 @@
 import { Assessment, Module } from "@/app/useSemesters";
 import { getDepartment } from "@/data/departments";
 import { useIsDraggingChats } from "@/useChatSelection";
-import { HolderOutlined } from "@ant-design/icons";
+import { HolderOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import { Draggable, DraggableProvided } from "@hello-pangea/dnd";
 import {
+  Button,
   Card,
   CardProps,
   Flex,
   Popover,
+  Row,
   Skeleton,
   Tag,
   Tooltip,
@@ -21,12 +23,14 @@ export interface ModulesListItemProps extends CardProps {
   draggableId?: string;
   index?: number;
   assessment?: Assessment | null;
+  showPopoverOn?: "info-icon" | "hover";
 }
 function ModulesListItem({
   module,
   draggableId = "",
   index = 0,
   assessment,
+  showPopoverOn,
   ...rest
 }: ModulesListItemProps) {
   const isDraggingChats = useIsDraggingChats();
@@ -70,45 +74,49 @@ function ModulesListItem({
   return (
     <Popover
       placement="leftTop"
-      style={{ width: 512 }}
-      content={
-        <div>
-          <Link href={module.registerUrl}>Register</Link>
-        </div>
-      }
+      content={<ModulePopoverContent module={module} />}
       title={module.shortCode + " " + module.title}
-      trigger="hover"
-      open={isHovered && !isDragHandleHovered && !isDraggingChats}
+      mouseEnterDelay={0}
+      mouseLeaveDelay={0}
+      open={isDraggingChats || showPopoverOn !== "hover" ? false : undefined}
     >
       {assessment != null ? (
-        <InnerModulesListItem
-          isHovered={isHovered}
-          isDragHandleHovered={isDragHandleHovered}
-          setIsHovered={setIsHovered}
-          setIsDragHandleHovered={setIsDragHandleHovered}
-          module={module}
-          departmentColor={departmentColor}
-          assessment={assessment}
-          isDragging={false}
-          isDraggingChats={isDraggingChats}
-        />
+        <div>
+          <InnerModulesListItem
+            isHovered={isHovered}
+            isDragHandleHovered={isDragHandleHovered}
+            setIsHovered={setIsHovered}
+            setIsDragHandleHovered={setIsDragHandleHovered}
+            module={module}
+            departmentColor={departmentColor}
+            assessment={assessment}
+            isDragging={false}
+            isDraggingChats={isDraggingChats}
+            showPopoverOn={showPopoverOn}
+            {...rest}
+          />
+        </div>
       ) : (
-        <Draggable index={index} draggableId={draggableId}>
-          {(provided, { isDragging }) => (
-            <InnerModulesListItem
-              isDragging={isDragging}
-              isHovered={isHovered}
-              isDragHandleHovered={isDragHandleHovered}
-              setIsHovered={setIsHovered}
-              setIsDragHandleHovered={setIsDragHandleHovered}
-              module={module}
-              departmentColor={departmentColor}
-              assessment={assessment}
-              isDraggingChats={isDraggingChats}
-              provided={provided}
-            />
-          )}
-        </Draggable>
+        <div>
+          <Draggable index={index} draggableId={draggableId}>
+            {(provided, { isDragging }) => (
+              <InnerModulesListItem
+                isDragging={isDragging}
+                isHovered={isHovered}
+                isDragHandleHovered={isDragHandleHovered}
+                setIsHovered={setIsHovered}
+                setIsDragHandleHovered={setIsDragHandleHovered}
+                module={module}
+                departmentColor={departmentColor}
+                assessment={assessment}
+                isDraggingChats={isDraggingChats}
+                provided={provided}
+                showPopoverOn={showPopoverOn}
+                {...rest}
+              />
+            )}
+          </Draggable>
+        </div>
       )}
     </Popover>
   );
@@ -123,6 +131,7 @@ function InnerModulesListItem({
   isDragHandleHovered,
   module,
   departmentColor,
+  showPopoverOn,
 
   setIsHovered,
   setIsDragHandleHovered,
@@ -135,6 +144,7 @@ function InnerModulesListItem({
   assessment?: Assessment | null;
   isDraggingChats: boolean;
   provided?: DraggableProvided;
+  showPopoverOn?: "info-icon" | "hover";
 
   setIsHovered: (value: boolean) => void;
   setIsDragHandleHovered: (value: boolean) => void;
@@ -169,19 +179,20 @@ function InnerModulesListItem({
         <Flex>
           <Flex
             vertical
-            gap="0.25rem"
+            gap="0.125rem"
             style={{
               overflow: "hidden",
               width: "100%",
             }}
           >
-            <Typography.Text
+            <Row align="middle">
+              {/* <Typography.Text
               type="secondary"
               style={{
                 overflow: "ellipsis",
                 whiteSpace: "nowrap",
               }}
-            >
+            > */}
               <Tag
                 color={departmentColor}
                 style={{
@@ -192,10 +203,38 @@ function InnerModulesListItem({
               >
                 {module.shortCode}
               </Tag>
-              <Link target="_blank" href={module.url}>
-                {module.title}
-              </Link>
-            </Typography.Text>
+
+              <Typography.Text
+                type="secondary"
+                style={{
+                  overflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                <Link target="_blank" href={module.url}>
+                  {module.title}
+                </Link>
+              </Typography.Text>
+              {showPopoverOn === "info-icon" && (
+                <Popover
+                  placement="leftTop"
+                  content={<ModulePopoverContent module={module} />}
+                  title={module.shortCode + " " + module.title}
+                  mouseEnterDelay={0}
+                  mouseLeaveDelay={0}
+                >
+                  <div>
+                    <Button
+                      size="small"
+                      type="text"
+                      shape="circle"
+                      icon={<InfoCircleOutlined />}
+                    />
+                  </div>
+                </Popover>
+              )}
+            </Row>
+            {/* </Typography.Text> */}
 
             <Flex gap="small" align="center">
               <Typography.Text
@@ -295,27 +334,27 @@ function InnerModulesListItem({
             {...provided?.dragHandleProps}
           >
             {assessment != null ? (
-              assessment.published ? (
-                <Flex
-                  vertical
-                  align="end"
-                  justify="space-between"
+              <Flex
+                vertical
+                align="end"
+                justify="space-between"
+                style={{
+                  height: "100%",
+                }}
+              >
+                <Typography.Text
+                  type="secondary"
                   style={{
-                    height: "100%",
+                    overflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                    fontSize: "0.75rem",
                   }}
                 >
-                  <Typography.Text
-                    type="secondary"
-                    style={{
-                      overflow: "ellipsis",
-                      whiteSpace: "nowrap",
-                      fontSize: "0.75rem",
-                    }}
-                  >
-                    <Link target="_blank" href={assessment.assessorUrl}>
+                  {/* <Link target="_blank" href={assessment.assessorUrl}>
                       {assessment.assessorName}
-                    </Link>
-                  </Typography.Text>
+                    </Link> */}
+                </Typography.Text>
+                {assessment.published ? (
                   <Tag
                     color={assessment.passed ? "green" : "red"}
                     style={{
@@ -335,28 +374,7 @@ function InnerModulesListItem({
                       ? "Passed"
                       : "Failed"}
                   </Tag>
-                </Flex>
-              ) : (
-                <Flex
-                  vertical
-                  align="end"
-                  justify="space-between"
-                  style={{
-                    height: "100%",
-                  }}
-                >
-                  <Typography.Text
-                    type="secondary"
-                    style={{
-                      overflow: "ellipsis",
-                      whiteSpace: "nowrap",
-                      fontSize: "0.75rem",
-                    }}
-                  >
-                    <Link target="_blank" href={assessment.assessorUrl}>
-                      {assessment.assessorName}
-                    </Link>
-                  </Typography.Text>
+                ) : (
                   <Tag
                     color="gray"
                     style={{
@@ -370,8 +388,8 @@ function InnerModulesListItem({
                   >
                     Upcoming
                   </Tag>
-                </Flex>
-              )
+                )}
+              </Flex>
             ) : (
               <HolderOutlined
                 style={{
@@ -387,3 +405,22 @@ function InnerModulesListItem({
   );
 }
 export default memo(ModulesListItem);
+
+function ModulePopoverContent({ module }: { module: Module }) {
+  return (
+    <div style={{ width: "20rem" }}>
+      <Link href={module.registerUrl}>Register</Link>
+      <Typography>
+        It is a long established fact that a reader will be distracted by the
+        readable content of a page when looking at its layout. The point of
+        using Lorem Ipsum is that it has a more-or-less normal distribution of
+        letters, as opposed to using Content here, content here, making it look
+        like readable English. Many desktop publishing packages and web page
+        editors now use Lorem Ipsum as their default model text, and a search
+        for lorem ipsum will uncover many web sites still in their infancy.
+        Various versions have evolved over the years, sometimes by accident,
+        sometimes on purpose (injected humour and the like).
+      </Typography>
+    </div>
+  );
+}
