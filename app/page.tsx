@@ -1,65 +1,9 @@
-"use client";
+import dynamic from "next/dynamic";
 
-import { DragDropContext } from "@hello-pangea/dnd";
-import { PanelGroup, PanelResizeHandle } from "react-resizable-panels";
-import { useLearningPlatform } from "@/services/learningPlatform/useLearningPlatform";
-import LoginModal from "@/components/LoginModal";
-import Sidebar, { useLayoutStore } from "@/components/Sidebar";
-import { Layout } from "antd";
-import SemestersList from "@/components/SemestersList";
-import { useSemestersList } from "@/components/SemestersList/useSemestersList";
-import Header from "@/components/Header";
-import withProviders from "@/components/withProviders";
-import { useDragDropContext } from "./useDragDropContext";
+const HomePage = dynamic(() => import("../components/HomePage"), {
+  ssr: false,
+});
 
-function Page() {
-  const { signInWithAccessToken, isAuthenticated } = useLearningPlatform();
-
-  const { onDragStart, onDragEnd } = useDragDropContext();
-
-  const { isSidebarCollapsed } = useLayoutStore();
-
-  async function signIn(learningPlatformAccessToken: string) {
-    const res = await fetch("/api/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ learningPlatformAccessToken }),
-    });
-
-    if (!res.ok) {
-      throw new Error("Failed to sign in");
-    }
-    const data = await res.json();
-
-    localStorage.setItem("study-planner:session", data.accessToken);
-
-    await signInWithAccessToken(learningPlatformAccessToken);
-  }
-
-  return (
-    <>
-      {!isAuthenticated && <LoginModal onSubmit={signIn} />}
-      <Layout className="h-screen">
-        <Header />
-        <Layout.Content className="h-full">
-          <DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
-            <div className="bg-white w-full h-full flex">
-              <PanelGroup autoSaveId="semester-planner" direction="horizontal">
-                <SemestersList
-                  {...useSemestersList()}
-                  isZoomedOut={isSidebarCollapsed}
-                />
-                <PanelResizeHandle />
-                <Sidebar />
-              </PanelGroup>
-            </div>
-          </DragDropContext>
-        </Layout.Content>
-      </Layout>
-    </>
-  );
+export default function Page() {
+  return <HomePage />;
 }
-
-export default withProviders(Page);
