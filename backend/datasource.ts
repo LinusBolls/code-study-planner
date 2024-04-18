@@ -17,7 +17,7 @@ const dataSourceOptions: DataSourceOptions = {
   password: env.db.password,
   database: env.db.name,
   synchronize: env.isDevelopment,
-  logging: true,
+  logging: false,
   entities: [Module, Semester, SemesterModule, User, StudyPlan],
   subscribers: [],
   migrations: [],
