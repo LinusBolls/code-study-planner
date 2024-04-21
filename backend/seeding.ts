@@ -64,13 +64,13 @@ const compulsoryElectivePairings: {
 }[] = [
   {
     department: "SE",
-    handbookVersions: [2, 2.2, 3],
+    handbookVersions: [2, 3],
     modules: ["SE_05", "SE_06"],
   },
 
   {
     department: "SE",
-    handbookVersions: [2, 2.2, 3],
+    handbookVersions: [2, 3],
     modules: ["IS_01", "IS_02"],
   },
 
@@ -206,14 +206,12 @@ query {
     savedStudyPrograms.push(studyProgramEntity);
 
     for (const handbook of studyProgram.moduleHandbooks!) {
-      const [name, degree, department, version] =
-        handbook.name.match(/(BA|BSc)_(SE|ID|PM)_v(\d+)/) ?? [];
-
       savedModuleHandbooks.push(
         await moduleHandbookRepository.save(
           moduleHandbookRepository.create({
             lpId: handbook.id,
             studyProgramId: studyProgramEntity.id,
+            name: handbook.name,
           })
         )
       );
@@ -238,26 +236,39 @@ query {
     }
   }
   for (const pairing of compulsoryElectivePairings) {
-    const handbook = savedModuleHandbooks.find((i) => i);
+    for (const handbookVersion of pairing.handbookVersions) {
+      const handbook = savedModuleHandbooks.find((i) => {
+        const [fullName, degree, department, version] =
+          i.name.match(/(BA|BSc)_(SE|ID|PM)_v(\d+)/) ?? [];
 
-    const modules = savedModules.filter((i) =>
-      pairing.modules.includes(i.moduleIdentifier)
-    );
+        return (
+          fullName != null &&
+          pairing.department === department &&
+          handbookVersion === parseInt(version)
+        );
+      });
 
-    if (!handbook) {
-      throw new Error(
-        "failed to find handbook or study program for compulsory elective pairing: " +
-          JSON.stringify(pairing, null, 2)
+      const modules = savedModules.filter((i) =>
+        pairing.modules.includes(i.moduleIdentifier)
+      );
+
+      if (!handbook) {
+        throw new Error(
+          "failed to find handbook for compulsory elective pairing: " +
+            pairing.department +
+            " v" +
+            handbookVersion
+        );
+      }
+      savedCompulsoryElectivePairings.push(
+        await compulsoryElectivePairingRepository.save(
+          compulsoryElectivePairingRepository.create({
+            moduleHandbookId: handbook.id,
+            modules,
+          })
+        )
       );
     }
-    savedCompulsoryElectivePairings.push(
-      await compulsoryElectivePairingRepository.save(
-        compulsoryElectivePairingRepository.create({
-          moduleHandbookId: handbook.id,
-          modules,
-        })
-      )
-    );
   }
 
   console.info("finished seeding:");

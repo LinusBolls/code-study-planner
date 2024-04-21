@@ -43,4 +43,7 @@ export class ModuleHandbook {
   @ManyToOne(() => StudyProgram, (studyProgram) => studyProgram.moduleHandbooks)
   @JoinColumn({ name: "studyProgramId" })
   studyProgram!: Relation<StudyProgram>;
+
+  @Column()
+  name!: string;
 }
