@@ -4,7 +4,11 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToMany,
+  type Relation,
+  JoinTable,
 } from "typeorm";
+import { CompulsoryElectivePairing } from "./compulsoryElectivePairing.entity";
 
 @Entity({ name: "modules" })
 export class Module {
@@ -39,4 +43,8 @@ export class Module {
 
   @Column({ unique: true })
   moduleIdentifier!: string;
+
+  @ManyToMany(() => CompulsoryElectivePairing, (pairing) => pairing.modules)
+  @JoinTable()
+  compulsoryElectivePairings!: Relation<CompulsoryElectivePairing>[];
 }

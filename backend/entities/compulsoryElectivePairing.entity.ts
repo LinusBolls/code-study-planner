@@ -7,8 +7,10 @@ import {
   UpdateDateColumn,
   type Relation,
   JoinColumn,
+  ManyToMany,
 } from "typeorm";
 import { ModuleHandbook } from "./moduleHandbook.entity";
+import { Module } from "./module.entity";
 
 @Entity({ name: "compulsory_elective_pairings" })
 export class CompulsoryElectivePairing {
@@ -30,4 +32,7 @@ export class CompulsoryElectivePairing {
   )
   @JoinColumn({ name: "moduleHandbookId" })
   moduleHandbook!: Relation<ModuleHandbook>;
+
+  @ManyToMany(() => Module, (module) => module.compulsoryElectivePairings)
+  modules!: Relation<Module>[];
 }

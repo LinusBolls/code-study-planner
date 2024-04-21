@@ -1,4 +1,4 @@
-const assertString = (value: unknown, name: string) => {
+export const assertString = (value: unknown, name: string) => {
   if (typeof value !== "string") {
     throw new Error(`Invalid ${name}`);
   }
@@ -22,5 +22,8 @@ export const env = {
         "ACCESS_TOKEN_SECRET"
       ),
     },
+  },
+  lp: {
+    accessToken: process.env.LP_ACCESS_TOKEN,
   },
 };
