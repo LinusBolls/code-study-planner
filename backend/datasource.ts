@@ -8,6 +8,9 @@ import { Semester } from "./entities/semester.entity";
 import { SemesterModule } from "./entities/semesterModule.entity";
 import { User } from "./entities/user.entity";
 import { StudyPlan } from "./entities/studyPlan.entity";
+import { StudyProgram } from "./entities/studyProgram.entity";
+import { ModuleHandbook } from "./entities/moduleHandbook.entity";
+import { CompulsoryElectivePairing } from "./entities/compulsoryElectivePairing.entity";
 
 const dataSourceOptions: DataSourceOptions = {
   type: "postgres",
@@ -18,7 +21,16 @@ const dataSourceOptions: DataSourceOptions = {
   database: env.db.name,
   synchronize: env.isDevelopment,
   logging: false,
-  entities: [Module, Semester, SemesterModule, User, StudyPlan],
+  entities: [
+    Module,
+    Semester,
+    SemesterModule,
+    User,
+    StudyPlan,
+    StudyProgram,
+    ModuleHandbook,
+    CompulsoryElectivePairing,
+  ],
   subscribers: [],
   migrations: [],
 };

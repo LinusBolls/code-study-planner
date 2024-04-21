@@ -36,4 +36,7 @@ export class Module {
       "if true, the module information might be outdated and should be manually checked / updated by a study plan admin.",
   })
   possiblyOutdated!: boolean;
+
+  @Column({ unique: true })
+  moduleIdentifier!: string;
 }

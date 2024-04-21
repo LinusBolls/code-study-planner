@@ -1,21 +1,17 @@
 import {
   Entity,
   PrimaryGeneratedColumn,
-  OneToMany,
+  Column,
+  ManyToOne,
   CreateDateColumn,
   UpdateDateColumn,
   type Relation,
-  OneToOne,
-  ManyToOne,
   JoinColumn,
-  Column,
 } from "typeorm";
-import { User } from "./user.entity";
-import { Semester } from "./semester.entity";
 import { ModuleHandbook } from "./moduleHandbook.entity";
 
-@Entity({ name: "study_plans" })
-export class StudyPlan {
+@Entity({ name: "compulsory_elective_pairings" })
+export class CompulsoryElectivePairing {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 
@@ -25,18 +21,13 @@ export class StudyPlan {
   @UpdateDateColumn({ select: false })
   updatedAt!: Date;
 
-  @OneToOne(() => User, (user) => user.studyPlan)
-  user!: Relation<User>;
-
-  @OneToMany(() => Semester, (semester) => semester.studyPlan, {
-    cascade: ["remove"],
-  })
-  semesters!: Relation<Semester>[];
-
   @Column()
   moduleHandbookId!: string;
 
-  @ManyToOne(() => ModuleHandbook, (handbook) => handbook.studyPlans)
+  @ManyToOne(
+    () => ModuleHandbook,
+    (handbook) => handbook.compulsoryElectivePairings
+  )
   @JoinColumn({ name: "moduleHandbookId" })
   moduleHandbook!: Relation<ModuleHandbook>;
 }

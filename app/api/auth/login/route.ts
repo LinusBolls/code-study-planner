@@ -8,6 +8,7 @@ import { Semester } from "@/backend/entities/semester.entity";
 import { isDefined } from "@/services/learningPlatform/util/isDefined";
 import dayjs from "dayjs";
 import { StudyPlan } from "@/backend/entities/studyPlan.entity";
+import { ModuleHandbook } from "@/backend/entities/moduleHandbook.entity";
 
 export async function POST(req: NextRequest) {
   await connectToDatabase();
@@ -32,12 +33,37 @@ export async function POST(req: NextRequest) {
       permissions
       userEventStreamLink
       __typename
+
+      moduleHandbooks {
+        moduleHandbook {
+          id
+        }
+      }
     }
     underMaintanance
   }`);
 
   const userRepository = AppDataSource.getRepository(User);
   const studyPlanRepository = AppDataSource.getRepository(StudyPlan);
+  const moduleHandbookRepository = AppDataSource.getRepository(ModuleHandbook);
+
+  const moduleHandbookLpId =
+    learningPlatformUser.me.moduleHandbooks![0]?.moduleHandbook?.id;
+
+  const moduleHandbook = await moduleHandbookRepository.findOne({
+    where: {
+      lpId: moduleHandbookLpId,
+    },
+  });
+
+  if (!moduleHandbook) {
+    return NextResponse.json(
+      {
+        message: `module handbook with learningplatform id '${moduleHandbookLpId}' not found in database`,
+      },
+      { status: 400 }
+    );
+  }
 
   const existingUser = await userRepository.findOneBy({
     lpId: learningPlatformUser.me.id,
@@ -53,6 +79,8 @@ export async function POST(req: NextRequest) {
     newUser.lpId = learningPlatformUser.me.id;
 
     const studyPlan = new StudyPlan();
+
+    studyPlan.moduleHandbookId = moduleHandbook.id;
 
     const newStudyPlan = await studyPlanRepository.save(studyPlan);
 
