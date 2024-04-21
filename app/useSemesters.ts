@@ -12,7 +12,12 @@ export interface Assessment {
 }
 
 export interface Module {
+  /** the id of the corresponding SemesterModule on the learning platform api */
   id: string;
+  /** e.g. "SE_19" */
+  moduleIdentifier: string;
+  /** the id of the corresponding Module on the learning platform api */
+  moduleId: string;
   title: string;
   coordinatorName: string;
   url: string;

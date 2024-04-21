@@ -4,8 +4,16 @@ import { LP } from "code-university";
 export const toModule =
   (mandatoryModuleIds: string[]) =>
   (i: LP.ViewerSemesterModule | LP.SemesterModule): Module => {
+    const moduleId = i.module!.id;
+
+    const isMandatory = mandatoryModuleIds.includes(moduleId + "|MANDATORY");
+    const isCompulsoryElective = mandatoryModuleIds.includes(
+      moduleId + "|COMPULSORY_ELECTIVE"
+    );
     return {
       id: i.id,
+      moduleIdentifier: i.moduleIdentifier!,
+      moduleId,
       title: i.module?.title!,
       coordinatorName: i.module?.coordinator?.name!,
       url:
@@ -22,10 +30,8 @@ export const toModule =
       shortCode: i.module?.simpleShortCode!,
 
       ects: i.module?.ects!,
-      isMandatory: mandatoryModuleIds.includes(i.module!.id + "|MANDATORY"),
-      isCompulsoryElective: mandatoryModuleIds.includes(
-        i.module!.id + "|COMPULSORY_ELECTIVE"
-      ),
+      isMandatory,
+      isCompulsoryElective,
       departmentId: i.module?.department?.abbreviation!,
 
       allowEarlyAssessment:
