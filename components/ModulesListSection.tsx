@@ -3,7 +3,7 @@ import { Button, Flex, FlexProps, Typography } from "antd";
 import ModulesListItem from "./ModulesListItem";
 import { PlusOutlined } from "@ant-design/icons";
 import { theme } from "@/data/theme";
-import { SemesterModule } from "@/app/useSemesters";
+import { SemesterModule } from "@/components/util/types";
 import { memo } from "react";
 
 export interface ModulesListSectionProps extends Omit<FlexProps, "children"> {

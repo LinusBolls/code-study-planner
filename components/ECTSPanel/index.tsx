@@ -1,6 +1,6 @@
 import { Divider, Flex, Statistic, Typography } from "antd";
-import ECTSProgress, { ECTSProgressStep } from "./ECTSProgress";
-import { SemesterModule } from "@/app/useSemesters";
+import ECTSProgress, { ECTSProgressStep } from "../ECTSProgress";
+import { SemesterModule } from "@/components/util/types";
 import { getDepartment } from "@/data/departments";
 
 const toStep = (module: SemesterModule): ECTSProgressStep => {

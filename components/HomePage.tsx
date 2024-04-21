@@ -10,7 +10,7 @@ import SemestersList from "@/components/SemestersList";
 import { useSemestersList } from "@/components/SemestersList/useSemestersList";
 import Header from "@/components/Header";
 import withProviders from "@/components/withProviders";
-import { useDragDropContext } from "../app/useDragDropContext";
+import { useDragDropContext } from "./util/useDragDropContext";
 
 function HomePage() {
   const { signInWithAccessToken, isAuthenticated } = useLearningPlatform();

@@ -1,10 +1,10 @@
 import { Flex } from "antd";
 import { Panel } from "react-resizable-panels";
 import SemestersListSkeletonLoader from "./SemestersListSkeletonLoader";
-import { Semester } from "@/app/useSemesters";
+import { Semester } from "@/components/util/types";
 import SemesterCard from "../Semester";
 import { useRef } from "react";
-import { useChatSelection } from "@/useChatSelection";
+import { useChatSelection } from "@/components/util/useChatSelection";
 
 export interface SemestersListProps {
   semestersQuery: {

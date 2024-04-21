@@ -1,73 +1,19 @@
-import { useLearningPlatformMyStudies } from "@/services/learningPlatform/hooks/useLearningPlatformMyStudies";
 import { SemestersListProps } from ".";
 import {
-  isDefined,
-  isUnique,
-} from "@/services/learningPlatform/util/isDefined";
-import { useLearningPlatformModules } from "@/services/learningPlatform/hooks/useLearningPlatformModules";
-import { useLearningPlatformCurrentUser } from "@/services/learningPlatform/hooks/useLearningPlatformCurrentUser";
-import { useLearningPlatformSemesterModules } from "@/services/learningPlatform/hooks/useLearningPlatformSemesterModules";
-import { getUserUrl, toModule } from "@/services/learningPlatform/mapping";
-import { Semester, SemesterModule } from "@/app/useSemesters";
+  getSemesterName,
+  getUserUrl,
+} from "@/services/learningPlatform/mapping";
+import { Semester, SemesterModule } from "@/components/util/types";
 import dayjs from "dayjs";
 import { getGradeInfo } from "@/services/learningPlatform/util/getGradeInfo";
 import { useStudyPlan } from "@/services/apiClient/hooks/useStudyPlan";
 import { ApiSemesterModule } from "@/services/apiClient";
 import { useLearningPlatformAssessmentTable } from "@/services/learningPlatform/hooks/useLearningPlatformAssessmentTable";
+import { useModulesInScope } from "../util/useModulesInScope";
 
-const getSemesterName = (startDate?: dayjs.Dayjs | null) => {
-  if (!startDate) return "Unknown Semester";
-
-  const isSpringSemester = startDate.month() < 6;
-
-  const season = isSpringSemester ? "Spring" : "Fall";
-
-  return season + " " + startDate.year();
-};
-
-export function useModulesInScope() {
-  const myStudiesQuery = useLearningPlatformMyStudies();
-
-  const myPastModules = myStudiesQuery.data?.myStudies?.filter(isDefined) ?? [];
-
-  const modulesQuery = useLearningPlatformModules();
-
-  const currentUserQuery = useLearningPlatformCurrentUser();
-
-  const mandatoryModuleIds = currentUserQuery.data?.me.mandatoryModules ?? [];
-
-  const currentSemesterModules =
-    modulesQuery.data?.currentSemesterModules ?? [];
-
-  const attemptedModuleIds = myPastModules
-    // this filters only the modules ones that are retired (the web modules)
-    // .filter(
-    //   (i) =>
-    //     currentSemesterModules.find(
-    //       (j) => j.moduleIdentifier === i.moduleIdentifier
-    //     ) == null
-    // )
-    .flatMap((i) => i.assessments!.map((j) => j.semesterModule!.id))
-    .filter(isDefined)
-    .filter(isUnique);
-
-  const retiredAttemptedModulesQuery =
-    useLearningPlatformSemesterModules(attemptedModuleIds);
-
-  const retiredAttemptedModules =
-    retiredAttemptedModulesQuery.data?.semesterModules ?? [];
-  /**
-   * includes:
-   * (1) modules that can currently be taken
-   * (2) modules that the user took in the past that are not available anymore
-   */
-  const modules = currentSemesterModules
-    .concat(retiredAttemptedModules)
-    .map(toModule(mandatoryModuleIds));
-
-  return { modules };
-}
-
+/**
+ * aggregates the data for the kanban view of the study plan from both learning platform data and our own backend
+ */
 export function useSemestersList(): SemestersListProps {
   const studyPlan = useStudyPlan();
 
@@ -106,7 +52,13 @@ export function useSemestersList(): SemestersListProps {
   for (const i of myAssessments) {
     const semester = semesters.find((j) => j.lpId === i.semester!.id);
 
-    if (!semester) continue;
+    if (!semester) {
+      console.warn(
+        "[useSemestersList] failed to find semester:",
+        i.semester!.id
+      );
+      continue;
+    }
 
     const category = (() => {
       if (i.assessmentStyle === "ALTERNATIVE") {
@@ -125,7 +77,14 @@ export function useSemestersList(): SemestersListProps {
 
     const assessedModule = modules.find((j) => j.id === i.semesterModule!.id);
 
-    if (!assessedModule) continue;
+    if (!assessedModule) {
+      console.warn(
+        "[useSemestersList] failed to find module for assessment:",
+        i.semesterModule!.id,
+        i.semesterModule!.moduleIdentifier
+      );
+      continue;
+    }
 
     const gradeInfo = getGradeInfo(highestGrade);
 

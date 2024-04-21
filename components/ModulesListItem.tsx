@@ -1,6 +1,6 @@
-import { Assessment, Module } from "@/app/useSemesters";
+import { Assessment, Module } from "@/components/util/types";
 import { getDepartment } from "@/data/departments";
-import { useIsDraggingChats } from "@/useChatSelection";
+import { useIsDraggingChats } from "@/components/util/useChatSelection";
 import { HolderOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import { Draggable, DraggableProvided } from "@hello-pangea/dnd";
 import {

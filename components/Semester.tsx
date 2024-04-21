@@ -1,4 +1,4 @@
-import { Module, Semester } from "@/app/useSemesters";
+import { Module, Semester } from "@/components/util/types";
 import { Flex, Typography } from "antd";
 import ModulesListSection from "./ModulesListSection";
 import { memo, useState } from "react";

@@ -10,7 +10,7 @@ import Link from "antd/es/typography/Link";
 import { urlParams } from "@/services/learningPlatform/util/urlParams";
 import { create } from "zustand";
 import { useECTSPanel } from "./ECTSPanel/useECTSPanel";
-import { useSuggestions } from "@/useSuggestionsPanel";
+import { useSuggestions } from "@/components/SuggestionsPanel/useSuggestionsPanel";
 
 const isBrowser = typeof window !== "undefined";
 

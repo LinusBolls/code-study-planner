@@ -1,9 +1,9 @@
-import { useModulesInScope } from "@/components/SemestersList/useSemestersList";
 import { UpdateSemesterModuleInput } from "@/services/apiClient";
 import { useStudyPlan } from "@/services/apiClient/hooks/useStudyPlan";
 import { useUpdateSemesterModule } from "@/services/apiClient/hooks/useUpdateSemesterModules";
-import { getChatSelectionState } from "@/useChatSelection";
+import { getChatSelectionState } from "@/components/util/useChatSelection";
 import { OnDragEndResponder, OnDragStartResponder } from "@hello-pangea/dnd";
+import { useModulesInScope } from "@/components/util/useModulesInScope";
 
 /**
  * keeps track of what module is currently being dragged, and updates the study plan when a drag has been completed.

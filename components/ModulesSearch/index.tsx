@@ -2,7 +2,7 @@ import { AutoSizer, List, ListRowRenderer } from "react-virtualized";
 import { Droppable } from "@hello-pangea/dnd";
 import { AutoComplete, Checkbox, Flex, Segmented, Typography } from "antd";
 import ModulesListItem from "../ModulesListItem";
-import { Module } from "@/app/useSemesters";
+import { Module } from "@/components/util/types";
 import { SegmentedLabeledOption, SegmentedOptions } from "antd/es/segmented";
 import { LegacyRef } from "react";
 

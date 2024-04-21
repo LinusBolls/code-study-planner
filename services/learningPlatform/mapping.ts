@@ -1,5 +1,6 @@
-import { Module } from "@/app/useSemesters";
+import { Module } from "@/components/util/types";
 import { LP } from "code-university";
+import dayjs from "dayjs";
 
 export const toModule =
   (mandatoryModuleIds: string[]) =>
@@ -49,4 +50,14 @@ export const getModuleRegisterUrl = (moduleId: string) => {
 
 export const getUserUrl = (coordinatorId: string) => {
   return "https://app.code.berlin/users/" + coordinatorId + "?table=projects";
+};
+
+export const getSemesterName = (startDate?: dayjs.Dayjs | null) => {
+  if (!startDate) return "Unknown Semester";
+
+  const isSpringSemester = startDate.month() < 6;
+
+  const season = isSpringSemester ? "Spring" : "Fall";
+
+  return season + " " + startDate.year();
 };

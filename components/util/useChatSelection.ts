@@ -1,6 +1,6 @@
 import { create } from "zustand";
-import { Module } from "./app/useSemesters";
-import { SemesterModuleCategory } from "./services/apiClient";
+import { Module } from "./types";
+import { SemesterModuleCategory } from "../../services/apiClient";
 
 const DROP_TARGET_GRACE_PERIOD_MS = 500;
 

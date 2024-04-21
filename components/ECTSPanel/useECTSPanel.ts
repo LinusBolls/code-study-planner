@@ -1,11 +1,9 @@
 import { useLearningPlatformAssessmentTable } from "@/services/learningPlatform/hooks/useLearningPlatformAssessmentTable";
 import { ECTSPanelProps } from "../ECTSPanel";
-import {
-  useModulesInScope,
-  useSemestersList,
-} from "../SemestersList/useSemestersList";
+import { useSemestersList } from "../SemestersList/useSemestersList";
 import { getGradeInfo } from "@/services/learningPlatform/util/getGradeInfo";
 import { getBachelorsGrade } from "@/services/learningPlatform/util/getBachelorsGrade";
+import { useModulesInScope } from "../util/useModulesInScope";
 
 export function useECTSPanel(): ECTSPanelProps {
   const { semesters } = useSemestersList();

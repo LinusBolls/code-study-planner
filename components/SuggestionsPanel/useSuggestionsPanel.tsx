@@ -1,15 +1,13 @@
 import Link from "antd/es/typography/Link";
-import { Suggestion } from "./components/SuggestionsPanel";
-import { useModules } from "./services/apiClient/hooks/useModules";
-import { useLearningPlatformCurrentUser } from "./services/learningPlatform/hooks/useLearningPlatformCurrentUser";
+import { Suggestion } from ".";
+import { useModules } from "../../services/apiClient/hooks/useModules";
+import { useLearningPlatformCurrentUser } from "../../services/learningPlatform/hooks/useLearningPlatformCurrentUser";
 import { LP } from "code-university";
-import { Module } from "@/app/useSemesters";
-import {
-  useModulesInScope,
-  useSemestersList,
-} from "./components/SemestersList/useSemestersList";
-import { getGradeInfo } from "./services/learningPlatform/util/getGradeInfo";
-import { getModuleUrl } from "./services/learningPlatform/mapping";
+import { Module } from "@/components/util/types";
+import { useSemestersList } from "../SemestersList/useSemestersList";
+import { getGradeInfo } from "../../services/learningPlatform/util/getGradeInfo";
+import { getModuleUrl } from "../../services/learningPlatform/mapping";
+import { useModulesInScope } from "../util/useModulesInScope";
 
 const ModuleLink = ({ module }: { module?: LP.Module | null | Module }) => (
   <Link href={getModuleUrl(module?.moduleIdentifier!, module?.shortCode!)}>
