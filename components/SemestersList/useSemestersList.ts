@@ -14,7 +14,6 @@ import { getGradeInfo } from "@/services/learningPlatform/util/getGradeInfo";
 import { useStudyPlan } from "@/services/apiClient/hooks/useStudyPlan";
 import { ApiSemesterModule } from "@/services/apiClient";
 import { useLearningPlatformAssessmentTable } from "@/services/learningPlatform/hooks/useLearningPlatformAssessmentTable";
-import { getBachelorsGrade } from "@/services/learningPlatform/util/getBachelorsGrade";
 
 const getSemesterName = (startDate?: dayjs.Dayjs | null) => {
   if (!startDate) return "Unknown Semester";

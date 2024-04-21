@@ -1,3 +1,6 @@
+import { CompulsoryElectivePairing } from "@/backend/entities/compulsoryElectivePairing.entity";
+import { Module } from "@/backend/entities/module.entity";
+
 export interface ApiSemesterModule {
   moduleId: string;
 }
@@ -24,6 +27,21 @@ export class StudyPlannerApiClient {
     private readonly url = "/api"
   ) {
     this.url = "/api";
+  }
+
+  public async getModules(): Promise<{
+    modules: Module[];
+    compulsoryElective: CompulsoryElectivePairing[];
+  }> {
+    const res = await fetch(this.url + "/modules", {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: this.accessToken,
+      },
+    });
+    const data = await res.json();
+
+    return data;
   }
 
   public async getStudyPlan(): Promise<StudyPlan> {

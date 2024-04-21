@@ -10,6 +10,7 @@ import Link from "antd/es/typography/Link";
 import { urlParams } from "@/services/learningPlatform/util/urlParams";
 import { create } from "zustand";
 import { useECTSPanel } from "./ECTSPanel/useECTSPanel";
+import { useSuggestions } from "@/useSuggestionsPanel";
 
 const isBrowser = typeof window !== "undefined";
 
@@ -92,6 +93,8 @@ export default function Sidebar({}: SidebarProps) {
   const sidebarMinWidth = 26 * rem;
   const sidebarCollapsedWidth = 3 * rem;
 
+  const suggestionsPanelProps = useSuggestions();
+
   const items: TabsProps["items"] = [
     {
       key: "modules",
@@ -104,7 +107,7 @@ export default function Sidebar({}: SidebarProps) {
         <Flex gap="0.25rem">
           Suggestions
           <Badge
-            count={suggestions.length}
+            count={suggestionsPanelProps.suggestions.length}
             color="#E6E6E6" // "#1890FF"
             style={{
               color: "#5D5D5D",
@@ -112,7 +115,11 @@ export default function Sidebar({}: SidebarProps) {
           />
         </Flex>
       ),
-      children: <SuggestionsPanel suggestions={suggestions} />,
+      children: (
+        <SuggestionsPanel
+          {...suggestionsPanelProps} // suggestions={suggestions}
+        />
+      ),
     },
     {
       key: "ects",

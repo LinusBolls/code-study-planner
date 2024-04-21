@@ -20,10 +20,13 @@ export const useLearningPlatformModules = () => {
 
       const results = await consumePaginatedQuery(
         (pagination) =>
-          learningPlatform!.raw.query<"currentSemesterModules">(query, {
-            pagination,
-            filter: {},
-          }),
+          learningPlatform!.raw.query<"currentSemesterModules">(
+            learningPlatformModulesQuery,
+            {
+              pagination,
+              filter: {},
+            }
+          ),
         currentSemesterModulesCount,
         modulesPerQuery
       );
@@ -42,7 +45,7 @@ export const useLearningPlatformModules = () => {
   });
 };
 
-const query = `query semesterModuleAllModules($pagination: OffsetPaginationInput, $filter: SemesterModuleFilter) {
+export const learningPlatformModulesQuery = `query semesterModuleAllModules($pagination: OffsetPaginationInput, $filter: SemesterModuleFilter) {
   currentSemesterModules(pagination: $pagination, filter: $filter) {
     __typename
     ...SemesterModuleListCard
