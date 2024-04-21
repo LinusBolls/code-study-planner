@@ -7,7 +7,7 @@ import {
 import { useLearningPlatformModules } from "@/services/learningPlatform/hooks/useLearningPlatformModules";
 import { useLearningPlatformCurrentUser } from "@/services/learningPlatform/hooks/useLearningPlatformCurrentUser";
 import { useLearningPlatformSemesterModules } from "@/services/learningPlatform/hooks/useLearningPlatformSemesterModules";
-import { toModule } from "@/services/learningPlatform/mapping";
+import { getUserUrl, toModule } from "@/services/learningPlatform/mapping";
 import { Semester, SemesterModule } from "@/app/useSemesters";
 import dayjs from "dayjs";
 import { getGradeInfo } from "@/services/learningPlatform/util/getGradeInfo";
@@ -142,10 +142,7 @@ export function useSemestersList(): SemestersListProps {
         url: "#",
         date: i.submittedOn,
         assessorName: i.assessor?.name!,
-        assessorUrl:
-          "https://app.code.berlin/users/" +
-          i.assessor?.id! +
-          "?table=projects",
+        assessorUrl: getUserUrl(i.assessor?.id!),
       },
       module: assessedModule,
     });

@@ -24,7 +24,16 @@ export function useECTSPanel(): ECTSPanelProps {
   >((acc, i) => {
     const existing = acc[i.semesterModule!.moduleIdentifier!];
 
-    const assessedModule = modules.find((j) => j.id === i.semesterModule!.id)!;
+    const assessedModule = modules.find((j) => j.id === i.semesterModule!.id);
+
+    if (!assessedModule) {
+      console.warn(
+        "[useECTSPanel] failed to find module for assessment:",
+        i.semesterModule!.id,
+        i.semesterModule!.moduleIdentifier
+      );
+      return acc;
+    }
 
     if (
       i.grade != null &&

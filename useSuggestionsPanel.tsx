@@ -9,17 +9,10 @@ import {
   useSemestersList,
 } from "./components/SemestersList/useSemestersList";
 import { getGradeInfo } from "./services/learningPlatform/util/getGradeInfo";
+import { getModuleUrl } from "./services/learningPlatform/mapping";
 
 const ModuleLink = ({ module }: { module?: LP.Module | null | Module }) => (
-  <Link
-    href={
-      "https://app.code.berlin/module/" +
-      module?.moduleIdentifier +
-      "?shortCode=" +
-      module?.shortCode +
-      "&table=description"
-    }
-  >
+  <Link href={getModuleUrl(module?.moduleIdentifier!, module?.shortCode!)}>
     {module ? module.moduleIdentifier + " " + module.title : "Unknown module"}
   </Link>
 );
@@ -81,7 +74,9 @@ export function useSuggestions() {
         partnerModules.length !== partnerModuleIdentifiers.length)
     ) {
       console.warn(
-        `[useSuggestions] failed to find partner modules for compulsory elective module with id ${moduleId}`
+        "[useSuggestions] failed to find partner modules for compulsory elective module",
+        moduleId,
+        thisModule.moduleIdentifier
       );
     }
 

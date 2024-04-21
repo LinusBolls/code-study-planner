@@ -16,17 +16,9 @@ export const toModule =
       moduleId,
       title: i.module?.title!,
       coordinatorName: i.module?.coordinator?.name!,
-      url:
-        "https://app.code.berlin/module/" +
-        i.moduleIdentifier +
-        "?shortCode=" +
-        i.module?.shortCode +
-        "&table=description",
-      coordinatorUrl:
-        "https://app.code.berlin/users/" +
-        i.module?.coordinator?.id! +
-        "?table=projects",
-      registerUrl: "https://app.code.berlin/modules/" + i.id + "/register",
+      url: getModuleUrl(i.moduleIdentifier!, i.module?.simpleShortCode!),
+      registerUrl: getModuleRegisterUrl(i.id),
+      coordinatorUrl: getUserUrl(i.module?.coordinator?.id!),
       shortCode: i.module?.simpleShortCode!,
 
       ects: i.module?.ects!,
@@ -41,3 +33,20 @@ export const toModule =
       isGraded: i.module?.graded ?? false,
     };
   };
+
+export const getModuleUrl = (moduleIdentifier: string, shortCode: string) => {
+  return (
+    "https://app.code.berlin/module/" +
+    moduleIdentifier +
+    // "?shortCode=" + shortCode +
+    "?table=description"
+  );
+};
+
+export const getModuleRegisterUrl = (moduleId: string) => {
+  return "https://app.code.berlin/modules/" + moduleId + "/register";
+};
+
+export const getUserUrl = (coordinatorId: string) => {
+  return "https://app.code.berlin/users/" + coordinatorId + "?table=projects";
+};
