@@ -1,5 +1,5 @@
 import { Module, Semester } from "@/components/util/types";
-import { Flex, Typography } from "antd";
+import { Flex, Row, Typography } from "antd";
 import ModulesListSection from "./ModulesListSection";
 import { memo, useState } from "react";
 import { Droppable } from "@hello-pangea/dnd";
@@ -48,11 +48,22 @@ function SemesterCard({
 }: SemesterProps) {
   const [isHovered, setIsHovered] = useState(false);
 
+  // TODO: add check for semester module register date
   const isPastSemester = offsetToCurrentSemester < 0;
 
   const isDraggingChats = draggedModules.length > 0;
 
+  // TODO: check if draggedModules[0] has successfull assessment
+
   const showActions = isHovered && !isDraggingChats && !isPastSemester;
+
+  const totalEcts = Object.values(semester.modules)
+    .flat()
+    .reduce((acc, i) => {
+      if (i.assessment?.published && !i.assessment?.passed) return acc;
+
+      return acc + i.module.ects;
+    }, 0);
 
   return (
     <Flex
@@ -82,27 +93,40 @@ function SemesterCard({
                 >
                   {getOffsetText(offsetToCurrentSemester)}
                 </Typography.Text>
-                <Typography.Title
-                  ref={provided.innerRef}
-                  {...provided.droppableProps}
-                  level={4}
-                  style={{
-                    marginTop: 0,
-                  }}
-                  onMouseUp={() =>
-                    setMouseUpInboxId(
-                      `droppable:semester:${semester.id}:standartAssessments`
-                    )
-                  }
-                  onMouseEnter={() =>
-                    setHoveredInboxId(
-                      `droppable:semester:${semester.id}:standartAssessments`
-                    )
-                  }
-                  onMouseLeave={() => setHoveredInboxId(null)}
-                >
-                  {semester.title}
-                </Typography.Title>
+                <Row align="middle">
+                  <Typography.Title
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
+                    level={4}
+                    style={{
+                      margin: 0,
+                    }}
+                    onMouseUp={() =>
+                      setMouseUpInboxId(
+                        `droppable:semester:${semester.id}:standartAssessments`
+                      )
+                    }
+                    onMouseEnter={() =>
+                      setHoveredInboxId(
+                        `droppable:semester:${semester.id}:standartAssessments`
+                      )
+                    }
+                    onMouseLeave={() => setHoveredInboxId(null)}
+                  >
+                    {semester.title}
+                  </Typography.Title>
+                  <Typography.Text
+                    type="secondary"
+                    style={{
+                      lineHeight: "0.75rem",
+                      fontSize: "0.75rem",
+                      whiteSpace: "pre",
+                    }}
+                  >
+                    {" "}
+                    • {totalEcts} ECTS
+                  </Typography.Text>
+                </Row>
               </Flex>
             </>
           );
