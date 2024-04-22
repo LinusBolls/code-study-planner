@@ -4,16 +4,26 @@ import { useUpdateSemesterModule } from "@/services/apiClient/hooks/useUpdateSem
 import { getChatSelectionState } from "@/components/util/useChatSelection";
 import { OnDragEndResponder, OnDragStartResponder } from "@hello-pangea/dnd";
 import { useModulesInScope } from "@/components/util/useModulesInScope";
+import { useMessages } from "./useMessages";
+import { useSemestersList } from "../SemestersList/useSemestersList";
 
 /**
  * keeps track of what module is currently being dragged, and updates the study plan when a drag has been completed.
  */
 export function useDragDropContext() {
+  const { showInfoMessage } = useMessages();
+
   const { modules } = useModulesInScope();
 
   const studyPlan = useStudyPlan();
 
   const updateSemesterModule = useUpdateSemesterModule();
+
+  const { semesters } = useSemestersList();
+
+  const flattenedModules = semesters.flatMap((i) =>
+    Object.values(i.modules).flat()
+  );
 
   const onDragStart: OnDragStartResponder = (e) => {
     const { startDraggingChats } = getChatSelectionState();
@@ -22,9 +32,30 @@ export function useDragDropContext() {
 
     const draggedModule = modules.find((i) => i.id === draggedModuleId);
 
+    const assessment = flattenedModules.find(
+      (i) => i.module.moduleIdentifier === draggedModule?.moduleIdentifier
+    )?.assessment;
+
     if (draggedModule) {
       startDraggingChats([draggedModule], e.source.droppableId);
+
+      if (
+        assessment &&
+        assessment.passed &&
+        e.source.droppableId === "droppable:modules-list"
+      ) {
+        if (draggedModule.isGraded && assessment.grade) {
+          showInfoMessage(
+            `You already got a ${assessment.grade} in this module, but you can still retake it to level up 🍄`
+          );
+        } else {
+          showInfoMessage(
+            "You already passed this module, there is no need to retake it"
+          );
+        }
+      }
     } else {
+      alert("bruh");
       console.warn(
         "[useDragDropContext.onDragStart] dragged module not found:",
         e.draggableId
