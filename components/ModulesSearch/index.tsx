@@ -176,7 +176,7 @@ export default function ModulesSearch({
             droppableId="droppable:modules-list"
             mode="virtual"
             renderClone={(provided, _, rubric) => {
-              const rowModule = modules[rubric.source.index];
+              const rowModule = modules[rubric.source.index - 1];
 
               return (
                 <ModulesListItem

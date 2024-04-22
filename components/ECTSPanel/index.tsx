@@ -3,6 +3,14 @@ import ECTSProgress, { ECTSProgressStep } from "../ECTSProgress";
 import { SemesterModule } from "@/components/util/types";
 import { getDepartment } from "@/data/departments";
 
+const isFailed = (module: SemesterModule) => {
+  return (
+    module.type === "past" &&
+    module.assessment.published &&
+    !module.assessment.passed
+  );
+};
+
 const toStep = (module: SemesterModule): ECTSProgressStep => {
   const isFinished = module.type === "past" && module.assessment.passed;
 
@@ -107,7 +115,7 @@ export default function ECTSPanel({ modules, averageGrade }: ECTSPanelProps) {
           .filter(
             (module) =>
               module.module != null &&
-              !(module.type === "past" && !module.assessment.passed) &&
+              !isFailed(module) &&
               module.module.shortCode.startsWith("OS_")
           )
           .map(toStep)}
@@ -119,7 +127,7 @@ export default function ECTSPanel({ modules, averageGrade }: ECTSPanelProps) {
           .filter(
             (module) =>
               module.module != null &&
-              !(module.type === "past" && !module.assessment.passed) &&
+              !isFailed(module) &&
               module.module.isMandatory &&
               !module.module.shortCode.startsWith("OS_")
           )
@@ -132,7 +140,7 @@ export default function ECTSPanel({ modules, averageGrade }: ECTSPanelProps) {
           .filter(
             (module) =>
               module.module != null &&
-              !(module.type === "past" && !module.assessment.passed) &&
+              !isFailed(module) &&
               module.module.isCompulsoryElective
           )
           .map(toStep)}
@@ -144,7 +152,7 @@ export default function ECTSPanel({ modules, averageGrade }: ECTSPanelProps) {
           .filter(
             (module) =>
               module.module != null &&
-              !(module.type === "past" && !module.assessment.passed) &&
+              !isFailed(module) &&
               !(module.module.isMandatory || module.module.isCompulsoryElective)
           )
           .map(toStep)}
@@ -156,7 +164,7 @@ export default function ECTSPanel({ modules, averageGrade }: ECTSPanelProps) {
           .filter(
             (module) =>
               module.module != null &&
-              !(module.type === "past" && !module.assessment.passed) &&
+              !isFailed(module) &&
               (module.module.isMandatory ||
                 module.module.isCompulsoryElective) &&
               module.module.departmentId === "STS"
