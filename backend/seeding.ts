@@ -26,8 +26,24 @@ if (!env.lp.accessToken) {
 }
 
 const moduleMeta: Record<string, { proficiency: number }> = {
+  OS_01: { proficiency: 0 },
+  OS_02: { proficiency: 0 },
+  OS_03: { proficiency: 0 },
+  OS_04: { proficiency: 0 },
+  OS_05: { proficiency: 0 },
+
   IS_01: { proficiency: 0 },
   IS_02: { proficiency: 0 },
+  IS_03: { proficiency: 0 },
+  IS_04: { proficiency: 0 },
+  IS_05: { proficiency: 0 },
+  IS_06: { proficiency: 0 },
+
+  STS_01: { proficiency: 0 },
+  STS_02: { proficiency: 0 },
+  STS_03: { proficiency: 0 },
+  STS_04: { proficiency: 0 },
+  STS_05: { proficiency: 0 },
 
   PM_11: { proficiency: 0 },
   PM_21: { proficiency: 0 },
@@ -57,6 +73,9 @@ const moduleMeta: Record<string, { proficiency: number }> = {
   SE_46: { proficiency: 2 }, // web backend technologies
 };
 
+/**
+ * src: https://www.notion.so/codeuniversitywiki/University-Regulations-828ab80d0edf409d992870947bdbbdd6 -> Program-Specific Study and Examination Regulations (V1, V2, V3) -> for each handbook version, see the "Compulsory Elective" section of the pdfs
+ */
 const compulsoryElectivePairings: {
   department: string;
   handbookVersions: number[];
@@ -70,7 +89,7 @@ const compulsoryElectivePairings: {
 
   {
     department: "SE",
-    handbookVersions: [2, 3],
+    handbookVersions: [2],
     modules: ["IS_01", "IS_02"],
   },
 
@@ -79,18 +98,6 @@ const compulsoryElectivePairings: {
     handbookVersions: [3],
     modules: ["PM_24", "PM_27", "PM_28"],
   },
-
-  {
-    department: "ID",
-    handbookVersions: [/** 2? 2.2? */ 3],
-    modules: ["pm_11", "pm_21", "pm_22", "pm_24", "pm_25"],
-  },
-  {
-    department: "ID",
-    handbookVersions: [/** 2? 2.2? */ 3],
-    modules: ["se_01", "se_02", "se_19", "se_41", "se_45"],
-  },
-  // PM v3 doesn't have any
 ];
 
 const getAbbreviation = (name: string) => {
