@@ -6,6 +6,7 @@ import { OnDragEndResponder, OnDragStartResponder } from "@hello-pangea/dnd";
 import { useModulesInScope } from "@/components/util/useModulesInScope";
 import { useMessages } from "./useMessages";
 import { useSemestersList } from "../SemestersList/useSemestersList";
+import { useQueryClient } from "@tanstack/react-query";
 
 /**
  * keeps track of what module is currently being dragged, and updates the study plan when a drag has been completed.
@@ -17,7 +18,7 @@ export function useDragDropContext() {
 
   const studyPlan = useStudyPlan();
 
-  const updateSemesterModule = useUpdateSemesterModule();
+  const { updateStudyPlan } = useUpdateStudyPlan();
 
   const { semesters } = useSemestersList();
 
@@ -81,27 +82,22 @@ export function useDragDropContext() {
     if (isDraggingChats) {
       const draggedModule = draggedModules[0];
 
-      const body = studyPlan.data.semesters.reduce<UpdateSemesterModuleInput>(
-        (acc, semester) => {
-          acc[semester.id] = semester.modules;
-
-          if (semester.id === targetSemester) {
-            // add the module to the semester it was dragged into
-            acc[semester.id][targetCategory].push({
-              moduleId: draggedModule.id,
-            });
-          }
-          if (semester.id === sourceSemester) {
-            // remove the module from the semester it was dragged out of
-            acc[semester.id][sourceCategory] = acc[semester.id][
-              sourceCategory
-            ].filter((i) => i.moduleId !== draggedModule.id);
-          }
-          return acc;
-        },
-        {}
+      updateStudyPlan(
+        [
+          {
+            id: draggedModule.id,
+            semesterId: targetSemester,
+            categoryId: targetCategory,
+          },
+        ],
+        [
+          {
+            id: draggedModule.id,
+            semesterId: sourceSemester,
+            categoryId: sourceCategory,
+          },
+        ]
       );
-      updateSemesterModule.mutate(body);
     } else {
       console.warn("[useDragDropContext.onDragEnd] not executed");
     }
@@ -110,5 +106,48 @@ export function useDragDropContext() {
   return {
     onDragStart,
     onDragEnd,
+  };
+}
+
+export function useUpdateStudyPlan() {
+  const studyPlan = useStudyPlan();
+
+  const updateSemesterModule = useUpdateSemesterModule();
+
+  async function updateStudyPlan(
+    modulesToAdd: { id: string; semesterId: string; categoryId: string }[],
+    modulesToRemove: { id: string; semesterId: string; categoryId: string }[]
+  ) {
+    if (!studyPlan.isSuccess) return;
+
+    const body = studyPlan.data.semesters.reduce<UpdateSemesterModuleInput>(
+      (acc, semester) => {
+        acc[semester.id] = semester.modules;
+
+        for (const toAdd of modulesToAdd) {
+          if (semester.id === toAdd.semesterId) {
+            // @ts-ignore
+            acc[semester.id][toAdd.categoryId].push({
+              moduleId: toAdd.id,
+            });
+          }
+        }
+        for (const toRemove of modulesToRemove) {
+          if (semester.id === toRemove.semesterId) {
+            // @ts-ignore
+            acc[semester.id][toRemove.categoryId] = acc[semester.id][
+              toRemove.categoryId
+              // @ts-ignore
+            ].filter((i) => i.moduleId !== toRemove.id);
+          }
+        }
+        return acc;
+      },
+      {}
+    );
+    await updateSemesterModule.mutateAsync(body);
+  }
+  return {
+    updateStudyPlan,
   };
 }

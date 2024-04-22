@@ -8,6 +8,8 @@ import { useSemestersList } from "../SemestersList/useSemestersList";
 import { getGradeInfo } from "../../services/learningPlatform/util/getGradeInfo";
 import { getModuleUrl } from "../../services/learningPlatform/mapping";
 import { useModulesInScope } from "../util/useModulesInScope";
+import { useMessages } from "../util/useMessages";
+import { useUpdateStudyPlan } from "../util/useDragDropContext";
 
 const ModuleLink = ({ module }: { module?: LP.Module | null | Module }) => (
   <Link href={getModuleUrl(module?.moduleIdentifier!, module?.shortCode!)}>
@@ -24,6 +26,10 @@ export function useSuggestions() {
   const flattenedModules = semesters.flatMap((i) =>
     Object.values(i.modules).flat()
   );
+
+  const { showInfoMessage } = useMessages();
+
+  const { updateStudyPlan } = useUpdateStudyPlan();
 
   const currentUserQuery = useLearningPlatformCurrentUser();
 
@@ -103,6 +109,24 @@ export function useSuggestions() {
 
     if (!isTaken && isMandatory) {
       suggestions.push({
+        fix: () => {
+          updateStudyPlan(
+            [
+              {
+                id: thisModule.id,
+                semesterId: semesters[0].id,
+                categoryId: "standartAssessments",
+              },
+            ],
+            []
+          );
+          showInfoMessage(
+            <>
+              Added <ModuleLink module={thisModule} /> to your study plan
+            </>
+          );
+          // TODO: don't add it to the first semester, but to the first viable one instead
+        },
         title: "Mandatory",
         level: "error",
         description: (
