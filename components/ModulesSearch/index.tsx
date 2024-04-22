@@ -176,9 +176,12 @@ export default function ModulesSearch({
             droppableId="droppable:modules-list"
             mode="virtual"
             renderClone={(provided, _, rubric) => {
+              const rowModule = modules[rubric.source.index];
+
               return (
                 <ModulesListItem
-                  module={modules[rubric.source.index]}
+                  draggableId={"draggable:semester-module:" + rowModule.id}
+                  module={rowModule}
                   style={provided.draggableProps.style}
                   showPopoverOn="hover"
                   {...provided.dragHandleProps}

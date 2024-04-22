@@ -112,6 +112,7 @@ export async function PUT(req: NextRequest) {
         newModule.lpId = unknownModuleId;
         newModule.proficiency = 0;
         newModule.possiblyOutdated = true;
+        newModule.moduleIdentifier = "Unknown Module";
         await transaction.getRepository(Module).save(newModule);
       }
 
