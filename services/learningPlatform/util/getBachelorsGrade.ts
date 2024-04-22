@@ -22,7 +22,7 @@ export const getBachelorsGrade = (modules: GradeInputModule[]): number => {
   let ects = 0;
 
   for (const i of modules) {
-    if (i.grade != null) {
+    if (i.grade != null && i.grade > 0 && i.grade <= 4) {
       const multiplier = i.isCapstone || i.isThesis ? 3 : 1;
 
       grades += i.grade * i.ects * multiplier;

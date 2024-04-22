@@ -1,5 +1,5 @@
 export interface Assessment {
-  proposedDate: any;
+  proposedDate: string;
   id: string;
   date: number;
   published: boolean;
