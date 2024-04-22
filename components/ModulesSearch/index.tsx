@@ -154,7 +154,7 @@ export default function ModulesSearch({
         </Flex>
       );
     }
-    const rowModule = modules[index];
+    const rowModule = modules[index - 1];
 
     return (
       <ModulesListItem
@@ -214,7 +214,7 @@ export default function ModulesSearch({
                     );
                     provided.innerRef(listEl!);
                   }}
-                  rowCount={modules.length}
+                  rowCount={modules.length + 1}
                   rowHeight={({ index }) => {
                     const isFirstRow = index === 0;
                     const isLastRow = index === modules.length - 1;
