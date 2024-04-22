@@ -81,7 +81,11 @@ export function useSuggestions() {
     const isTaken = flattenedModules.some(
       (i) =>
         i.module.moduleIdentifier === moduleIdentifier &&
-        !(i.assessment?.published && !getGradeInfo(i.assessment?.grade).passed)
+        !(
+          i.assessment?.published &&
+          getGradeInfo(i.assessment?.grade).valid &&
+          !getGradeInfo(i.assessment?.grade).passed
+        )
     );
 
     const isAnyPartnerModuleTaken = partnerModules.some((i) =>

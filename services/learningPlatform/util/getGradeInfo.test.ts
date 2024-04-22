@@ -14,6 +14,13 @@ describe("getGradeInfo", () => {
       level: null,
     });
   });
+  test("is passed if the grade is exactly 0 (ungraded modules)", () => {
+    expect(getGradeInfo(0)).toEqual({
+      valid: true,
+      passed: true,
+      level: null,
+    });
+  });
   test("is valid if the grade is between 1.0 and 4.0", () => {
     expect(getGradeInfo(1)).toEqual({
       valid: true,
