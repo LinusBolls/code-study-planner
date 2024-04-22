@@ -1,3 +1,5 @@
+import { LP } from "code-university";
+
 export interface Assessment {
   proposedDate: string;
   id: string;
@@ -33,6 +35,7 @@ export interface Module {
   allowEarlyAssessment: boolean;
   allowAlternativeAssessment: boolean;
   isGraded: boolean;
+  frequency: LP.ModuleFrequency;
 }
 
 export interface PastModule {

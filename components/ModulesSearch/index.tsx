@@ -180,6 +180,7 @@ export default function ModulesSearch({
 
               return (
                 <ModulesListItem
+                  isClone
                   module={rowModule}
                   showPopoverOn="hover"
                   {...provided.dragHandleProps}

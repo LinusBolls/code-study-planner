@@ -24,6 +24,7 @@ export interface ModulesListItemProps extends CardProps {
   index?: number;
   assessment?: Assessment | null;
   showPopoverOn?: "info-icon" | "hover";
+  isClone?: boolean;
 }
 function ModulesListItem({
   module,
@@ -31,6 +32,7 @@ function ModulesListItem({
   index = 0,
   assessment,
   showPopoverOn,
+  isClone = false,
   ...rest
 }: ModulesListItemProps) {
   const isDraggingChats = useIsDraggingChats();
@@ -45,7 +47,6 @@ function ModulesListItem({
         style={{
           width: "100%",
           ...rest.style,
-          // borderLeft: "0.25rem solid #F0F0F0",
           borderRadius: "0.25rem",
         }}
         styles={{
@@ -94,6 +95,7 @@ function ModulesListItem({
               isDragging={false}
               isDraggingChats={isDraggingChats}
               showPopoverOn={showPopoverOn}
+              isClone={isClone}
             />
           </div>
         ) : (
@@ -112,6 +114,7 @@ function ModulesListItem({
                   isDraggingChats={isDraggingChats}
                   provided={provided}
                   showPopoverOn={showPopoverOn}
+                  isClone={isClone}
                 />
               )}
             </Draggable>
@@ -132,6 +135,7 @@ function InnerModulesListItem({
   module,
   departmentColor,
   showPopoverOn,
+  isClone,
 
   setIsHovered,
   setIsDragHandleHovered,
@@ -146,6 +150,7 @@ function InnerModulesListItem({
   isDraggingChats: boolean;
   provided?: DraggableProvided;
   showPopoverOn?: "info-icon" | "hover";
+  isClone: boolean;
 
   setIsHovered: (value: boolean) => void;
   setIsDragHandleHovered: (value: boolean) => void;

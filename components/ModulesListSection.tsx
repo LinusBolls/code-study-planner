@@ -40,6 +40,7 @@ function ModulesListSection({
 
         return (
           <ModulesListItem
+            isClone
             module={rowModule}
             showPopoverOn="hover"
             {...provided.dragHandleProps}
