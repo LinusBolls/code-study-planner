@@ -32,7 +32,22 @@ function ModulesListSection({
   const isDragTarget = isHovered && isDragInProgress && !disabled;
 
   return (
-    <Droppable droppableId={droppableId} isDropDisabled={!isDragTarget}>
+    <Droppable
+      droppableId={droppableId}
+      isDropDisabled={!isDragTarget}
+      renderClone={(provided, _, rubric) => {
+        const rowModule = modules[rubric.source.index].module;
+
+        return (
+          <ModulesListItem
+            module={rowModule}
+            showPopoverOn="hover"
+            {...provided.dragHandleProps}
+            {...provided.draggableProps}
+          />
+        );
+      }}
+    >
       {(provided) => (
         <Flex
           {...rest}

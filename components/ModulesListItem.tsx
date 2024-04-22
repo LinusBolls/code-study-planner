@@ -27,7 +27,7 @@ export interface ModulesListItemProps extends CardProps {
 }
 function ModulesListItem({
   module,
-  draggableId = "",
+  draggableId,
   index = 0,
   assessment,
   showPopoverOn,
@@ -81,7 +81,7 @@ function ModulesListItem({
         mouseLeaveDelay={0}
         open={isDraggingChats || showPopoverOn !== "hover" ? false : undefined}
       >
-        {assessment != null ? (
+        {assessment != null || draggableId == null ? (
           <div>
             <InnerModulesListItem
               isHovered={isHovered}

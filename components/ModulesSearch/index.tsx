@@ -180,9 +180,7 @@ export default function ModulesSearch({
 
               return (
                 <ModulesListItem
-                  draggableId={"draggable:semester-module:" + rowModule.id}
                   module={rowModule}
-                  style={provided.draggableProps.style}
                   showPopoverOn="hover"
                   {...provided.dragHandleProps}
                   {...provided.draggableProps}
@@ -200,18 +198,9 @@ export default function ModulesSearch({
               >
                 {isLoading && (
                   <>
-                    <ModulesListItem
-                      draggableId="draggable:semester-module:0"
-                      index={0}
-                    />
-                    <ModulesListItem
-                      draggableId="draggable:semester-module:1"
-                      index={1}
-                    />
-                    <ModulesListItem
-                      draggableId="draggable:semester-module:2"
-                      index={2}
-                    />
+                    <ModulesListItem index={0} />
+                    <ModulesListItem index={1} />
+                    <ModulesListItem index={2} />
                   </>
                 )}
                 <List
