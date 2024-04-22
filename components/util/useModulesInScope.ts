@@ -47,5 +47,12 @@ export function useModulesInScope() {
     .concat(retiredAttemptedModules)
     .map(toModule(mandatoryModuleIds));
 
-  return { modules };
+  return {
+    modules,
+    isLoading:
+      modulesQuery.isLoading ||
+      myStudiesQuery.isLoading ||
+      currentUserQuery.isLoading ||
+      retiredAttemptedModulesQuery.isLoading,
+  };
 }

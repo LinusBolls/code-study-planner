@@ -17,7 +17,7 @@ import { useModulesInScope } from "../util/useModulesInScope";
 export function useSemestersList(): SemestersListProps {
   const studyPlan = useStudyPlan();
 
-  const { modules } = useModulesInScope();
+  const { modules, isLoading } = useModulesInScope();
 
   const assessmentTableQuery = useLearningPlatformAssessmentTable();
 
@@ -109,6 +109,6 @@ export function useSemestersList(): SemestersListProps {
 
   return {
     semesters,
-    semestersQuery: assessmentTableQuery,
+    semestersQuery: { isLoading: isLoading || assessmentTableQuery.isLoading },
   };
 }

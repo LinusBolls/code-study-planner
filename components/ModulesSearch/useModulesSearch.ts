@@ -317,7 +317,11 @@ export const useModulesSearch = (): ModulesSearchProps => {
     modulesTab,
     onModulesTabChange,
 
-    isLoading: modulesQuery.isLoading,
+    isLoading:
+      modulesQuery.isLoading ||
+      currentUserQuery.isLoading ||
+      myStudiesQuery.isLoading ||
+      mySemesterListQuery.isLoading,
     currentTabIsEmpty,
   };
 };

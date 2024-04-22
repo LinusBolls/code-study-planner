@@ -60,7 +60,11 @@ function SemesterCard({
   const totalEcts = Object.values(semester.modules)
     .flat()
     .reduce((acc, i) => {
-      if (i.assessment?.published && !i.assessment?.passed) return acc;
+      if (
+        (i.assessment?.published && !i.assessment?.passed) ||
+        i.module == null
+      )
+        return acc;
 
       return acc + i.module.ects;
     }, 0);

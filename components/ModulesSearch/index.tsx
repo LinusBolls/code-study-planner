@@ -154,12 +154,26 @@ export default function ModulesSearch({
         </Flex>
       );
     }
+    if (isLoading)
+      return (
+        <ModulesListItem
+          key={key}
+          index={index}
+          style={style}
+          showPopoverOn="hover"
+        />
+      );
+
     const rowModule = modules[index - 1];
+
+    const draggableId = rowModule
+      ? "draggable:module:" + rowModule.id
+      : undefined;
 
     return (
       <ModulesListItem
         key={key}
-        draggableId={"draggable:module:" + rowModule.id}
+        draggableId={draggableId}
         index={index}
         module={rowModule}
         style={style}
@@ -197,13 +211,6 @@ export default function ModulesSearch({
                   paddingBottom: "1rem",
                 }}
               >
-                {isLoading && (
-                  <>
-                    <ModulesListItem index={0} />
-                    <ModulesListItem index={1} />
-                    <ModulesListItem index={2} />
-                  </>
-                )}
                 <List
                   /** we use the key to rerender the <List /> component when modulesTab changes, to prevent the rowHeight callback from going stale */
                   key={modulesTab}
@@ -215,7 +222,7 @@ export default function ModulesSearch({
                     );
                     provided.innerRef(listEl!);
                   }}
-                  rowCount={modules.length + 1}
+                  rowCount={(isLoading ? 3 : modules.length) + 1}
                   rowHeight={({ index }) => {
                     const isFirstRow = index === 0;
                     const isLastRow = index === modules.length - 1;
