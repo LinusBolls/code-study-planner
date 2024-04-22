@@ -32,6 +32,7 @@ export const toModule =
       allowAlternativeAssessment:
         !i.module?.semesterModules[0]?.disabledAlternativeAssessment,
       isGraded: i.module?.graded ?? false,
+      frequency: i.module?.frequency!,
     };
   };
 

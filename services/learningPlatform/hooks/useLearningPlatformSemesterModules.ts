@@ -61,6 +61,7 @@ const query = `query customSemesterModule($semesterModuleId: ID!) {
     __typename
 
     # we added these fields
+    frequency
     content
     qualificationGoals
     ects

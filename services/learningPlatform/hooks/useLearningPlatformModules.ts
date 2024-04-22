@@ -110,6 +110,7 @@ fragment SemesterModuleFrame on ViewerSemesterModule {
     __typename
 
     # we added these fields
+    frequency
     content
     qualificationGoals
     ects
