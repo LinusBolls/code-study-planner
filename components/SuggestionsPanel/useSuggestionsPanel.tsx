@@ -23,9 +23,9 @@ const ModuleLink = ({ module }: { module?: LP.Module | null | Module }) => (
 export function useSuggestions() {
   const { semesters } = useSemestersList();
 
-  const flattenedModules = semesters.flatMap((i) =>
-    Object.values(i.modules).flat()
-  );
+  const flattenedModules = semesters
+    .flatMap((i) => Object.values(i.modules).flat())
+    .filter((i) => i.module != null);
 
   const { showInfoMessage } = useMessages();
 

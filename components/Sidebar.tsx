@@ -90,7 +90,7 @@ export default function Sidebar({}: SidebarProps) {
 
   const rem = isBrowser ? (100 / window.innerWidth) * 16 : 0;
 
-  const sidebarMinWidth = 26 * rem;
+  const sidebarMinWidth = 32 * rem;
   const sidebarCollapsedWidth = 3 * rem;
 
   const suggestionsPanelProps = useSuggestions();

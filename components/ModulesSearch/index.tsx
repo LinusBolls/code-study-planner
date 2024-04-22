@@ -225,12 +225,16 @@ export default function ModulesSearch({
                   rowCount={(isLoading ? 3 : modules.length) + 1}
                   rowHeight={({ index }) => {
                     const isFirstRow = index === 0;
-                    const isLastRow = index === modules.length - 1;
+                    const isLastRow = index === modules.length;
 
-                    if (isFirstRow)
-                      return 194 + 16 + (modulesTab === "all" ? 0 : 30);
-                    // if (isLastRow) return 64;
-
+                    if (isFirstRow) {
+                      return (
+                        194 +
+                        16 +
+                        (modulesTab === "all" ? 0 : 30) +
+                        (!isLoading && modules.length === 0 ? 64 : 0)
+                      );
+                    }
                     return 64 + 8;
                   }}
                   rowRenderer={rowRenderer}
