@@ -6,6 +6,7 @@ a webapp that interacts with the graphql api of the code learning platform to he
 
 - [NodeJs](https://nodejs.org) >= 18.17.0
 - [Docker](https://docs.docker.com/get-docker)
+- [BunJs](https://bun.sh) (for running the seeding script)
 
 ## setup
 
@@ -22,7 +23,7 @@ docker compose up
 this requires the additional `LP_ACCESS_TOKEN` environment variable, which can be the [learning platform access token](https://github.com/linusBolls/code-university-sdk/?tab=readme-ov-file#retrieving-an-access-token-from-the-code-learning-platform) of any account.
 
 ```bash
-docker compose up
+NODE_ENV=development bun run backend/seeding.ts
 ```
 
 ##### (4) install dependencies
@@ -39,4 +40,4 @@ npm run dev
 
 ## contributing
 
-study planner is open to PRs, issues and general feedback!
+study planner is open to PRs, issues, and general feedback!
