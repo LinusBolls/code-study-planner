@@ -4,13 +4,19 @@ import { useSemestersList } from "../SemestersList/useSemestersList";
 import { getGradeInfo } from "@/services/learningPlatform/util/getGradeInfo";
 import { getBachelorsGrade } from "@/services/learningPlatform/util/getBachelorsGrade";
 import { useModulesInScope } from "../util/useModulesInScope";
+import dayjs from "dayjs";
 
 export function useECTSPanel(): ECTSPanelProps {
   const { semesters } = useSemestersList();
 
-  const modulesTakenByUser = semesters.flatMap((i) =>
-    Object.values(i.modules).flat()
-  );
+  const modulesTakenByUser = semesters
+    .flatMap((i) => Object.values(i.modules).flat())
+    .toSorted(
+      (a, b) =>
+        (dayjs(a.assessment?.proposedDate).unix() || 0) -
+        (dayjs(b.assessment?.proposedDate).unix() || 0)
+    );
+
   const { modules } = useModulesInScope();
 
   const assessmentTableQuery = useLearningPlatformAssessmentTable();
