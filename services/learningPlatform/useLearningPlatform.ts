@@ -2,7 +2,7 @@ import {
   LearningPlatformClient,
   LearningPlatformClientOptions,
   LearningPlatformClientType,
-} from "../../../code-university-sdk";
+} from "code-university";
 import { useEffect } from "react";
 import { create } from "zustand";
 

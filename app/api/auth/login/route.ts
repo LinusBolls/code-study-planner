@@ -1,7 +1,7 @@
 import * as jose from "jose";
 import { AppDataSource, connectToDatabase } from "@/backend/datasource";
 import { User } from "@/backend/entities/user.entity";
-import { LearningPlatformClient } from "/Users/linusbolls/projects/code-university-sdk";
+import { LearningPlatformClient } from "code-university";
 import { NextRequest, NextResponse } from "next/server";
 import { env } from "@/backend/env";
 import { Semester } from "@/backend/entities/semester.entity";
