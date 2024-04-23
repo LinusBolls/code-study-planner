@@ -34,6 +34,15 @@ export function useSuggestions() {
 
   const { updateStudyPlan } = useUpdateStudyPlan();
 
+  const activeSemesterIdx = semesters.findIndex((i) => i.isActive);
+  const activeSemester = semesters[activeSemesterIdx];
+
+  const earliestRegistrableSemester =
+    semesters[
+      activeSemesterIdx +
+        (activeSemester?.canRegisterForStandardAssessments ? 0 : 1)
+    ];
+
   const compulsoryElectivePairings =
     modulesMetaQuery.data?.compulsoryElective ?? [];
 
@@ -77,7 +86,7 @@ export function useSuggestions() {
             [
               {
                 id: modules.find((i) => i.moduleId === issue.module)!.id,
-                semesterId: semesters[0].id,
+                semesterId: earliestRegistrableSemester.id,
                 categoryId: "standartAssessments",
               },
             ],

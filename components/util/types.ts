@@ -62,6 +62,12 @@ export interface Semester {
   id: string;
   lpId: string;
   title: string;
+  isActive: boolean;
+
+  canRegisterForEarlyAssessments: boolean;
+  canRegisterForStandardAssessments: boolean;
+  canRegisterForAlternativeAssessments: boolean;
+  canRegisterForReassessments: boolean;
 
   modules: {
     earlyAssessments: SemesterModule[];

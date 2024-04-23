@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { QueryRes } from "code-university";
 import { useLearningPlatform } from "../useLearningPlatform";
+import { readFromCache } from "@/services/caching";
 
 export const useLearningPlatformSemesters = (limit = 20, offset = 0) => {
   const { learningPlatform, enabled } = useLearningPlatform();
@@ -20,6 +21,7 @@ export const useLearningPlatformSemesters = (limit = 20, offset = 0) => {
     },
     queryKey: ["learningPlatform", "semesters"],
     enabled,
+    initialData: readFromCache(["learningPlatform", "semesesters"]),
   });
 };
 
@@ -29,6 +31,13 @@ export const useLearningPlatformSemestersQuery = `query allSemesters($pagination
       name
       startDate
       isActive
+      moduleStandardRegistrationStartDate
       moduleStandardRegistrationEndDate
+      moduleAlternativeRegistrationStartDate
+      moduleAlternativeRegistrationEndDate
+      moduleEarlyRegistrationStartDate
+      moduleEarlyRegistrationEndDate
+      moduleReassessmentRegistrationPhaseStartDate
+      moduleReassessmentRegistrationPhaseEndDate
   }
 }`;

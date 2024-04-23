@@ -10,12 +10,15 @@ import { useStudyPlan } from "@/services/apiClient/hooks/useStudyPlan";
 import { ApiSemesterModule } from "@/services/apiClient";
 import { useLearningPlatformAssessmentTable } from "@/services/learningPlatform/hooks/useLearningPlatformAssessmentTable";
 import { useModulesInScope } from "../util/useModulesInScope";
+import { useLearningPlatformSemesters } from "@/services/learningPlatform/hooks/useLearningPlatformSemesters";
 
 /**
  * aggregates the data for the kanban view of the study plan from both learning platform data and our own backend
  */
 export function useSemestersList(): SemestersListProps {
   const studyPlan = useStudyPlan();
+
+  const semestersQuery = useLearningPlatformSemesters();
 
   const { modules, isLoading } = useModulesInScope();
 
@@ -31,9 +34,44 @@ export function useSemestersList(): SemestersListProps {
 
   const semesters =
     studyPlan.data?.semesters?.map<Semester>((semester) => {
+      const matching = semestersQuery.data?.semesters.find(
+        (i) => i.id === semester.lpId
+      );
+
+      const canRegisterForEarlyAssessments =
+        dayjs(matching?.moduleEarlyRegistrationStartDate).isBefore(dayjs()) &&
+        dayjs(matching?.moduleEarlyRegistrationEndDate).isAfter(dayjs());
+
+      const canRegisterForStandardAssessments =
+        dayjs(matching?.moduleStandardRegistrationStartDate).isBefore(
+          dayjs()
+        ) &&
+        dayjs(matching?.moduleStandardRegistrationEndDate).isAfter(dayjs());
+
+      const canRegisterForAlternativeAssessments =
+        dayjs(matching?.moduleAlternativeRegistrationStartDate).isBefore(
+          dayjs()
+        ) &&
+        dayjs(matching?.moduleAlternativeRegistrationEndDate).isAfter(dayjs());
+
+      const canRegisterForReassessments =
+        dayjs(matching?.moduleReassessmentRegistrationPhaseStartDate).isBefore(
+          dayjs()
+        ) &&
+        dayjs(matching?.moduleReassessmentRegistrationPhaseEndDate).isAfter(
+          dayjs()
+        );
+
       return {
         id: semester.id,
         lpId: semester.lpId,
+        isActive: matching?.isActive ?? false,
+
+        canRegisterForEarlyAssessments,
+        canRegisterForStandardAssessments,
+        canRegisterForAlternativeAssessments,
+        canRegisterForReassessments,
+
         title: getSemesterName(dayjs(semester.startDate)),
         modules: {
           earlyAssessments:
@@ -111,7 +149,10 @@ export function useSemestersList(): SemestersListProps {
     semesters,
     semestersQuery: {
       isLoading:
-        isLoading || assessmentTableQuery.isLoading || studyPlan.isLoading,
+        isLoading ||
+        assessmentTableQuery.isLoading ||
+        studyPlan.isLoading ||
+        semestersQuery.isLoading,
     },
   };
 }

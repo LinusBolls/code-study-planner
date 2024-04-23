@@ -69,21 +69,31 @@ function SemesterCard({
       return acc + i.module.ects;
     }, 0);
 
-  const isEarlyDisabled = semester.modules.earlyAssessments.some(
-    (i) => i.module?.moduleId === draggedModules[0]?.moduleId
-  );
+  const isFutureSemester = offsetToCurrentSemester > 0;
 
-  const isStandartDisabled = semester.modules.standartAssessments.some(
-    (i) => i.module?.moduleId === draggedModules[0]?.moduleId
-  );
+  const isEarlyDisabled =
+    semester.modules.earlyAssessments.some(
+      (i) => i.module?.moduleId === draggedModules[0]?.moduleId
+    ) ||
+    (!semester.canRegisterForEarlyAssessments && !isFutureSemester);
 
-  const isAlternativeDisabled = semester.modules.alternativeAssessments.some(
-    (i) => i.module?.moduleId === draggedModules[0]?.moduleId
-  );
+  const isStandartDisabled =
+    semester.modules.standartAssessments.some(
+      (i) => i.module?.moduleId === draggedModules[0]?.moduleId
+    ) ||
+    (!semester.canRegisterForStandardAssessments && !isFutureSemester);
 
-  const isReassessmentDisabled = semester.modules.reassessments.some(
-    (i) => i.module?.moduleId === draggedModules[0]?.moduleId
-  );
+  const isAlternativeDisabled =
+    semester.modules.alternativeAssessments.some(
+      (i) => i.module?.moduleId === draggedModules[0]?.moduleId
+    ) ||
+    (!semester.canRegisterForAlternativeAssessments && !isFutureSemester);
+
+  const isReassessmentDisabled =
+    semester.modules.reassessments.some(
+      (i) => i.module?.moduleId === draggedModules[0]?.moduleId
+    ) ||
+    (!semester.canRegisterForReassessments && !isFutureSemester);
 
   return (
     <Flex

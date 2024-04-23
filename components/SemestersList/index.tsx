@@ -35,6 +35,8 @@ export default function SemestersList({
     setHoveredInboxId,
   } = useChatSelection();
 
+  const activeSemesterIdx = semesters.findIndex((i) => i.isActive);
+
   return (
     <Panel>
       {/* <Anchor
@@ -73,7 +75,7 @@ export default function SemestersList({
             <SemesterCard
               key={semester.id}
               semester={semester}
-              offsetToCurrentSemester={idx - 5}
+              offsetToCurrentSemester={idx - activeSemesterIdx}
               hoveredSection={
                 hoveredInboxId?.includes(semester.id)
                   ? hoveredInboxId.split(":")[
