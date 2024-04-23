@@ -36,6 +36,8 @@ export interface Module {
   allowAlternativeAssessment: boolean;
   isGraded: boolean;
   frequency: LP.ModuleFrequency;
+  prerequisites: string[];
+  prerequisiteFor: string[];
 }
 
 export interface PastModule {

@@ -33,6 +33,8 @@ export const toModule =
         !i.module?.semesterModules[0]?.disabledAlternativeAssessment,
       isGraded: i.module?.graded ?? false,
       frequency: i.module?.frequency!,
+      prerequisites: i.module?.prerequisites?.map((i) => i.id) ?? [],
+      prerequisiteFor: i.module?.prerequisiteFor?.map((i) => i.id) ?? [],
     };
   };
 

@@ -5,11 +5,12 @@ import { useLearningPlatformCurrentUser } from "../../services/learningPlatform/
 import { LP } from "code-university";
 import { Module } from "@/components/util/types";
 import { useSemestersList } from "../SemestersList/useSemestersList";
-import { getGradeInfo } from "../../services/learningPlatform/util/getGradeInfo";
 import { getModuleUrl } from "../../services/learningPlatform/mapping";
 import { useModulesInScope } from "../util/useModulesInScope";
 import { useMessages } from "../util/useMessages";
 import { useUpdateStudyPlan } from "../util/useDragDropContext";
+import { getMissingPrerequisites } from "./getMissingPrerequisites";
+import { getMissingMandatory } from "./getMissingMandatory";
 
 const ModuleLink = ({ module }: { module?: LP.Module | null | Module }) => (
   <Link href={getModuleUrl(module?.moduleIdentifier!, module?.shortCode!)}>
@@ -23,97 +24,59 @@ const ModuleLink = ({ module }: { module?: LP.Module | null | Module }) => (
 export function useSuggestions() {
   const { semesters } = useSemestersList();
 
-  const flattenedModules = semesters
-    .flatMap((i) => Object.values(i.modules).flat())
-    .filter((i) => i.module != null);
-
-  const { showInfoMessage } = useMessages();
-
-  const { updateStudyPlan } = useUpdateStudyPlan();
+  const { modules } = useModulesInScope();
 
   const currentUserQuery = useLearningPlatformCurrentUser();
 
   const modulesMetaQuery = useModules();
+
+  const { showInfoMessage } = useMessages();
+
+  const { updateStudyPlan } = useUpdateStudyPlan();
 
   const compulsoryElectivePairings =
     modulesMetaQuery.data?.compulsoryElective ?? [];
 
   const mandatoryModuleIds = currentUserQuery.data?.me.mandatoryModules ?? [];
 
-  let suggestions: Suggestion[] = [];
+  const issues = getMissingMandatory(
+    semesters,
+    modules,
+    mandatoryModuleIds,
+    compulsoryElectivePairings
+  ).concat(getMissingPrerequisites(semesters));
 
-  const { modules } = useModulesInScope();
+  const fromId = (moduleId: string) =>
+    modules.find((i) => i.moduleId === moduleId);
 
-  for (const id of mandatoryModuleIds) {
-    const [moduleId, type] = id.split("|");
-
-    const thisModule = modules.find((m) => m.moduleId === moduleId);
-
-    if (!thisModule) {
-      console.warn(`[useSuggestions] module with id ${moduleId} not found`);
-      continue;
-    }
-
-    const moduleIdentifier = thisModule?.moduleIdentifier;
-
-    const isMandatory = type === "MANDATORY";
-    const isCompulsoryElective = type === "COMPULSORY_ELECTIVE";
-
-    const partnerModuleIdentifiers = isCompulsoryElective
-      ? compulsoryElectivePairings
-          .find((i) => i.modules[0]?.moduleIdentifier === moduleIdentifier)
-          ?.modules.slice(1)
-          .map((i) => i.moduleIdentifier) ?? []
-      : [];
-
-    const partnerModules = modules.filter(
-      (i) =>
-        partnerModuleIdentifiers.includes(i.moduleIdentifier) &&
-        i.isCompulsoryElective
-    );
-
-    if (
-      isCompulsoryElective &&
-      (partnerModuleIdentifiers.length === 0 ||
-        partnerModules.length !== partnerModuleIdentifiers.length)
-    ) {
-      console.warn(
-        "[useSuggestions] failed to find partner modules for compulsory elective module",
-        moduleId,
-        thisModule.moduleIdentifier
-      );
-    }
-
-    const isTaken = flattenedModules.some(
-      (i) =>
-        i.module.moduleIdentifier === moduleIdentifier &&
-        !(
-          i.assessment?.published &&
-          getGradeInfo(i.assessment?.grade).valid &&
-          !getGradeInfo(i.assessment?.grade).passed
-        )
-    );
-
-    const isAnyPartnerModuleTaken = partnerModules.some((i) =>
-      flattenedModules.some(
-        (j) =>
-          j.module.moduleIdentifier === i.moduleIdentifier &&
-          !(
-            j.assessment?.published && !getGradeInfo(j.assessment?.grade).passed
-          )
-      )
-    );
-
-    // TODO: this
-    const isMissingPrerequisite = false;
-
-    if (!isTaken && isMandatory) {
-      suggestions.push({
+  const suggestions = issues.map<Suggestion>((issue) => {
+    if (issue.type === "missing_compulsory_electives") {
+      return {
+        title: "Compulsory elective",
+        level: "error",
+        description: (
+          <>
+            You are required to take either{" "}
+            <ModuleLink module={fromId(issue.modules[0])} />
+            {issue.modules.slice(1, -1).map((id) => (
+              <>
+                , <ModuleLink module={fromId(id)} />
+              </>
+            ))}{" "}
+            or{" "}
+            <ModuleLink
+              module={fromId(issue.modules[issue.modules.length - 1])}
+            />
+          </>
+        ),
+      };
+    } else if (issue.type === "missing_mandatory") {
+      return {
         fix: () => {
           updateStudyPlan(
             [
               {
-                id: thisModule.id,
+                id: modules.find((i) => i.moduleId === issue.module)!.id,
                 semesterId: semesters[0].id,
                 categoryId: "standartAssessments",
               },
@@ -122,7 +85,8 @@ export function useSuggestions() {
           );
           showInfoMessage(
             <>
-              Added <ModuleLink module={thisModule} /> to your study plan
+              Added <ModuleLink module={fromId(issue.module)} /> to your study
+              plan
             </>
           );
           // TODO: don't add it to the first semester, but to the first viable one instead
@@ -131,50 +95,29 @@ export function useSuggestions() {
         level: "error",
         description: (
           <>
-            You are required to take <ModuleLink module={thisModule} />
+            You are required to take{" "}
+            <ModuleLink module={fromId(issue.module)} />
           </>
         ),
-      });
-    }
-    if (
-      !isTaken &&
-      isCompulsoryElective &&
-      !isAnyPartnerModuleTaken &&
-      partnerModules.length > 0
-    ) {
-      suggestions.push({
-        title: "Compulsory elective",
-        level: "error",
-        description: (
-          <>
-            You are required to take either <ModuleLink module={thisModule} />
-            {partnerModules.slice(1, -1).map((i) => (
-              <>
-                , <ModuleLink module={i} />
-              </>
-            ))}{" "}
-            or <ModuleLink module={partnerModules[partnerModules.length - 1]} />
-          </>
-        ),
-      });
-    }
-    if (isMissingPrerequisite) {
-      suggestions.push({
+      };
+    } else {
+      return {
         title: "Missing prerequisite",
         level: "error",
         description: (
           <>
-            You are required to take <ModuleLink module={thisModule} /> before{" "}
-            <ModuleLink module={thisModule} />
+            You are required to take{" "}
+            <ModuleLink module={fromId(issue.prerequisite)} /> before{" "}
+            <ModuleLink module={fromId(issue.prerequisiteFor)} />
           </>
         ),
-      });
+      };
     }
-  }
+  });
+
   // warning: check for proficiency mismatches
   // warning: check for schedule mismatches
   // warning: only one attempt left for module
-  // warning: taking dings before dongs is not recommended
   // warning: module might not be offered that semester
   // to-do: sign up for module / lu
 

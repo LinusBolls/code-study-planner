@@ -73,6 +73,7 @@ function ModulesListItem({
     getDepartment(module.departmentId)?.color ?? "#000000";
 
   return (
+    // @ts-ignore
     <div {...rest}>
       <Popover
         placement="leftTop"
@@ -163,6 +164,7 @@ function InnerModulesListItem({
       onMouseLeave={() => setIsHovered(false)}
       {...rest}
       style={{
+        // @ts-ignore
         ...(rest.style ?? {}),
         paddingBottom: "0.5rem",
       }}
