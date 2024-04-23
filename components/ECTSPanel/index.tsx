@@ -2,6 +2,7 @@ import { Divider, Flex, Statistic, Typography } from "antd";
 import ECTSProgress, { ECTSProgressStep } from "../ECTSProgress";
 import { SemesterModule } from "@/components/util/types";
 import { getDepartment } from "@/data/departments";
+import Link from "antd/es/typography/Link";
 
 const isFailed = (module: SemesterModule) => {
   return (
@@ -34,6 +35,14 @@ export interface ECTSPanelProps {
   averageGrade: number;
 }
 export default function ECTSPanel({ modules, averageGrade }: ECTSPanelProps) {
+  const totalEcts = modules.reduce(
+    (acc, module) =>
+      module.module != null && !isFailed(module)
+        ? acc + module.module.ects
+        : acc,
+    0
+  );
+
   return (
     <Flex
       vertical
@@ -41,7 +50,7 @@ export default function ECTSPanel({ modules, averageGrade }: ECTSPanelProps) {
       style={{
         maxWidth: "32rem",
         height: "calc(100vh - 10rem)",
-        padding: "1rem 1.5rem 0 1.5rem",
+        padding: "1rem 1.5rem 1rem 1.5rem",
         overflowY: "scroll",
       }}
     >
@@ -109,6 +118,7 @@ export default function ECTSPanel({ modules, averageGrade }: ECTSPanelProps) {
           <Typography.Text>STS, IS</Typography.Text>
         </Flex>
       </div>
+      <Statistic title="Total" value={totalEcts + " ECTS"} />
       <ECTSProgress
         title="Orientation Semester"
         steps={modules
@@ -181,8 +191,14 @@ export default function ECTSPanel({ modules, averageGrade }: ECTSPanelProps) {
         precision={1}
       />
       <Typography>
-        Please keep in mind that your thesis and capstone combined make up
-        around half of your final bachelor&apos;s grade.
+        Please keep in mind that your thesis and capstone combined{" "}
+        <Link
+          href="https://www.notion.so/codeuniversitywiki/Determination-of-Final-Grade-8e0be16695934a44bf3ba0a4c4c0bedd"
+          target="_blank"
+        >
+          make up around half of your final bachelor&apos;s grade
+        </Link>
+        .
       </Typography>
     </Flex>
   );
