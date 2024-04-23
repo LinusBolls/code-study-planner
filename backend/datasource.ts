@@ -19,7 +19,7 @@ const dataSourceOptions: DataSourceOptions = {
   username: env.db.username,
   password: env.db.password,
   database: env.db.name,
-  synchronize: env.isDevelopment,
+  synchronize: true,
   logging: false,
   entities: [
     Module,
