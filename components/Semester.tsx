@@ -69,6 +69,22 @@ function SemesterCard({
       return acc + i.module.ects;
     }, 0);
 
+  const isEarlyDisabled = semester.modules.earlyAssessments.some(
+    (i) => i.module?.moduleId === draggedModules[0]?.moduleId
+  );
+
+  const isStandartDisabled = semester.modules.standartAssessments.some(
+    (i) => i.module?.moduleId === draggedModules[0]?.moduleId
+  );
+
+  const isAlternativeDisabled = semester.modules.alternativeAssessments.some(
+    (i) => i.module?.moduleId === draggedModules[0]?.moduleId
+  );
+
+  const isReassessmentDisabled = semester.modules.reassessments.some(
+    (i) => i.module?.moduleId === draggedModules[0]?.moduleId
+  );
+
   return (
     <Flex
       id={semester.id}
@@ -80,7 +96,7 @@ function SemesterCard({
     >
       <Droppable
         droppableId={`droppable:semester:${semester.id}:standartAssessments:header`}
-        isDropDisabled={isPastSemester}
+        isDropDisabled={isPastSemester || isStandartDisabled}
       >
         {(provided) => {
           return (
@@ -140,7 +156,8 @@ function SemesterCard({
         disabled={
           (isDraggingChats &&
             draggedModules[0]?.allowEarlyAssessment === false) ||
-          isPastSemester
+          isPastSemester ||
+          isEarlyDisabled
         }
         droppableId={`droppable:semester:${semester.id}:earlyAssessments`}
         onMouseUp={() =>
@@ -180,13 +197,14 @@ function SemesterCard({
         modules={semester.modules.standartAssessments}
         showAddItemButton={showActions}
         onAddItem={() => {}}
-        disabled={isPastSemester}
+        disabled={isPastSemester || isStandartDisabled}
       />
       <ModulesListSection
         disabled={
           (isDraggingChats &&
             draggedModules[0]?.allowAlternativeAssessment === false) ||
-          isPastSemester
+          isPastSemester ||
+          isAlternativeDisabled
         }
         droppableId={`droppable:semester:${semester.id}:alternativeAssessments`}
         onMouseUp={() =>
@@ -222,12 +240,12 @@ function SemesterCard({
         modules={semester.modules.reassessments}
         showAddItemButton={showActions}
         onAddItem={() => {}}
-        disabled={isPastSemester}
+        disabled={isPastSemester || isReassessmentDisabled}
       />
 
       <Droppable
         droppableId={`droppable:semester:${semester.id}:standartAssessments:footer`}
-        isDropDisabled={isPastSemester}
+        isDropDisabled={isPastSemester || isStandartDisabled}
       >
         {(provided) => {
           return (
