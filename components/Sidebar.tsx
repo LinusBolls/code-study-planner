@@ -32,53 +32,6 @@ export const useLayoutStore = create<LayoutStore>((set) => ({
   },
 }));
 
-const suggestions: Suggestion[] = [
-  {
-    title: "Compulsory elective",
-    level: "error",
-    description: (
-      <>
-        You are required to take either{" "}
-        <Link href="#">SE_05 Relational Databases</Link> or{" "}
-        <Link href="#">SE_06 NoSQL Databases</Link>.
-      </>
-    ),
-    fix: () => {},
-  },
-  {
-    title: "Missing prerequisite",
-    level: "error",
-    description: (
-      <>
-        You are required to take <Link href="#">SE_08 Clean Code</Link> before{" "}
-        <Link href="#">SE_35 Software Modeling and Design patterns</Link>.
-      </>
-    ),
-  },
-  {
-    title: "Advanced module",
-    level: "warning",
-    description: (
-      <>
-        <Link href="#">SE_35 Software Modeling and Design patterns</Link>{" "}
-        assumes advanced software engineering experience, and should not be
-        taken in your first core semester.
-      </>
-    ),
-  },
-  {
-    title: "Schedule overlap",
-    level: "warning",
-    description: (
-      <>
-        The learning units for <Link href="#">SE_08 Clean Code</Link> and{" "}
-        <Link href="#">SE_10 Automated Software Testing</Link> overlap.
-      </>
-    ),
-    fix: () => {},
-  },
-];
-
 export interface SidebarProps {}
 export default function Sidebar({}: SidebarProps) {
   const sidebarRef = useRef<ImperativePanelHandle>(null);

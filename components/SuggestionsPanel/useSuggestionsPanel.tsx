@@ -12,6 +12,12 @@ import { useUpdateStudyPlan } from "../util/useDragDropContext";
 import { getMissingPrerequisites } from "./getMissingPrerequisites";
 import { getMissingMandatory } from "./getMissingMandatory";
 
+export type SuggestionFix = {
+  type: "missing_mandatory";
+  moduleId: string;
+  module: string;
+};
+
 const ModuleLink = ({ module }: { module?: LP.Module | null | Module }) => (
   <Link href={getModuleUrl(module?.moduleIdentifier!, module?.shortCode!)}>
     {module ? module.moduleIdentifier + " " + module.title : "Unknown Module"}
@@ -30,7 +36,7 @@ export function useSuggestions() {
 
   const modulesMetaQuery = useModules();
 
-  const { showInfoMessage } = useMessages();
+  const { showInfoMessage, showErrorMessage } = useMessages();
 
   const { updateStudyPlan } = useUpdateStudyPlan();
 
@@ -80,26 +86,10 @@ export function useSuggestions() {
         ),
       };
     } else if (issue.type === "missing_mandatory") {
+      const moduleId = modules.find((i) => i.moduleId === issue.module)?.id!;
+
       return {
-        fix: () => {
-          updateStudyPlan(
-            [
-              {
-                id: modules.find((i) => i.moduleId === issue.module)!.id,
-                semesterId: earliestRegistrableSemester.id,
-                categoryId: "standartAssessments",
-              },
-            ],
-            []
-          );
-          showInfoMessage(
-            <>
-              Added <ModuleLink module={fromId(issue.module)} /> to your study
-              plan
-            </>
-          );
-          // TODO: don't add it to the first semester, but to the first viable one instead
-        },
+        fix: { type: "missing_mandatory", moduleId, module: issue.module },
         title: "Mandatory",
         level: "error",
         description: (
@@ -130,7 +120,39 @@ export function useSuggestions() {
   // warning: module might not be offered that semester
   // to-do: sign up for module / lu
 
+  async function applyFix(fix: SuggestionFix) {
+    if (fix.type === "missing_mandatory") {
+      if (!fix.moduleId || !fix.module) {
+        showErrorMessage(
+          <>
+            Failed to add <ModuleLink module={fromId(fix.module)} /> to your
+            study plan
+          </>
+        );
+        return;
+      }
+
+      updateStudyPlan(
+        [
+          {
+            id: fix.moduleId,
+            semesterId: earliestRegistrableSemester.id,
+            categoryId: "standartAssessments",
+          },
+        ],
+        []
+      );
+      showInfoMessage(
+        <>
+          Added <ModuleLink module={fromId(fix.module)} /> to your study plan
+        </>
+      );
+    }
+    throw new Error("[applyFix] received invalid fix.type " + fix.type);
+  }
+
   return {
     suggestions,
+    applyFix,
   };
 }

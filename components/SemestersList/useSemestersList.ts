@@ -11,12 +11,17 @@ import { ApiSemesterModule } from "@/services/apiClient";
 import { useLearningPlatformAssessmentTable } from "@/services/learningPlatform/hooks/useLearningPlatformAssessmentTable";
 import { useModulesInScope } from "../util/useModulesInScope";
 import { useLearningPlatformSemesters } from "@/services/learningPlatform/hooks/useLearningPlatformSemesters";
+import { useQuery } from "@tanstack/react-query";
 
 /**
  * aggregates the data for the kanban view of the study plan from both learning platform data and our own backend
  */
 export function useSemestersList(): SemestersListProps {
   const studyPlan = useStudyPlan();
+
+  useQuery({
+    queryKey: ["studyPlanner", "studyPlan"],
+  });
 
   const semestersQuery = useLearningPlatformSemesters();
 
