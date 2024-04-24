@@ -39,6 +39,9 @@ export const toModule =
   };
 
 export const getModuleUrl = (moduleIdentifier: string, shortCode: string) => {
+  if (!moduleIdentifier) {
+    return "#";
+  }
   return (
     "https://app.code.berlin/module/" +
     moduleIdentifier +
@@ -48,10 +51,16 @@ export const getModuleUrl = (moduleIdentifier: string, shortCode: string) => {
 };
 
 export const getModuleRegisterUrl = (moduleId: string) => {
+  if (!moduleId) {
+    return "#";
+  }
   return "https://app.code.berlin/modules/" + moduleId + "/register";
 };
 
 export const getUserUrl = (coordinatorId: string) => {
+  if (!coordinatorId) {
+    return "#";
+  }
   return "https://app.code.berlin/users/" + coordinatorId + "?table=projects";
 };
 
@@ -63,4 +72,28 @@ export const getSemesterName = (startDate?: dayjs.Dayjs | null) => {
   const season = isSpringSemester ? "Spring" : "Fall";
 
   return season + " " + startDate.year();
+};
+
+export const getRelativeSemesterTime = (offset: number) => {
+  if (offset === 0) {
+    return "Current semester";
+  }
+  if (offset === 1) {
+    return "Next semester";
+  }
+  if (offset === -1) {
+    return "6 months ago";
+  }
+  if (offset === 2) {
+    return `In 1 year`;
+  }
+  if (offset === -2) {
+    return `1 year ago`;
+  }
+  if (offset > 0) {
+    return `In ${offset / 2} years`;
+  }
+  if (offset < 0) {
+    return `${Math.abs(offset) / 2} years ago`;
+  }
 };

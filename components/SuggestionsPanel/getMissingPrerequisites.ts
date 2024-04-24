@@ -52,7 +52,5 @@ export const getMissingPrerequisites = (semesters: Semester[]) => {
       }))
     );
   }
-  console.log("getMissingPrerequisites.ts: issues", semesters, issues);
-
   return issues;
 };

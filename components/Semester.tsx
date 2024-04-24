@@ -3,30 +3,7 @@ import { Flex, Row, Typography } from "antd";
 import ModulesListSection from "./ModulesListSection";
 import { memo, useState } from "react";
 import { Droppable } from "@hello-pangea/dnd";
-
-const getOffsetText = (offset: number) => {
-  if (offset === 0) {
-    return "Current semester";
-  }
-  if (offset === 1) {
-    return "Next semester";
-  }
-  if (offset === -1) {
-    return "6 months ago";
-  }
-  if (offset === 2) {
-    return `In 1 year`;
-  }
-  if (offset === -2) {
-    return `1 year ago`;
-  }
-  if (offset > 0) {
-    return `In ${offset / 2} years`;
-  }
-  if (offset < 0) {
-    return `${Math.abs(offset) / 2} years ago`;
-  }
-};
+import { getRelativeSemesterTime } from "@/services/learningPlatform/mapping";
 
 export interface SemesterProps {
   semester: Semester;
@@ -48,12 +25,11 @@ function SemesterCard({
 }: SemesterProps) {
   const [isHovered, setIsHovered] = useState(false);
 
-  // TODO: add check for semester module register date
   const isPastSemester = offsetToCurrentSemester < 0;
 
-  const isDraggingChats = draggedModules.length > 0;
+  const isFutureSemester = offsetToCurrentSemester > 0;
 
-  // TODO: check if draggedModules[0] has successfull assessment
+  const isDraggingChats = draggedModules.length > 0;
 
   const showActions = isHovered && !isDraggingChats && !isPastSemester;
 
@@ -68,8 +44,6 @@ function SemesterCard({
 
       return acc + i.module.ects;
     }, 0);
-
-  const isFutureSemester = offsetToCurrentSemester > 0;
 
   const isEarlyDisabled =
     semester.modules.earlyAssessments.some(
@@ -121,7 +95,7 @@ function SemesterCard({
                   type="secondary"
                   style={{ lineHeight: "0.75rem", fontSize: "0.75rem" }}
                 >
-                  {getOffsetText(offsetToCurrentSemester)}
+                  {getRelativeSemesterTime(offsetToCurrentSemester)}
                 </Typography.Text>
                 <Row align="middle">
                   <Typography.Title

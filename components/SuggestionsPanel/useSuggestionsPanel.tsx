@@ -14,7 +14,7 @@ import { getMissingMandatory } from "./getMissingMandatory";
 
 const ModuleLink = ({ module }: { module?: LP.Module | null | Module }) => (
   <Link href={getModuleUrl(module?.moduleIdentifier!, module?.shortCode!)}>
-    {module ? module.moduleIdentifier + " " + module.title : "Unknown module"}
+    {module ? module.moduleIdentifier + " " + module.title : "Unknown Module"}
   </Link>
 );
 
