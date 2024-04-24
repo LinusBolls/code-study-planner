@@ -7,7 +7,6 @@ import {
   UpdateDateColumn,
   type Relation,
   JoinColumn,
-  OneToOne,
   Unique,
 } from "typeorm";
 import { Semester } from "./semester.entity";
@@ -57,7 +56,7 @@ export class SemesterModule {
   @JoinColumn({ name: "semesterId" })
   semester!: Relation<Semester>;
 
-  @OneToOne(() => Module, (module) => module.id)
+  @ManyToOne(() => Module, (module) => module.id)
   @JoinColumn({ name: "moduleId" })
   module!: Relation<Module>;
 }
