@@ -1,14 +1,13 @@
-import * as jose from "jose";
 import { AppDataSource, connectToDatabase } from "@/backend/datasource";
 import { User } from "@/backend/entities/user.entity";
 import { LearningPlatformClient } from "code-university";
 import { NextRequest, NextResponse } from "next/server";
-import { env } from "@/backend/env";
 import { Semester } from "@/backend/entities/semester.entity";
 import { isDefined } from "@/services/learningPlatform/util/isDefined";
 import dayjs from "dayjs";
 import { StudyPlan } from "@/backend/entities/studyPlan.entity";
 import { ModuleHandbook } from "@/backend/entities/moduleHandbook.entity";
+import { issueAccessToken } from "@/backend/jwt";
 
 export async function POST(req: NextRequest) {
   await connectToDatabase();
@@ -251,35 +250,4 @@ export async function POST(req: NextRequest) {
   res.headers.set("set-cookie", accessToken);
 
   return res;
-}
-
-type JwtPayload = {
-  sub: string;
-  learningPlatformUserId: string;
-};
-
-async function issueAccessToken(user: User): Promise<string> {
-  const secret = new TextEncoder().encode(env.auth.accessToken.secret);
-
-  const payload: JwtPayload = {
-    sub: user.id,
-    learningPlatformUserId: user.lpId,
-  };
-
-  const jwt = await new jose.SignJWT(payload)
-    .setProtectedHeader({ alg: "HS256" })
-    .setIssuedAt()
-    // .setExpirationTime("2h")
-    // .setExpirationTime(Date.now() + Config.accessTokenExpiryMs)
-    .sign(secret);
-
-  return jwt;
-}
-
-export async function verifyAccessToken(jwt: string): Promise<JwtPayload> {
-  const secret = new TextEncoder().encode(env.auth.accessToken.secret);
-
-  const { payload } = await jose.jwtVerify(jwt, secret);
-
-  return payload as JwtPayload;
 }
