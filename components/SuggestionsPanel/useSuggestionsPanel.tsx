@@ -1,5 +1,4 @@
 import Link from "antd/es/typography/Link";
-import { Suggestion } from ".";
 import { useModules } from "../../services/apiClient/hooks/useModules";
 import { useLearningPlatformCurrentUser } from "../../services/learningPlatform/hooks/useLearningPlatformCurrentUser";
 import { LP } from "code-university";
@@ -11,12 +10,8 @@ import { useMessages } from "../util/useMessages";
 import { useUpdateStudyPlan } from "../util/useDragDropContext";
 import { getMissingPrerequisites } from "./getMissingPrerequisites";
 import { getMissingMandatory } from "./getMissingMandatory";
-
-export type SuggestionFix = {
-  type: "missing_mandatory";
-  moduleId: string;
-  module: string;
-};
+import React from "react";
+import { Suggestion, SuggestionFix } from "./issues";
 
 const ModuleLink = ({ module }: { module?: LP.Module | null | Module }) => (
   <Link href={getModuleUrl(module?.moduleIdentifier!, module?.shortCode!)}>
@@ -89,7 +84,14 @@ export function useSuggestions() {
       const moduleId = modules.find((i) => i.moduleId === issue.module)?.id!;
 
       return {
-        fix: { type: "missing_mandatory", moduleId, module: issue.module },
+        fixes: [
+          {
+            type: "missing_mandatory",
+            title: "Take next semester",
+            moduleId,
+            module: issue.module,
+          },
+        ],
         title: "Mandatory",
         level: "error",
         description: (

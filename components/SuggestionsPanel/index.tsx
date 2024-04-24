@@ -1,13 +1,6 @@
 import { Button, Flex, List, Typography } from "antd";
 import { ExclamationCircleOutlined, WarningOutlined } from "@ant-design/icons";
-import { SuggestionFix } from "./useSuggestionsPanel";
-
-export interface Suggestion {
-  title: string;
-  level: "error" | "warning" | "info";
-  description: React.ReactNode;
-  fix?: SuggestionFix;
-}
+import { Suggestion, SuggestionFix } from "./issues";
 
 export interface SuggestionsPanelProps {
   suggestions: Suggestion[];
@@ -47,10 +40,10 @@ export default function SuggestionsPanel({
               title={
                 <Flex justify="space-between">
                   <Typography.Text strong>{item.title}</Typography.Text>
-                  {item.fix && (
+                  {item.fixes?.length && (
                     <Button
                       type="link"
-                      onClick={() => applyFix(item.fix!)}
+                      onClick={() => applyFix(item.fixes![0])}
                       style={{
                         height: "1rem",
                         padding: 0,
