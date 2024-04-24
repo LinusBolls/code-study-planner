@@ -8,9 +8,14 @@ export function useMessages() {
     message.info(content);
   };
 
+  const showErrorMessage = (content: JointContent) => {
+    message.error(content);
+  };
+
   return {
     messageApi,
     contextHolder,
     showInfoMessage,
+    showErrorMessage,
   };
 }

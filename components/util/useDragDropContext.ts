@@ -1,4 +1,7 @@
-import { UpdateSemesterModuleInput } from "@/services/apiClient";
+import {
+  SemesterModuleCategory,
+  UpdateSemesterModuleInput,
+} from "@/services/apiClient";
 import { useStudyPlan } from "@/services/apiClient/hooks/useStudyPlan";
 import { useUpdateSemesterModule } from "@/services/apiClient/hooks/useUpdateSemesterModules";
 import { getChatSelectionState } from "@/components/util/useChatSelection";
@@ -6,7 +9,6 @@ import { OnDragEndResponder, OnDragStartResponder } from "@hello-pangea/dnd";
 import { useModulesInScope } from "@/components/util/useModulesInScope";
 import { useMessages } from "./useMessages";
 import { useSemestersList } from "../SemestersList/useSemestersList";
-import { useQueryClient } from "@tanstack/react-query";
 
 /**
  * keeps track of what module is currently being dragged, and updates the study plan when a drag has been completed.
@@ -115,8 +117,16 @@ export function useUpdateStudyPlan() {
   const updateSemesterModule = useUpdateSemesterModule();
 
   async function updateStudyPlan(
-    modulesToAdd: { id: string; semesterId: string; categoryId: string }[],
-    modulesToRemove: { id: string; semesterId: string; categoryId: string }[]
+    modulesToAdd: {
+      id: string;
+      semesterId: string;
+      categoryId: SemesterModuleCategory;
+    }[],
+    modulesToRemove: {
+      id: string;
+      semesterId: string;
+      categoryId: SemesterModuleCategory;
+    }[]
   ) {
     if (!studyPlan.isSuccess) return;
 
@@ -126,7 +136,6 @@ export function useUpdateStudyPlan() {
 
         for (const toAdd of modulesToAdd) {
           if (semester.id === toAdd.semesterId) {
-            // @ts-ignore
             acc[semester.id][toAdd.categoryId].push({
               moduleId: toAdd.id,
             });
@@ -134,10 +143,8 @@ export function useUpdateStudyPlan() {
         }
         for (const toRemove of modulesToRemove) {
           if (semester.id === toRemove.semesterId) {
-            // @ts-ignore
             acc[semester.id][toRemove.categoryId] = acc[semester.id][
               toRemove.categoryId
-              // @ts-ignore
             ].filter((i) => i.moduleId !== toRemove.id);
           }
         }
