@@ -2,11 +2,10 @@ import { Badge, Button, Flex, Tabs, TabsProps } from "antd";
 import { useRef } from "react";
 import { ImperativePanelHandle, Panel } from "react-resizable-panels";
 import ECTSPanel from "./ECTSPanel";
-import SuggestionsPanel, { Suggestion } from "./SuggestionsPanel";
+import SuggestionsPanel from "./SuggestionsPanel";
 import ModulesSearch from "./ModulesSearch";
 import { useModulesSearch } from "./ModulesSearch/useModulesSearch";
 import { DoubleLeftOutlined, DoubleRightOutlined } from "@ant-design/icons";
-import Link from "antd/es/typography/Link";
 import { urlParams } from "@/services/learningPlatform/util/urlParams";
 import { create } from "zustand";
 import { useECTSPanel } from "./ECTSPanel/useECTSPanel";
@@ -61,18 +60,14 @@ export default function Sidebar({}: SidebarProps) {
           Suggestions
           <Badge
             count={suggestionsPanelProps.suggestions.length}
-            color="#E6E6E6" // "#1890FF"
+            color="#E6E6E6"
             style={{
               color: "#5D5D5D",
             }}
           />
         </Flex>
       ),
-      children: (
-        <SuggestionsPanel
-          {...suggestionsPanelProps} // suggestions={suggestions}
-        />
-      ),
+      children: <SuggestionsPanel {...suggestionsPanelProps} />,
     },
     {
       key: "ects",
@@ -109,7 +104,6 @@ export default function Sidebar({}: SidebarProps) {
             padding: "0 1rem",
             height: "3rem",
             alignItems: "center",
-            // borderBottom: "1px solid #F0F0F0",
           }}
         >
           <Button
