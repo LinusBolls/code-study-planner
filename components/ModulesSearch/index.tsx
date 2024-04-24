@@ -4,7 +4,6 @@ import { AutoComplete, Checkbox, Flex, Segmented, Typography } from "antd";
 import ModulesListItem from "../ModulesListItem";
 import { Module } from "@/components/util/types";
 import { SegmentedLabeledOption, SegmentedOptions } from "antd/es/segmented";
-import { LegacyRef } from "react";
 
 const getOptions = (values: string[]) => {
   return values.map((i) => ({
@@ -14,7 +13,7 @@ const getOptions = (values: string[]) => {
 };
 
 export interface ModulesSearchProps {
-  modules: Module[];
+  modules?: Module[];
 
   searchQuery?: string;
   onSearchQueryChange?: (query: string) => void;
@@ -28,14 +27,14 @@ export interface ModulesSearchProps {
   onlyEarlyAssessment: boolean;
   onOnlyEarlyAssessmentChange: (value: boolean) => void;
 
-  modulesTab: string;
+  modulesTab?: string;
   onModulesTabChange: (value: string) => void;
 
   isLoading?: boolean;
   currentTabIsEmpty?: boolean;
 }
 export default function ModulesSearch({
-  modules,
+  modules = [],
 
   searchQuery,
   onSearchQueryChange,
@@ -50,7 +49,7 @@ export default function ModulesSearch({
   onlyEarlyAssessment,
   onOnlyEarlyAssessmentChange,
 
-  modulesTab,
+  modulesTab = "all",
   onModulesTabChange,
 
   isLoading = false,
