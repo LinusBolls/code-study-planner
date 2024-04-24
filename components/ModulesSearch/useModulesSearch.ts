@@ -19,17 +19,60 @@ export const useModulesSearch = (): ModulesSearchProps => {
 
   const { semesters } = useSemestersList();
 
+  const mySemesterListQuery = useLearningPlatformMySemesterList(100, 0);
+
+  const myStudiesQuery = useLearningPlatformMyStudies();
+
   const flattenedModules = semesters
     .flatMap((i) => Object.values(i.modules).flat())
     .filter((i) => i.module != null);
 
-  const mandatoryModuleIds = currentUserQuery.data?.me.mandatoryModules ?? [];
-
   const currentSemesterModules =
     modulesQuery.data?.currentSemesterModules?.filter(isDefined) ?? [];
 
+  const mandatoryModuleIds = currentUserQuery.data?.me.mandatoryModules ?? [];
+
+  const myCurrentModules =
+    mySemesterListQuery.data?.mySemesterModules?.filter(isDefined) ?? [];
+
+  const myPastModules = myStudiesQuery.data?.myStudies?.filter(isDefined) ?? [];
+
+  /** the modules that *would* be included in the current tab prior to getting filtered by the search and checkboxes */
+  const modulesTabContents = currentSemesterModules.filter((i) => {
+    const attemptedModule = myPastModules.find(
+      (j) =>
+        j?.moduleIdentifier === i.moduleIdentifier && i.moduleIdentifier != null
+    );
+
+    const currentModule = myCurrentModules.find(
+      (j) =>
+        j?.moduleIdentifier === i.moduleIdentifier && i.moduleIdentifier != null
+    );
+
+    const allFailed = attemptedModule?.assessments?.every(
+      (i) => getGradeInfo(i.grade).valid && !getGradeInfo(i.grade).passed
+    );
+    const hasAssessments = (attemptedModule?.assessments?.length ?? 0) > 0;
+
+    const isPlanned = flattenedModules.some(
+      (j) => j.type === "planned" && j.module?.moduleId === i.module?.id
+    );
+    const isPartOfStudyPlan =
+      (hasAssessments && !allFailed) || currentModule != null || isPlanned;
+
+    if (store.filters.onlyMyStudies && attemptedModule == null) return false;
+
+    if (store.filters.onlyMySemester && currentModule == null) return false;
+
+    if (store.filters.onlyNotTaken && isPartOfStudyPlan) return false;
+
+    return true;
+  });
+
+  const currentTabIsEmpty = modulesTabContents.length < 1;
+
   const search = new FuzzySearch(
-    currentSemesterModules,
+    modulesTabContents,
     [
       "module.title",
       "module.coordinator.name",
@@ -55,15 +98,6 @@ export const useModulesSearch = (): ModulesSearchProps => {
   const passedFailedAttemptedFilter = store.searchQuery.match(
     /(?:^|\s+)(se|pm|id)(?:$|\s+)/i
   );
-
-  const mySemesterListQuery = useLearningPlatformMySemesterList(100, 0);
-
-  const myCurrentModules =
-    mySemesterListQuery.data?.mySemesterModules?.filter(isDefined) ?? [];
-
-  const myStudiesQuery = useLearningPlatformMyStudies();
-
-  const myPastModules = myStudiesQuery.data?.myStudies?.filter(isDefined) ?? [];
 
   const modules =
     search
@@ -114,9 +148,6 @@ export const useModulesSearch = (): ModulesSearchProps => {
             i.moduleIdentifier != null
         );
 
-        if (store.filters.onlyMyStudies && attemptedModule == null)
-          return false;
-
         if (store.filters.onlyPassed && attemptedModule?.status !== "ATTEMPTED")
           return false;
         if (
@@ -125,85 +156,9 @@ export const useModulesSearch = (): ModulesSearchProps => {
         )
           return false;
 
-        const currentModule = myCurrentModules.find(
-          (j) =>
-            j?.moduleIdentifier === i.moduleIdentifier &&
-            i.moduleIdentifier != null
-        );
-
-        const allFailed = attemptedModule?.assessments?.every(
-          (i) => getGradeInfo(i.grade).valid && !getGradeInfo(i.grade).passed
-        );
-
-        if (
-          store.filters.onlyNotTaken &&
-          ((!allFailed && (attemptedModule?.assessments?.length ?? 0) > 0) ||
-            currentModule != null ||
-            flattenedModules.some(
-              (j) => j.type === "planned" && j.module?.moduleId === i.module?.id
-            ))
-        )
-          return false;
-
-        if (store.filters.onlyMySemester && currentModule == null) return false;
-
         return true;
       })
       ?.map(toModule(mandatoryModuleIds)) ?? [];
-
-  function onModulesTabChange(value: string) {
-    if (value === "all") {
-      store.actions.setOnlyMyStudies(false);
-      store.actions.setOnlyMySemester(false);
-      store.actions.setOnlyNotTaken(false);
-      return;
-    } else if (value === "my-studies") {
-      store.actions.setOnlyMyStudies(true);
-      store.actions.setOnlyMySemester(false);
-      store.actions.setOnlyNotTaken(false);
-      return;
-    } else if (value === "my-semester") {
-      store.actions.setOnlyMyStudies(false);
-      store.actions.setOnlyMySemester(true);
-      store.actions.setOnlyNotTaken(false);
-      return;
-    } else if (value === "not-taken") {
-      store.actions.setOnlyMyStudies(false);
-      store.actions.setOnlyMySemester(false);
-      store.actions.setOnlyNotTaken(true);
-      return;
-    }
-    throw new Error(
-      "invalid modules tab (must be one of 'all', 'my-studies', 'my-semester'): " +
-        value
-    );
-  }
-  const modulesTab = (() => {
-    if (store.filters.onlyMyStudies) return "my-studies";
-    if (store.filters.onlyMySemester) return "my-semester";
-    if (store.filters.onlyNotTaken) return "not-taken";
-    return "all";
-  })();
-
-  const modulesTabContents = currentSemesterModules.filter((i) => {
-    const attemptedModule = myPastModules.find(
-      (j) =>
-        j?.moduleIdentifier === i.moduleIdentifier && i.moduleIdentifier != null
-    );
-
-    const currentModule = myCurrentModules.find(
-      (j) =>
-        j?.moduleIdentifier === i.moduleIdentifier && i.moduleIdentifier != null
-    );
-
-    if (store.filters.onlyMyStudies && attemptedModule == null) return false;
-
-    if (store.filters.onlyMySemester && currentModule == null) return false;
-
-    return true;
-  });
-
-  const currentTabIsEmpty = modulesTabContents.length < 1;
 
   return {
     modules,
@@ -215,8 +170,8 @@ export const useModulesSearch = (): ModulesSearchProps => {
     onOnlyMandatoryOrCompulsoryElectiveChange:
       store.actions.setOnlyMandaryOrCompulsoryElective,
     onSearchQueryChange: store.actions.setSearchQuery,
-    modulesTab,
-    onModulesTabChange,
+    modulesTab: store.modulesTab,
+    onModulesTabChange: store.setModulesTab,
 
     isLoading:
       modulesQuery.isLoading ||

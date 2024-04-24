@@ -133,5 +133,40 @@ export function useModulesSearchStore() {
     store.filters.onlyPassed,
     store.filters.onlyNotTaken,
   ]);
-  return store;
+
+  function setModulesTab(value: string) {
+    if (value === "all") {
+      store.actions.setOnlyMyStudies(false);
+      store.actions.setOnlyMySemester(false);
+      store.actions.setOnlyNotTaken(false);
+      return;
+    } else if (value === "my-studies") {
+      store.actions.setOnlyMyStudies(true);
+      store.actions.setOnlyMySemester(false);
+      store.actions.setOnlyNotTaken(false);
+      return;
+    } else if (value === "my-semester") {
+      store.actions.setOnlyMyStudies(false);
+      store.actions.setOnlyMySemester(true);
+      store.actions.setOnlyNotTaken(false);
+      return;
+    } else if (value === "not-taken") {
+      store.actions.setOnlyMyStudies(false);
+      store.actions.setOnlyMySemester(false);
+      store.actions.setOnlyNotTaken(true);
+      return;
+    }
+    throw new Error(
+      "invalid modules tab (must be one of 'all', 'my-studies', 'my-semester'): " +
+        value
+    );
+  }
+  const modulesTab = (() => {
+    if (store.filters.onlyMyStudies) return "my-studies";
+    if (store.filters.onlyMySemester) return "my-semester";
+    if (store.filters.onlyNotTaken) return "not-taken";
+    return "all";
+  })();
+
+  return { ...store, modulesTab, setModulesTab };
 }
