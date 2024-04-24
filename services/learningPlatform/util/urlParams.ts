@@ -7,6 +7,7 @@ type Param =
   | "failed"
   | "my-studies"
   | "my-semester"
+  | "not-taken"
   | "tab";
 
 class UrlParams {

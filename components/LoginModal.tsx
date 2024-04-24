@@ -85,7 +85,7 @@ export default function LoginModal({ onSubmit }: LoginModalProps) {
               title: "Click on the Application tab",
             },
             {
-              title: `Double-click the Value field of the cid cookie, and copy it to your clipboard.`,
+              title: `Double-click the Value field of the cid cookie, and copy it to your clipboard.\nIf the cid cookie doesn't show up, try refreshing the browser tab.`,
             },
           ]}
         />

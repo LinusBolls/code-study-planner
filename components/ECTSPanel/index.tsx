@@ -78,20 +78,8 @@ export default function ECTSPanel({ modules, averageGrade }: ECTSPanelProps) {
               fontSize: "0.875rem",
             }}
           >
-            Software Engineering
+            Interaction Design
           </Typography.Text>
-        </Flex>
-        <Flex gap="small" align="center">
-          <div
-            style={{
-              width: "0.5rem",
-              height: "0.5rem",
-              borderRadius: "50%",
-
-              backgroundColor: "#FF4473",
-            }}
-          />
-          <Typography.Text>Interaction Design</Typography.Text>
         </Flex>
         <Flex gap="small" align="center">
           <div
@@ -104,6 +92,18 @@ export default function ECTSPanel({ modules, averageGrade }: ECTSPanelProps) {
             }}
           />
           <Typography.Text>Product Management</Typography.Text>
+        </Flex>
+        <Flex gap="small" align="center">
+          <div
+            style={{
+              width: "0.5rem",
+              height: "0.5rem",
+              borderRadius: "50%",
+
+              backgroundColor: "#FF4473",
+            }}
+          />
+          <Typography.Text>Software Engineering</Typography.Text>
         </Flex>
         <Flex gap="small" align="center">
           <div

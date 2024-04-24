@@ -1,4 +1,3 @@
-import { create } from "zustand";
 import { ModulesSearchProps } from ".";
 import { useLearningPlatformModules } from "@/services/learningPlatform/hooks/useLearningPlatformModules";
 import { useLearningPlatformCurrentUser } from "@/services/learningPlatform/hooks/useLearningPlatformCurrentUser";
@@ -6,149 +5,28 @@ import { isDefined } from "@/services/learningPlatform/util/isDefined";
 import FuzzySearch from "fuzzy-search";
 import { useLearningPlatformMySemesterList } from "@/services/learningPlatform/hooks/useLearningPlatformMySemesterList";
 import { useLearningPlatformMyStudies } from "@/services/learningPlatform/hooks/useLearningPlatformMyStudies";
-import { useEffect } from "react";
-import { urlParams } from "@/services/learningPlatform/util/urlParams";
 import { toModule } from "@/services/learningPlatform/mapping";
-
-export interface ModulesSearchStore {
-  searchQuery: string;
-
-  filters: {
-    onlyMandatoryOrCompulsoryElective: boolean;
-
-    onlyAlternativeAssessment: boolean;
-    onlyEarlyAssessment: boolean;
-
-    onlyPassed: boolean;
-    onlyFailed: boolean;
-    onlyMyStudies: boolean;
-    onlyMySemester: boolean;
-  };
-
-  actions: {
-    setSearchQuery: (query: string) => void;
-    setOnlyMandaryOrCompulsoryElective: (value: boolean) => void;
-    setOnlyAlternativeAssessment: (value: boolean) => void;
-    setOnlyEarlyAssessment: (value: boolean) => void;
-    setOnlyPassed: (value: boolean) => void;
-    setOnlyFailed: (value: boolean) => void;
-    setOnlyMyStudies: (value: boolean) => void;
-    setOnlyMySemester: (value: boolean) => void;
-    clearFilters: () => void;
-  };
-}
-const useModulesSearchStore = create<ModulesSearchStore>(
-  // persist<ModulesSearchStore>(
-  (set) => ({
-    searchQuery: urlParams.get("q") ?? "",
-
-    filters: {
-      onlyMandatoryOrCompulsoryElective: urlParams.get("mandatory"),
-      onlyAlternativeAssessment: urlParams.get("alternative"),
-      onlyEarlyAssessment: urlParams.get("early"),
-      onlyPassed: urlParams.get("passed"),
-      onlyFailed: urlParams.get("failed"),
-      onlyMyStudies: urlParams.get("my-studies"),
-      onlyMySemester: urlParams.get("my-semester"),
-    },
-
-    actions: {
-      setSearchQuery: (query: string) => {
-        set({ searchQuery: query });
-      },
-      setOnlyMandaryOrCompulsoryElective: (value: boolean) => {
-        set((prev) => ({
-          filters: {
-            ...prev.filters,
-            onlyMandatoryOrCompulsoryElective: value,
-          },
-        }));
-      },
-      setOnlyAlternativeAssessment: (value: boolean) => {
-        set((prev) => ({
-          filters: { ...prev.filters, onlyAlternativeAssessment: value },
-        }));
-      },
-      setOnlyEarlyAssessment: (value: boolean) => {
-        set((prev) => ({
-          filters: { ...prev.filters, onlyEarlyAssessment: value },
-        }));
-      },
-      setOnlyPassed: (value: boolean) => {
-        set((prev) => ({
-          filters: { ...prev.filters, onlyPassed: value },
-        }));
-      },
-      setOnlyFailed: (value: boolean) => {
-        set((prev) => ({
-          filters: { ...prev.filters, onlyFailed: value },
-        }));
-      },
-      setOnlyMyStudies: (value: boolean) => {
-        set((prev) => ({
-          filters: { ...prev.filters, onlyMyStudies: value },
-        }));
-      },
-      setOnlyMySemester: (value: boolean) => {
-        set((prev) => ({
-          filters: { ...prev.filters, onlyMySemester: value },
-        }));
-      },
-      clearFilters: () => {
-        set({
-          filters: {
-            onlyMandatoryOrCompulsoryElective: false,
-            onlyAlternativeAssessment: false,
-            onlyEarlyAssessment: false,
-            onlyPassed: false,
-            onlyFailed: false,
-            onlyMyStudies: false,
-            onlyMySemester: false,
-          },
-        });
-      },
-    },
-  })
-  //   , {
-  //     name: "modules-search",
-  //     storage: createJSONStorage(() => hashStorage),
-  //   }
-  // ) as any
-);
+import { getGradeInfo } from "@/services/learningPlatform/util/getGradeInfo";
+import { useModulesSearchStore } from "./modulesSearchStore";
+import { useSemestersList } from "../SemestersList/useSemestersList";
 
 export const useModulesSearch = (): ModulesSearchProps => {
   const store = useModulesSearchStore();
-
-  useEffect(() => {
-    urlParams.set("q", store.searchQuery);
-    urlParams.set("mandatory", store.filters.onlyMandatoryOrCompulsoryElective);
-    urlParams.set("alternative", store.filters.onlyAlternativeAssessment);
-    urlParams.set("early", store.filters.onlyEarlyAssessment);
-    urlParams.set("passed", store.filters.onlyPassed);
-    urlParams.set("failed", store.filters.onlyFailed);
-    urlParams.set("my-studies", store.filters.onlyMyStudies);
-    urlParams.set("my-semester", store.filters.onlyMySemester);
-  }, [
-    store.searchQuery,
-    store.filters.onlyAlternativeAssessment,
-    store.filters.onlyEarlyAssessment,
-    store.filters.onlyFailed,
-    store.filters.onlyMandatoryOrCompulsoryElective,
-    store.filters.onlyMySemester,
-    store.filters.onlyMyStudies,
-    store.filters.onlyPassed,
-  ]);
 
   const modulesQuery = useLearningPlatformModules();
 
   const currentUserQuery = useLearningPlatformCurrentUser();
 
+  const { semesters } = useSemestersList();
+
+  const flattenedModules = semesters
+    .flatMap((i) => Object.values(i.modules).flat())
+    .filter((i) => i.module != null);
+
   const mandatoryModuleIds = currentUserQuery.data?.me.mandatoryModules ?? [];
 
   const currentSemesterModules =
     modulesQuery.data?.currentSemesterModules?.filter(isDefined) ?? [];
-
-  // type Ding = Parse<"$module.coordinator", LP.ViewerTakenSemesterModule>;
 
   const search = new FuzzySearch(
     currentSemesterModules,
@@ -253,6 +131,20 @@ export const useModulesSearch = (): ModulesSearchProps => {
             i.moduleIdentifier != null
         );
 
+        const allFailed = attemptedModule?.assessments?.every(
+          (i) => getGradeInfo(i.grade).valid && !getGradeInfo(i.grade).passed
+        );
+
+        if (
+          store.filters.onlyNotTaken &&
+          ((!allFailed && (attemptedModule?.assessments?.length ?? 0) > 0) ||
+            currentModule != null ||
+            flattenedModules.some(
+              (j) => j.type === "planned" && j.module?.moduleId === i.module?.id
+            ))
+        )
+          return false;
+
         if (store.filters.onlyMySemester && currentModule == null) return false;
 
         return true;
@@ -263,14 +155,22 @@ export const useModulesSearch = (): ModulesSearchProps => {
     if (value === "all") {
       store.actions.setOnlyMyStudies(false);
       store.actions.setOnlyMySemester(false);
+      store.actions.setOnlyNotTaken(false);
       return;
     } else if (value === "my-studies") {
       store.actions.setOnlyMyStudies(true);
       store.actions.setOnlyMySemester(false);
+      store.actions.setOnlyNotTaken(false);
       return;
     } else if (value === "my-semester") {
       store.actions.setOnlyMyStudies(false);
       store.actions.setOnlyMySemester(true);
+      store.actions.setOnlyNotTaken(false);
+      return;
+    } else if (value === "not-taken") {
+      store.actions.setOnlyMyStudies(false);
+      store.actions.setOnlyMySemester(false);
+      store.actions.setOnlyNotTaken(true);
       return;
     }
     throw new Error(
@@ -278,11 +178,12 @@ export const useModulesSearch = (): ModulesSearchProps => {
         value
     );
   }
-  const modulesTab = store.filters.onlyMyStudies
-    ? "my-studies"
-    : store.filters.onlyMySemester
-    ? "my-semester"
-    : "all";
+  const modulesTab = (() => {
+    if (store.filters.onlyMyStudies) return "my-studies";
+    if (store.filters.onlyMySemester) return "my-semester";
+    if (store.filters.onlyNotTaken) return "not-taken";
+    return "all";
+  })();
 
   const modulesTabContents = currentSemesterModules.filter((i) => {
     const attemptedModule = myPastModules.find(

@@ -79,6 +79,13 @@ export default function ModulesSearch({
       description: "Showing all modules that you passed or failed.",
       emptyText: "You haven't taken any modules yet.",
     },
+    {
+      value: "not-taken",
+      label: "Not taken",
+      title: "Modules that aren't in your study plan yet",
+      description: "Showing all modules that aren't in your study plan yet.",
+      emptyText: "You took every single module lmao",
+    },
   ];
   const activeTab = modulesTabs.find((tab) => tab.value === modulesTab);
 
