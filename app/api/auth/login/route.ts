@@ -43,7 +43,6 @@ export async function POST(req: NextRequest) {
   }`);
 
   const userRepository = AppDataSource.getRepository(User);
-  const studyPlanRepository = AppDataSource.getRepository(StudyPlan);
   const moduleHandbookRepository = AppDataSource.getRepository(ModuleHandbook);
 
   const moduleHandbookLpId =
@@ -73,22 +72,25 @@ export async function POST(req: NextRequest) {
   let newUser: User | null = null;
 
   if (isSignup) {
-    newUser = new User();
+    await AppDataSource.transaction(async (transaction) => {
+      newUser = new User();
 
-    newUser.lpId = learningPlatformUser.me.id;
+      newUser.lpId = learningPlatformUser.me.id;
 
-    const studyPlan = new StudyPlan();
+      const studyPlan = new StudyPlan();
 
-    studyPlan.moduleHandbookId = moduleHandbook.id;
+      studyPlan.moduleHandbookId = moduleHandbook.id;
 
-    const newStudyPlan = await studyPlanRepository.save(studyPlan);
+      const newStudyPlan = await transaction
+        .getRepository(StudyPlan)
+        .save(studyPlan);
 
-    newUser.studyPlanId = newStudyPlan.id;
+      newUser.studyPlanId = newStudyPlan.id;
 
-    await userRepository.save(newUser);
+      await transaction.getRepository(User).save(newUser);
 
-    const myStudiesData = await learningPlatform.raw.query(
-      `query myStudies($filter: ModuleFilter) {
+      const myStudiesData = await learningPlatform.raw.query(
+        `query myStudies($filter: ModuleFilter) {
         myStudies(filter: $filter) {
           ...myStudies
           __typename
@@ -179,61 +181,62 @@ export async function POST(req: NextRequest) {
         avatarUrl
         __typename
       }`
-    );
+      );
 
-    const myPastAssessments = myStudiesData
-      .myStudies!.filter(isDefined)
-      .flatMap((i) => i.assessments?.map((j) => ({ ...j, module: i })) ?? []);
+      const myPastAssessments = myStudiesData
+        .myStudies!.filter(isDefined)
+        .flatMap((i) => i.assessments?.map((j) => ({ ...j, module: i })) ?? []);
 
-    const semestersData = await learningPlatform.raw.query(
-      `query allSemesters($pagination: OffsetPaginationInput) {
+      const semestersData = await learningPlatform.raw.query(
+        `query allSemesters($pagination: OffsetPaginationInput) {
         semesters(pagination: $pagination) {
             id
             name
             startDate
         }
       }`
-    );
+      );
 
-    const allSemesters = (semestersData.semesters ?? []).toReversed();
+      const allSemesters = (semestersData.semesters ?? []).toReversed();
 
-    const indexOfFirstSemesterWithAssessments =
-      myPastAssessments
-        .map((i) => allSemesters.findIndex((j) => j.id === i.semester!.id))
-        .toSorted((a, b) => a - b)[0] ?? 0;
+      const indexOfFirstSemesterWithAssessments =
+        myPastAssessments
+          .map((i) => allSemesters.findIndex((j) => j.id === i.semester!.id))
+          .toSorted((a, b) => a - b)[0] ?? 0;
 
-    const semestersInScope = allSemesters.slice(
-      indexOfFirstSemesterWithAssessments
-    );
+      const semestersInScope = allSemesters.slice(
+        indexOfFirstSemesterWithAssessments
+      );
 
-    const semesterRepository = AppDataSource.getRepository(Semester);
+      const semesterRepository = transaction.getRepository(Semester);
 
-    const numVirtualSemesters = Math.max(0, 10 - semestersInScope.length);
+      const numVirtualSemesters = Math.max(0, 10 - semestersInScope.length);
 
-    const lastExistingSemesterDate = dayjs(
-      semestersInScope[semestersInScope.length - 1]?.startDate ?? new Date()
-    );
+      const lastExistingSemesterDate = dayjs(
+        semestersInScope[semestersInScope.length - 1]?.startDate ?? new Date()
+      );
 
-    for (const semester of semestersInScope) {
-      const newSemester = new Semester();
+      for (const semester of semestersInScope) {
+        const newSemester = new Semester();
 
-      newSemester.lpId = semester.id;
-      newSemester.studyPlanId = newStudyPlan.id;
-      newSemester.startDate = semester.startDate;
+        newSemester.lpId = semester.id;
+        newSemester.studyPlanId = newStudyPlan.id;
+        newSemester.startDate = semester.startDate;
 
-      await semesterRepository.save(newSemester);
-    }
+        await semesterRepository.save(newSemester);
+      }
 
-    for (let i = 0; i < numVirtualSemesters; i++) {
-      const newSemester = new Semester();
+      for (let i = 0; i < numVirtualSemesters; i++) {
+        const newSemester = new Semester();
 
-      newSemester.studyPlanId = newStudyPlan.id;
-      newSemester.startDate = lastExistingSemesterDate
-        .add((i + 1) * 6, "months")
-        .toDate();
+        newSemester.studyPlanId = newStudyPlan.id;
+        newSemester.startDate = lastExistingSemesterDate
+          .add((i + 1) * 6, "months")
+          .toDate();
 
-      await semesterRepository.save(newSemester);
-    }
+        await semesterRepository.save(newSemester);
+      }
+    });
   }
   const studyPlannerUser = (newUser || existingUser)!;
 
