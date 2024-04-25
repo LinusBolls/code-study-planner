@@ -35,30 +35,38 @@ export function useDragDropContext() {
 
     const draggedModule = modules.find((i) => i.id === draggedModuleId);
 
-    const assessment = flattenedModules.find(
+    const existingModules = flattenedModules.filter(
       (i) => i.module.moduleIdentifier === draggedModule?.moduleIdentifier
-    )?.assessment;
+    );
+    const isPlanned = existingModules.some((i) => i.type === "planned");
+
+    const assessments = existingModules.map((i) => i.assessment);
+
+    const alreadyPassed = assessments.find((i) => i?.passed);
+
+    const pending = assessments.find((i) => i?.published === false);
 
     if (draggedModule) {
       startDraggingChats([draggedModule], e.source.droppableId);
 
-      if (
-        assessment &&
-        assessment.passed &&
-        e.source.droppableId === "droppable:modules-list"
-      ) {
-        if (draggedModule.isGraded && assessment.grade) {
+      if (alreadyPassed && e.source.droppableId === "droppable:modules-list") {
+        if (draggedModule.isGraded && alreadyPassed.grade) {
           showInfoMessage(
-            `You already got a ${assessment.grade} in this module, but you can still retake it to level up 🍄`
+            `You already got a ${alreadyPassed.grade} in this module, but you can still retake it to level up 🍄`
           );
         } else {
           showInfoMessage(
             "You already passed this module, there is no need to retake it"
           );
         }
+      } else if (isPlanned) {
+        showInfoMessage("This module is already part of your study plan");
+      } else if (pending) {
+        showInfoMessage(
+          "You already have an upcoming assessment for this module"
+        );
       }
     } else {
-      alert("bruh");
       console.warn(
         "[useDragDropContext.onDragStart] dragged module not found:",
         e.draggableId
