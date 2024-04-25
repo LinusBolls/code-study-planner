@@ -15,7 +15,7 @@ interface ModulesRecord {
 export interface StudyPlan {
   semesters: {
     id: string;
-    lpId: string;
+    lpId: string | null;
     startDate: string;
     modules: ModulesRecord;
   }[];

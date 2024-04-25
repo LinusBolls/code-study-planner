@@ -1,9 +1,9 @@
 import { LP } from "code-university";
 
 export interface Assessment {
-  proposedDate: string;
+  proposedDate: string | null;
   id: string;
-  date: number;
+  date: string;
   published: boolean;
   assessorName: string;
   assessorUrl: string;
@@ -62,7 +62,7 @@ export type SemesterModule = PastModule | PlannedModule;
 
 export interface Semester {
   id: string;
-  lpId: string;
+  lpId: string | null;
   title: string;
   isActive: boolean;
 
