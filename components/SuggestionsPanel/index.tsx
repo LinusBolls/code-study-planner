@@ -21,6 +21,14 @@ export default function SuggestionsPanel({
       }}
     >
       <List
+        locale={{
+          emptyText: (
+            <>
+              Congrats, you&apos;re following all best practices!{" "}
+              <span style={{ color: "black" }}>🎉</span>
+            </>
+          ),
+        }}
         itemLayout="horizontal"
         dataSource={suggestions}
         renderItem={(item) => (
@@ -40,7 +48,7 @@ export default function SuggestionsPanel({
               title={
                 <Flex justify="space-between">
                   <Typography.Text strong>{item.title}</Typography.Text>
-                  {item.fixes?.length && (
+                  {item.fixes?.length === 1 && (
                     <Button
                       type="link"
                       onClick={() => applyFix(item.fixes![0])}
@@ -50,8 +58,32 @@ export default function SuggestionsPanel({
                         lineHeight: "1rem",
                       }}
                     >
-                      Fix
+                      {item.fixes![0].title}
                     </Button>
+                  )}
+                  {(item.fixes?.length ?? 0) > 1 && (
+                    <div
+                      style={{
+                        display: "flex",
+                        gap: "0.5rem",
+                        paddingBottom: "0.5rem",
+                      }}
+                    >
+                      {item.fixes!.map((fix, index) => (
+                        <Button
+                          key={index}
+                          type="link"
+                          onClick={() => applyFix(fix)}
+                          style={{
+                            height: "1rem",
+                            padding: 0,
+                            lineHeight: "1rem",
+                          }}
+                        >
+                          {fix.title}
+                        </Button>
+                      ))}
+                    </div>
                   )}
                 </Flex>
               }

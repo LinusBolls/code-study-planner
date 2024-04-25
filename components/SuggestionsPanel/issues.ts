@@ -25,6 +25,12 @@ export type SuggestionFix =
       title: React.ReactNode;
       moduleId: string;
       module: string;
+    }
+  | {
+      type: "missing_prerequisite";
+      title: React.ReactNode;
+      prerequisite: string;
+      prerequisiteFor: string;
     };
 
 export interface Suggestion {

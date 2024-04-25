@@ -39,8 +39,6 @@ export async function PUT(req: NextRequest) {
   try {
     await connectToDatabase();
 
-    console.time("batch-update");
-
     const semesterIds = Object.keys(body);
 
     const semestersCount = await AppDataSource.getRepository(Semester)
@@ -143,7 +141,6 @@ export async function PUT(req: NextRequest) {
         }
       }
     });
-    console.timeEnd("batch-update");
 
     const res = NextResponse.json({});
 

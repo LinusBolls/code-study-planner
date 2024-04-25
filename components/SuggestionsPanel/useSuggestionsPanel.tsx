@@ -13,9 +13,12 @@ import { getMissingMandatory } from "./getMissingMandatory";
 import React from "react";
 import { Suggestion, SuggestionFix } from "./issues";
 
+const getModuleName = (module?: LP.Module | null | Module) =>
+  module ? module.moduleIdentifier + " " + module.title : "Unknown Module";
+
 const ModuleLink = ({ module }: { module?: LP.Module | null | Module }) => (
   <Link href={getModuleUrl(module?.moduleIdentifier!, module?.shortCode!)}>
-    {module ? module.moduleIdentifier + " " + module.title : "Unknown Module"}
+    {getModuleName(module)}
   </Link>
 );
 
@@ -62,6 +65,17 @@ export function useSuggestions() {
   const suggestions = issues.map<Suggestion>((issue) => {
     if (issue.type === "missing_compulsory_electives") {
       return {
+        fixes: issue.modules.map((module) => {
+          const moduleId = modules.find((i) => i.moduleId === module)?.id!;
+
+          return {
+            type: "missing_compulsory_electives",
+            title: "Take " + fromId(module)?.moduleIdentifier,
+            moduleId,
+            module,
+          };
+        }),
+
         title: "Compulsory elective",
         level: "error",
         description: (
@@ -123,7 +137,10 @@ export function useSuggestions() {
   // to-do: sign up for module / lu
 
   async function applyFix(fix: SuggestionFix) {
-    if (fix.type === "missing_mandatory") {
+    if (
+      fix.type === "missing_mandatory" ||
+      fix.type === "missing_compulsory_electives"
+    ) {
       if (!fix.moduleId || !fix.module) {
         showErrorMessage(
           <>
@@ -149,6 +166,7 @@ export function useSuggestions() {
           Added <ModuleLink module={fromId(fix.module)} /> to your study plan
         </>
       );
+      return;
     }
     throw new Error("[applyFix] received invalid fix.type " + fix.type);
   }
