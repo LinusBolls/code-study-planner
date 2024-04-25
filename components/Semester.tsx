@@ -31,7 +31,7 @@ function SemesterCard({
 
   const isDraggingChats = draggedModules.length > 0;
 
-  const showActions = isHovered && !isDraggingChats && !isPastSemester;
+  const showActions = isHovered && !isDraggingChats;
 
   const totalEcts = Object.values(semester.modules)
     .flat()
@@ -159,7 +159,7 @@ function SemesterCard({
         isDragInProgress={isDraggingChats}
         title="Early Assessments"
         modules={semester.modules.earlyAssessments}
-        showAddItemButton={showActions}
+        showAddItemButton={showActions && !isEarlyDisabled}
         onAddItem={() => {}}
       />
       <ModulesListSection
@@ -179,7 +179,7 @@ function SemesterCard({
         isDragInProgress={isDraggingChats}
         title="Standart Assessments"
         modules={semester.modules.standartAssessments}
-        showAddItemButton={showActions}
+        showAddItemButton={showActions && !isStandartDisabled}
         onAddItem={() => {}}
         disabled={isPastSemester || isStandartDisabled}
       />
@@ -206,7 +206,7 @@ function SemesterCard({
         isDragInProgress={isDraggingChats}
         title="Alternative Assessments"
         modules={semester.modules.alternativeAssessments}
-        showAddItemButton={showActions}
+        showAddItemButton={showActions && !isAlternativeDisabled}
         onAddItem={() => {}}
       />
       <ModulesListSection
@@ -222,7 +222,7 @@ function SemesterCard({
         isDragInProgress={isDraggingChats}
         title="Reassessments"
         modules={semester.modules.reassessments}
-        showAddItemButton={showActions}
+        showAddItemButton={showActions && !isReassessmentDisabled}
         onAddItem={() => {}}
         disabled={isPastSemester || isReassessmentDisabled}
       />
