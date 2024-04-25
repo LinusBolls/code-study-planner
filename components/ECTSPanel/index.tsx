@@ -164,7 +164,8 @@ export default function ECTSPanel({
               module.module != null &&
               !isFailed(module) &&
               module.module.isMandatory &&
-              !module.module.shortCode.startsWith("OS_")
+              !module.module.shortCode.startsWith("OS_") &&
+              module.module.departmentId !== "STS"
           )
           .map(toStep)}
         max={myModuleData?.mandatory.totalECTSNeeded ?? 0}
