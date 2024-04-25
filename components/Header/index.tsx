@@ -1,21 +1,14 @@
-import {
-  PoweroffOutlined,
-  SettingOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
+import { PoweroffOutlined } from "@ant-design/icons";
 import { Avatar, Button, Dropdown, Layout, Typography } from "antd";
-import Link from "antd/es/typography/Link";
 
 export interface HeaderProps {
   isLoading?: boolean;
-  username?: string | null;
-  avatarUrl?: string | null;
+  user?: {
+    username: string;
+    avatarUrl: string;
+  } | null;
 }
-export default function Header({
-  isLoading = false,
-  username,
-  avatarUrl,
-}: HeaderProps) {
+export default function Header({ isLoading = false, user }: HeaderProps) {
   return (
     <Layout.Header
       style={{
@@ -30,7 +23,7 @@ export default function Header({
         zIndex: 1,
       }}
     >
-      {!isLoading && (
+      {!isLoading && user && (
         <Dropdown
           menu={{
             items: [
@@ -77,7 +70,7 @@ export default function Header({
             }}
           >
             <Avatar
-              src={avatarUrl}
+              src={user?.avatarUrl}
               style={{
                 marginRight: "0.5rem",
               }}
@@ -88,7 +81,7 @@ export default function Header({
                 lineHeight: "4rem",
               }}
             >
-              {username}
+              {user?.username}
             </Typography.Text>
           </Button>
         </Dropdown>
