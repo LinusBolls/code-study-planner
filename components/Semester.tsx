@@ -5,6 +5,9 @@ import { memo, useState } from "react";
 import { Droppable } from "@hello-pangea/dnd";
 import { getRelativeSemesterTime } from "@/services/learningPlatform/mapping";
 
+// feature flag
+const ADD_ITEM_BUTTON = false;
+
 export interface SemesterProps {
   semester: Semester;
   offsetToCurrentSemester?: number;
@@ -31,7 +34,7 @@ function SemesterCard({
 
   const isDraggingChats = draggedModules.length > 0;
 
-  const showActions = isHovered && !isDraggingChats;
+  const showActions = ADD_ITEM_BUTTON && isHovered && !isDraggingChats;
 
   const totalEcts = Object.values(semester.modules)
     .flat()

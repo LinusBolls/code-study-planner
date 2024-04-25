@@ -34,19 +34,19 @@ export default function Header({
         <Dropdown
           menu={{
             items: [
-              {
-                key: "1",
-                label: <Link href="/profile">Profile</Link>,
-                icon: <UserOutlined />,
-              },
-              {
-                key: "2",
-                label: <Link href="/settings">Settings</Link>,
-                icon: <SettingOutlined />,
-              },
-              {
-                type: "divider",
-              },
+              // {
+              //   key: "1",
+              //   label: <Link href="/profile">Profile</Link>,
+              //   icon: <UserOutlined />,
+              // },
+              // {
+              //   key: "2",
+              //   label: <Link href="/settings">Settings</Link>,
+              //   icon: <SettingOutlined />,
+              // },
+              // {
+              //   type: "divider",
+              // },
               {
                 key: "3",
                 label: (
