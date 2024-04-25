@@ -152,12 +152,10 @@ export function useSemestersList(): SemestersListProps {
 
   return {
     semesters,
-    semestersQuery: {
-      isLoading:
-        isLoading ||
-        assessmentTableQuery.isLoading ||
-        studyPlan.isLoading ||
-        semestersQuery.isLoading,
-    },
+    isLoading:
+      isLoading ||
+      assessmentTableQuery.isLoading ||
+      studyPlan.isLoading ||
+      semestersQuery.isLoading,
   };
 }

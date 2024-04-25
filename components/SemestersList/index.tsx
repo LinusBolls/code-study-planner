@@ -7,17 +7,15 @@ import { useRef } from "react";
 import { useChatSelection } from "@/components/util/useChatSelection";
 
 export interface SemestersListProps {
-  semestersQuery: {
-    isLoading: boolean;
-  };
+  isLoading?: boolean;
+
   semesters: Semester[];
 
   isZoomedOut?: boolean;
 }
 export default function SemestersList({
-  semestersQuery,
   semesters,
-
+  isLoading = false,
   isZoomedOut = false,
 }: SemestersListProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -70,7 +68,7 @@ export default function SemestersList({
               : {}),
           }}
         >
-          {semestersQuery.isLoading && <SemestersListSkeletonLoader />}
+          {isLoading && <SemestersListSkeletonLoader />}
           {Object.values(semesters).map((semester, idx) => (
             <SemesterCard
               key={semester.id}

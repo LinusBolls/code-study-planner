@@ -5,11 +5,12 @@ import { getGradeInfo } from "@/services/learningPlatform/util/getGradeInfo";
 import { getBachelorsGrade } from "@/services/learningPlatform/util/getBachelorsGrade";
 import { useModulesInScope } from "../util/useModulesInScope";
 import dayjs from "dayjs";
+import { useLearningPlatformMyModuleData } from "@/services/learningPlatform/hooks/useLearningPlatformMyModuleData";
 
 export function useECTSPanel(): ECTSPanelProps {
-  const { semesters } = useSemestersList();
+  const semestersListQuery = useSemestersList();
 
-  const modulesTakenByUser = semesters
+  const modulesTakenByUser = semestersListQuery.semesters
     .flatMap((i) => Object.values(i.modules).flat())
     .toSorted(
       (a, b) =>
@@ -17,7 +18,9 @@ export function useECTSPanel(): ECTSPanelProps {
         (dayjs(b.assessment?.proposedDate).unix() || 0)
     );
 
-  const { modules } = useModulesInScope();
+  const modulesInScopeQuery = useModulesInScope();
+
+  const myModuleDataQuery = useLearningPlatformMyModuleData();
 
   const assessmentTableQuery = useLearningPlatformAssessmentTable();
 
@@ -28,7 +31,9 @@ export function useECTSPanel(): ECTSPanelProps {
   >((acc, i) => {
     const existing = acc[i.semesterModule!.moduleIdentifier!];
 
-    const assessedModule = modules.find((j) => j.id === i.semesterModule!.id);
+    const assessedModule = modulesInScopeQuery.modules.find(
+      (j) => j.id === i.semesterModule!.id
+    );
 
     if (!assessedModule) {
       console.warn(
@@ -55,7 +60,12 @@ export function useECTSPanel(): ECTSPanelProps {
   const averageGrade = getBachelorsGrade(Object.values(gradeInputModules));
 
   return {
+    myModuleData: myModuleDataQuery.data?.myModuleData,
     modules: modulesTakenByUser,
     averageGrade,
+    isLoading:
+      semestersListQuery.isLoading ||
+      myModuleDataQuery.isLoading ||
+      modulesInScopeQuery.isLoading,
   };
 }

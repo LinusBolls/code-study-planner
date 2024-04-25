@@ -3,6 +3,7 @@ import ECTSProgress, { ECTSProgressStep } from "../ECTSProgress";
 import { SemesterModule } from "@/components/util/types";
 import { getDepartment } from "@/data/departments";
 import Link from "antd/es/typography/Link";
+import { LP } from "code-university";
 
 const isFailed = (module: SemesterModule) => {
   return (
@@ -31,10 +32,34 @@ const toStep = (module: SemesterModule): ECTSProgressStep => {
 };
 
 export interface ECTSPanelProps {
+  myModuleData?: LP.MyStudyData | null;
   modules: SemesterModule[];
   averageGrade: number;
+  isLoading?: boolean;
 }
-export default function ECTSPanel({ modules, averageGrade }: ECTSPanelProps) {
+export default function ECTSPanel({
+  myModuleData,
+  modules,
+  averageGrade,
+  isLoading = false,
+}: ECTSPanelProps) {
+  if (isLoading)
+    return (
+      <Flex
+        vertical
+        gap="middle"
+        style={{
+          maxWidth: "32rem",
+          height: "calc(100vh - 10rem)",
+          padding: "1rem 1.5rem 1rem 1.5rem",
+          overflowY: "scroll",
+        }}
+        align="center"
+      >
+        <Typography style={{ paddingTop: "5rem" }}>Loading...</Typography>
+      </Flex>
+    );
+
   const totalEcts = modules.reduce(
     (acc, module) =>
       module.module != null && !isFailed(module)
@@ -129,7 +154,7 @@ export default function ECTSPanel({ modules, averageGrade }: ECTSPanelProps) {
               module.module.shortCode.startsWith("OS_")
           )
           .map(toStep)}
-        max={24}
+        max={myModuleData?.orientation.totalECTSNeeded ?? 0}
       />
       <ECTSProgress
         title="Mandatory Modules"
@@ -142,7 +167,7 @@ export default function ECTSPanel({ modules, averageGrade }: ECTSPanelProps) {
               !module.module.shortCode.startsWith("OS_")
           )
           .map(toStep)}
-        max={40}
+        max={myModuleData?.mandatory.totalECTSNeeded ?? 0}
       />
       <ECTSProgress
         title="Compulsory Elective Modules"
@@ -154,7 +179,7 @@ export default function ECTSPanel({ modules, averageGrade }: ECTSPanelProps) {
               module.module.isCompulsoryElective
           )
           .map(toStep)}
-        max={10}
+        max={myModuleData?.compulsoryElective.totalECTSNeeded ?? 0}
       />
       <ECTSProgress
         title="Elective Modules"
@@ -166,7 +191,7 @@ export default function ECTSPanel({ modules, averageGrade }: ECTSPanelProps) {
               !(module.module.isMandatory || module.module.isCompulsoryElective)
           )
           .map(toStep)}
-        max={50}
+        max={myModuleData?.elective.totalECTSNeeded ?? 0}
       />
       <ECTSProgress
         title="Mandatory STS Modules"
@@ -180,10 +205,18 @@ export default function ECTSPanel({ modules, averageGrade }: ECTSPanelProps) {
               module.module.departmentId === "STS"
           )
           .map(toStep)}
-        max={26}
+        max={myModuleData?.sts.totalECTSNeeded ?? 0}
       />
-      <ECTSProgress title="Thesis" steps={[]} max={15} />
-      <ECTSProgress title="Capstone Project" steps={[]} max={15} />
+      <ECTSProgress
+        title="Thesis"
+        steps={[]}
+        max={myModuleData?.thesis.totalECTSNeeded ?? 0}
+      />
+      <ECTSProgress
+        title="Capstone Project"
+        steps={[]}
+        max={myModuleData?.capstone.totalECTSNeeded ?? 0}
+      />
       <Divider />
       <Statistic
         title="Average grade based on your modules"
@@ -196,9 +229,14 @@ export default function ECTSPanel({ modules, averageGrade }: ECTSPanelProps) {
           href="https://www.notion.so/codeuniversitywiki/Determination-of-Final-Grade-8e0be16695934a44bf3ba0a4c4c0bedd"
           target="_blank"
         >
-          make up around half of your final bachelor&apos;s grade
+          make up around half of your final bachelor&apos;s grade, because they
+          get weighted three times their ECTS value
         </Link>
         .
+      </Typography>
+      <Typography>
+        Pass / Fail modules don&apos;t get counted towards your bachelor&apos;s
+        grade at all.
       </Typography>
     </Flex>
   );
