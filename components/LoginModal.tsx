@@ -10,12 +10,17 @@ import {
 } from "antd";
 import Link from "next/link";
 import { useState } from "react";
+import { useMessages } from "./util/useMessages";
 
 export interface LoginModalProps {
-  onSubmit: (token: string) => void;
+  onSubmit: (token: string) => Promise<void>;
 }
 export default function LoginModal({ onSubmit }: LoginModalProps) {
   const [token, setToken] = useState("");
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const { showErrorMessage } = useMessages();
 
   return (
     <Modal
@@ -26,16 +31,27 @@ export default function LoginModal({ onSubmit }: LoginModalProps) {
       width="42rem"
     >
       <form
-        onSubmit={(e) => {
-          e.preventDefault();
+        onSubmit={async (e) => {
+          try {
+            e.preventDefault();
 
-          onSubmit(token);
+            setIsLoading(true);
+
+            await onSubmit(token.replace(/\s/g, ""));
+
+            setIsLoading(false);
+          } catch (err) {
+            showErrorMessage(
+              "Login failed: " + (err as Error).message ?? "Unknown Error"
+            );
+          }
         }}
       >
         <Typography.Title level={2}>Welcome to Study Planner</Typography.Title>
         Thank you for using Study Planner! We just need one thing from you:
         <Flex vertical gap="medium">
           <Input
+            disabled={isLoading}
             type="password"
             placeholder="Your access token for the CODE Learning Platform"
             style={{ marginTop: "1rem" }}
@@ -44,7 +60,7 @@ export default function LoginModal({ onSubmit }: LoginModalProps) {
             onChange={(e) => setToken(e.target.value)}
           />
           <Flex justify="end">
-            <Button type="primary" htmlType="submit">
+            <Button type="primary" htmlType="submit" loading={isLoading}>
               Submit
             </Button>
           </Flex>
