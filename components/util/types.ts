@@ -12,6 +12,8 @@ export interface Assessment {
   passed: boolean;
   url: string;
 }
+// i hate enums i hate enums i hate enums
+export type ModuleFrequency = `${LP.ModuleFrequency}`;
 
 export interface Module {
   /** the id of the corresponding SemesterModule on the learning platform api */
@@ -35,7 +37,7 @@ export interface Module {
   allowEarlyAssessment: boolean;
   allowAlternativeAssessment: boolean;
   isGraded: boolean;
-  frequency: LP.ModuleFrequency;
+  frequency: ModuleFrequency;
   prerequisites: string[];
   prerequisiteFor: string[];
 }

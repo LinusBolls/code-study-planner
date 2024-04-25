@@ -83,7 +83,7 @@ describe("ModulesSearch", () => {
               allowAlternativeAssessment: true,
               isGraded: true,
 
-              frequency: "every_semester" as any,
+              frequency: "EVERY_SEMESTER",
               prerequisites: [],
               prerequisiteFor: [],
             },

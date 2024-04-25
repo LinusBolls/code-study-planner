@@ -57,7 +57,7 @@ export function useSuggestions() {
     modules,
     mandatoryModuleIds,
     compulsoryElectivePairings
-  ).concat(getMissingPrerequisites(semesters));
+  ).concat(getMissingPrerequisites(semesters, modules));
 
   const fromId = (moduleId: string) =>
     modules.find((i) => i.moduleId === moduleId);

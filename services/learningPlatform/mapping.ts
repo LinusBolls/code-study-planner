@@ -28,7 +28,7 @@ export const toModule =
       departmentId: i.module?.department?.abbreviation!,
 
       allowEarlyAssessment:
-        i.module?.semesterModules[0]?.allowsEarlyAssessment!,
+        i.module?.semesterModules[0]?.allowsEarlyAssessment ?? false,
       allowAlternativeAssessment:
         !i.module?.semesterModules[0]?.disabledAlternativeAssessment,
       isGraded: i.module?.graded ?? false,

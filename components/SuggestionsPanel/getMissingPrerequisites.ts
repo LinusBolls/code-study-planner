@@ -1,8 +1,14 @@
 import { getGradeInfo } from "@/services/learningPlatform/util/getGradeInfo";
-import { Semester, SemesterModule } from "../util/types";
+import { Module, Semester, SemesterModule } from "../util/types";
 import { Issue } from "./issues";
 
-export const getMissingPrerequisites = (semesters: Semester[]) => {
+// for leonard darsow (pm sixthsense), some modules are flagged as having os_04 as a prerequisite, but that doesn't seem to actually be the case
+const OS_04_ID = "ckowsvvgt60710wl30sp7zbrf";
+
+export const getMissingPrerequisites = (
+  semesters: Semester[],
+  modules: Module[]
+) => {
   let coords: {
     module: SemesterModule;
     semesterId: string;
@@ -27,8 +33,14 @@ export const getMissingPrerequisites = (semesters: Semester[]) => {
   for (const coord of coords) {
     const missingPrerequisiteIds =
       coord.module.module?.prerequisites.filter((id) => {
+        const thisModule = modules.find((i) => i.moduleId === id);
+
+        if (id === OS_04_ID) return false;
+
         const prerequisites = coords.filter(
-          (j) => j.module.module?.moduleId === id
+          (j) =>
+            // we can't directly compare module ids here, otherwise os_05 and os_05_v2 would not be considered equivalent
+            j.module.module?.moduleIdentifier === thisModule?.moduleIdentifier
         );
 
         return (
