@@ -1,7 +1,18 @@
 import { getGradeInfo } from "@/services/learningPlatform/util/getGradeInfo";
 import { Module, Semester } from "../util/types";
-import { CompulsoryElectivePairing } from "@/backend/entities/compulsoryElectivePairing.entity";
 import { Issue } from "./issues";
+
+export interface CompulsoryElectivePairing {
+  id: string;
+  moduleHandbookId: string;
+  modules: {
+    id: string;
+    lpId: string;
+    proficiency: number;
+    possiblyOutdated: boolean;
+    moduleIdentifier: string;
+  }[];
+}
 
 export function getMissingMandatory(
   semesters: Semester[],
