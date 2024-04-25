@@ -11,6 +11,7 @@ import { useSemestersList } from "@/components/SemestersList/useSemestersList";
 import Header from "@/components/Header";
 import withProviders from "@/components/withProviders";
 import { useDragDropContext } from "./util/useDragDropContext";
+import useHeader from "./Header/useHeader";
 
 function HomePage() {
   const { signInWithAccessToken, isAuthenticated } = useLearningPlatform();
@@ -40,7 +41,7 @@ function HomePage() {
     <>
       {!isAuthenticated && <LoginModal onSubmit={signIn} />}
       <Layout className="h-screen">
-        <Header />
+        <Header {...useHeader()} />
         <Layout.Content className="h-full">
           <DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
             <div className="bg-white w-full h-full flex">

@@ -6,8 +6,16 @@ import {
 import { Avatar, Button, Dropdown, Layout, Typography } from "antd";
 import Link from "antd/es/typography/Link";
 
-export interface HeaderProps {}
-export default function Header({}: HeaderProps) {
+export interface HeaderProps {
+  isLoading?: boolean;
+  username?: string | null;
+  avatarUrl?: string | null;
+}
+export default function Header({
+  isLoading = false,
+  username,
+  avatarUrl,
+}: HeaderProps) {
   return (
     <Layout.Header
       style={{
@@ -22,67 +30,69 @@ export default function Header({}: HeaderProps) {
         zIndex: 1,
       }}
     >
-      <Dropdown
-        menu={{
-          items: [
-            {
-              key: "1",
-              label: <Link href="/profile">Profile</Link>,
-              icon: <UserOutlined />,
-            },
-            {
-              key: "2",
-              label: <Link href="/settings">Settings</Link>,
-              icon: <SettingOutlined />,
-            },
-            {
-              type: "divider",
-            },
-            {
-              key: "3",
-              label: (
-                <Button
-                  type="link"
-                  onClick={() => {
-                    localStorage.removeItem("learning-platform:session");
-                    localStorage.removeItem("study-planner:session");
+      {!isLoading && (
+        <Dropdown
+          menu={{
+            items: [
+              {
+                key: "1",
+                label: <Link href="/profile">Profile</Link>,
+                icon: <UserOutlined />,
+              },
+              {
+                key: "2",
+                label: <Link href="/settings">Settings</Link>,
+                icon: <SettingOutlined />,
+              },
+              {
+                type: "divider",
+              },
+              {
+                key: "3",
+                label: (
+                  <Button
+                    type="link"
+                    onClick={() => {
+                      localStorage.removeItem("learning-platform:session");
+                      localStorage.removeItem("study-planner:session");
 
-                    location.reload();
-                  }}
-                >
-                  Logout
-                </Button>
-              ),
-              icon: <PoweroffOutlined />,
-            },
-          ],
-        }}
-      >
-        <Button
-          type="text"
-          style={{
-            height: "100%",
-            padding: "0 0.5rem",
-
-            borderRadius: 0,
+                      location.reload();
+                    }}
+                  >
+                    Logout
+                  </Button>
+                ),
+                icon: <PoweroffOutlined />,
+              },
+            ],
           }}
         >
-          <Avatar
-            src="https://prod-code-uploads.s3.eu-central-1.amazonaws.com/Avatar/cksn66uwl47500wlcrpg94tok/2021-8-23/58779762-f89f-4885-96fe-2a0bb1d0a4c3--IMG_1518.png"
+          <Button
+            type="text"
             style={{
-              marginRight: "0.5rem",
-            }}
-          />
-          <Typography.Text
-            style={{
-              fontSize: "1rem",
-              lineHeight: "4rem",
+              height: "100%",
+              padding: "0 0.5rem",
+
+              borderRadius: 0,
             }}
           >
-            Linus Bolls
-          </Typography.Text>
-        </Button>
-      </Dropdown>
+            <Avatar
+              src={avatarUrl}
+              style={{
+                marginRight: "0.5rem",
+              }}
+            />
+            <Typography.Text
+              style={{
+                fontSize: "1rem",
+                lineHeight: "4rem",
+              }}
+            >
+              {username}
+            </Typography.Text>
+          </Button>
+        </Dropdown>
+      )}
     </Layout.Header>
   );
 }
