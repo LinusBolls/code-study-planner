@@ -1,3 +1,4 @@
+import { clearCache } from "@/services/caching";
 import { PoweroffOutlined } from "@ant-design/icons";
 import { Avatar, Button, Dropdown, Layout, Typography } from "antd";
 
@@ -48,6 +49,8 @@ export default function Header({ isLoading = false, user }: HeaderProps) {
                     onClick={() => {
                       localStorage.removeItem("learning-platform:session");
                       localStorage.removeItem("study-planner:session");
+
+                      clearCache();
 
                       location.reload();
                     }}

@@ -17,3 +17,12 @@ export const readFromCache = (queryKey: string[]) => {
     localStorage.getItem("cache:" + queryKey.join("-")) ?? "null"
   );
 };
+export const clearCache = () => {
+  const keys = Object.keys(localStorage);
+
+  for (const key of keys) {
+    if (key.startsWith("cache:")) {
+      localStorage.removeItem(key);
+    }
+  }
+};
