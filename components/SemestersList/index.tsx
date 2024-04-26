@@ -3,7 +3,7 @@ import { Panel } from "react-resizable-panels";
 import SemestersListSkeletonLoader from "./SemestersListSkeletonLoader";
 import { Semester } from "@/components/util/types";
 import SemesterCard from "../Semester";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useChatSelection } from "@/components/util/useChatSelection";
 
 export interface SemestersListProps {
@@ -34,6 +34,25 @@ export default function SemestersList({
   } = useChatSelection();
 
   const activeSemesterIdx = semesters.findIndex((i) => i.isActive);
+
+  useEffect(() => {
+    if (
+      !isLoading &&
+      childRef.current &&
+      containerRef.current &&
+      activeSemesterIdx !== -1
+    ) {
+      const currentSemester = childRef.current.children[activeSemesterIdx] as
+        | HTMLElement
+        | undefined;
+
+      const listPadding = 24;
+
+      const scrollX = (currentSemester?.offsetLeft ?? 0) - listPadding;
+
+      containerRef.current.scrollBy(scrollX, 0);
+    }
+  }, [isLoading, activeSemesterIdx]);
 
   return (
     <Panel>
