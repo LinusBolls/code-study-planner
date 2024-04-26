@@ -180,7 +180,7 @@ function SemesterCard({
         onMouseLeave={() => setHoveredInboxId(null)}
         isHovered={hoveredSection === "standartAssessments"}
         isDragInProgress={isDraggingChats}
-        title="Standart Assessments"
+        title="Standard Assessments"
         modules={semester.modules.standartAssessments}
         showAddItemButton={showActions && !isStandartDisabled}
         onAddItem={() => {}}

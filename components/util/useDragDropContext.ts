@@ -49,14 +49,27 @@ export function useDragDropContext() {
     if (draggedModule) {
       startDraggingChats([draggedModule], e.source.droppableId);
 
+      const canGradeBeImproved = alreadyPassed
+        ? (alreadyPassed.grade ?? 0) < 4
+        : false;
+
       if (alreadyPassed && e.source.droppableId === "droppable:modules-list") {
         if (draggedModule.isGraded && alreadyPassed.grade) {
-          showInfoMessage(
-            `You already got a ${alreadyPassed.grade} in this module, but you can still retake it to level up 🍄`
-          );
+          // transform e.g. 4 to 4.0
+          const grade = alreadyPassed.grade.toFixed(1);
+
+          if (canGradeBeImproved) {
+            showInfoMessage(
+              `You already got a ${grade} in this module, but you can retake it to level up 🍄`
+            );
+          } else {
+            showInfoMessage(
+              `You already got a ✨ perfect grade ✨ in this module, there is no need to retake it 🎉`
+            );
+          }
         } else {
           showInfoMessage(
-            "You already passed this module, there is no need to retake it"
+            "You already passed this module, there is no need to retake it 🎉"
           );
         }
       } else if (isPlanned) {

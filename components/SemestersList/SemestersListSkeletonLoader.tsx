@@ -31,7 +31,7 @@ export default function SemestersListSkeletonLoader() {
       <ModulesListSection
         disabled={true}
         droppableId="dummy"
-        title="Standart Assessments"
+        title="Standard Assessments"
         modules={[1, 2, 3, 4].map((_, idx) => ({
           id: "dummy:" + idx,
           type: "planned",
