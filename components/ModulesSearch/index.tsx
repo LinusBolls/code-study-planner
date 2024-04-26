@@ -110,13 +110,18 @@ export default function ModulesSearch({
             value={searchQuery}
             onChange={(value) => onSearchQueryChange?.(value)}
             allowClear
-            options={getOptions([
-              "se 10 ects",
-              "fatma meawad",
-              "requires project",
-              "mandatory",
-              "level 0",
-            ])}
+            options={[
+              {
+                label: "Some things you could search for",
+                options: getOptions([
+                  "se 10 ects",
+                  "fatma meawad",
+                  "requires project",
+                  "mandatory",
+                  "level 0",
+                ]),
+              },
+            ]}
           />
           <Checkbox
             checked={onlyMandaryOrCompulsoryElective}
