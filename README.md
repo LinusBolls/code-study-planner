@@ -41,3 +41,14 @@ npm run dev
 ## contributing
 
 study planner is open to PRs, issues, and general feedback!
+
+## technical details
+
+![study planner database schema](docs/study-planner-schema.png)
+
+## use cases
+
+- create your study plan by signing in with your access token
+- drag and drop modules into your study plan
+- preview your study progress and bachelor's grade
+- get suggestions for your study plan
