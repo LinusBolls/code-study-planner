@@ -16,5 +16,9 @@ const config: Config = {
     },
   },
   plugins: [],
+  corePlugins: {
+    /** prevent tailwind from breaking some ant design styles: https://stackoverflow.com/a/74229003/13385003 */
+    preflight: false,
+  },
 };
 export default config;
