@@ -18,6 +18,10 @@ export type ModuleFrequency = `${LP.ModuleFrequency}`;
 export interface Module {
   /** the id of the corresponding SemesterModule on the learning platform api */
   id: string;
+  /** directly linked to the yellow "Retired" chip in the modules list on the LP */
+  retired: boolean;
+  /** directly linked to the gray "Not offered this semester" chip in the modules list on the LP */
+  allowsRegistration: boolean;
   /** e.g. "SE_19" */
   moduleIdentifier: string;
   /** the id of the corresponding Module on the learning platform api */

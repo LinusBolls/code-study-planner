@@ -331,6 +331,31 @@ function InnerModulesListItem({
                     </span>
                   </Tooltip>
                 )}
+                {module.retired && (
+                  <Tooltip title="Retired">
+                    <span
+                      title="Retired"
+                      style={{
+                        width: "fit-content",
+                        padding: "0 0.25rem",
+                        margin: 0,
+
+                        border: "none",
+                        background: "#FFE58F",
+                        color: "#775c00",
+
+                        fontSize: "0.625rem",
+                        lineHeight: "0.875rem",
+                        height: "0.875rem",
+                        fontWeight: "bold",
+
+                        borderRadius: "0.125rem",
+                      }}
+                    >
+                      R
+                    </span>
+                  </Tooltip>
+                )}
               </Flex>
             </Flex>
           </Flex>

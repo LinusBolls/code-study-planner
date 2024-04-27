@@ -11,8 +11,11 @@ export const toModule =
     const isCompulsoryElective = mandatoryModuleIds.includes(
       moduleId + "|COMPULSORY_ELECTIVE"
     );
+
     return {
       id: i.id,
+      retired: i.module?.retired ?? false,
+      allowsRegistration: i.allowsRegistration ?? false,
       moduleIdentifier: i.moduleIdentifier!,
       moduleId,
       title: i.module?.title!,
