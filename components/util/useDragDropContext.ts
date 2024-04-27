@@ -53,31 +53,36 @@ export function useDragDropContext() {
         ? (alreadyPassed.grade ?? 0) < 4
         : false;
 
-      if (alreadyPassed && e.source.droppableId === "droppable:modules-list") {
-        if (draggedModule.isGraded && alreadyPassed.grade) {
-          // transform e.g. 4 to 4.0
-          const grade = alreadyPassed.grade.toFixed(1);
+      const isDraggingFromModulesList =
+        e.source.droppableId === "droppable:modules-list";
 
-          if (canGradeBeImproved) {
-            showInfoMessage(
-              `You already got a ${grade} in this module, but you can retake it to level up 🍄`
-            );
+      if (isDraggingFromModulesList) {
+        if (alreadyPassed) {
+          if (draggedModule.isGraded && alreadyPassed.grade) {
+            // transform e.g. 4 to 4.0
+            const grade = alreadyPassed.grade.toFixed(1);
+
+            if (canGradeBeImproved) {
+              showInfoMessage(
+                `You already got a ${grade} in this module, but you can retake it to level up 🍄`
+              );
+            } else {
+              showInfoMessage(
+                `You already got a ✨ perfect grade ✨ in this module, there is no need to retake it 🎉`
+              );
+            }
           } else {
             showInfoMessage(
-              `You already got a ✨ perfect grade ✨ in this module, there is no need to retake it 🎉`
+              "You already passed this module, there is no need to retake it 🎉"
             );
           }
-        } else {
+        } else if (isPlanned) {
+          showInfoMessage("This module is already part of your study plan");
+        } else if (pending) {
           showInfoMessage(
-            "You already passed this module, there is no need to retake it 🎉"
+            "You already have an upcoming assessment for this module"
           );
         }
-      } else if (isPlanned) {
-        showInfoMessage("This module is already part of your study plan");
-      } else if (pending) {
-        showInfoMessage(
-          "You already have an upcoming assessment for this module"
-        );
       }
     } else {
       console.warn(
