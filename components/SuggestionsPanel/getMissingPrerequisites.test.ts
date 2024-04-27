@@ -37,6 +37,8 @@ describe("getMissingPrerequisites", () => {
               },
               module: {
                 id: "ckrgjnzsm58120vl0u6kb5aea",
+                retired: false,
+                allowsRegistration: true,
                 moduleIdentifier: "OS_05",
                 moduleId: "ckowt0zfm968411mdzdly7jmk",
                 title: "Basic Methods of Project-Based Learning",
@@ -193,6 +195,8 @@ describe("getMissingPrerequisites", () => {
               },
               module: {
                 id: "ckrg9q0yr47800vjlmbwng8xq",
+                retired: false,
+                allowsRegistration: true,
                 moduleIdentifier: "OS_04",
                 moduleId: "ckowsvvgt60710wl30sp7zbrf",
                 title: "Introduction to Interpersonal Skills",
@@ -349,6 +353,8 @@ describe("getMissingPrerequisites", () => {
               },
               module: {
                 id: "ckpdehqsb2257pmv8rsigo8us",
+                retired: false,
+                allowsRegistration: true,
                 moduleIdentifier: "OS_03",
                 moduleId: "ckowstiva162360wmdk06yq73h",
                 title: "Introduction to Product Management",
@@ -505,6 +511,8 @@ describe("getMissingPrerequisites", () => {
               },
               module: {
                 id: "ckpdehqnf2231pmv8dzavt6v8",
+                retired: false,
+                allowsRegistration: true,
                 moduleIdentifier: "OS_02",
                 moduleId: "ckowsrimj272970vmlb2r6hm4q",
                 title: "Introduction to Interaction Design",
@@ -661,6 +669,8 @@ describe("getMissingPrerequisites", () => {
               },
               module: {
                 id: "ckpdehqj32204pmv8haj4vqxv",
+                retired: false,
+                allowsRegistration: true,
                 moduleIdentifier: "OS_01",
                 moduleId: "ckowsjos9158660vl99wfd8hkd",
                 title: "Introduction to Software Engineering",
@@ -852,6 +862,8 @@ describe("getMissingPrerequisites", () => {
               },
               module: {
                 id: "cl4pomtx403620wmjaykb4wtb",
+                retired: false,
+                allowsRegistration: true,
                 moduleIdentifier: "OS_04",
                 moduleId: "ckowsvvgt60710wl30sp7zbrf",
                 title: "Introduction to Interpersonal Skills",
@@ -1026,6 +1038,8 @@ describe("getMissingPrerequisites", () => {
               },
               module: {
                 id: "clbf42r5l1057tct851zuqfcu",
+                retired: false,
+                allowsRegistration: true,
                 moduleIdentifier: "SE_08",
                 moduleId: "ckowxm9rp141420vmjkbfhwgld",
                 title: "Clean Code",
@@ -1072,6 +1086,8 @@ describe("getMissingPrerequisites", () => {
               },
               module: {
                 id: "clbf43g5i3728tct8z3jzmnat",
+                retired: false,
+                allowsRegistration: true,
                 moduleIdentifier: "SE_01",
                 moduleId: "ckox10ddy42870wl2i71msew3",
                 title: "Software Development Basics",
@@ -1118,6 +1134,8 @@ describe("getMissingPrerequisites", () => {
               },
               module: {
                 id: "clcz02j6p57540vmj8rh1c6s8",
+                retired: false,
+                allowsRegistration: true,
                 moduleIdentifier: "ID_16",
                 moduleId: "ckoxyf1uc01220vmhguc9kv2j",
                 title: "Navigation Design",
@@ -1164,6 +1182,8 @@ describe("getMissingPrerequisites", () => {
               },
               module: {
                 id: "clbf43e8y3521tct8m1gnxpr9",
+                retired: false,
+                allowsRegistration: true,
                 moduleIdentifier: "SE_03",
                 moduleId: "ckox12mt766510wl2v1dsa79b",
                 title: "Concepts of Programming Languages",
@@ -1210,6 +1230,8 @@ describe("getMissingPrerequisites", () => {
               },
               module: {
                 id: "clcyjgzd6138120wmjlohe6kr9",
+                retired: false,
+                allowsRegistration: true,
                 moduleIdentifier: "SE_22",
                 moduleId: "ckowzmb5s12350vl1hvesy4n2",
                 title: "Web Backend Technologies",
@@ -1256,6 +1278,8 @@ describe("getMissingPrerequisites", () => {
               },
               module: {
                 id: "clcyjg1qr18580wmjp32hl4ug",
+                retired: false,
+                allowsRegistration: true,
                 moduleIdentifier: "SE_20",
                 moduleId: "ckowzguhd03520vl1189y1hy7",
                 title: "Web Frontend Technologies",
@@ -1302,6 +1326,8 @@ describe("getMissingPrerequisites", () => {
               },
               module: {
                 id: "clcyjf5f103240vl7mntyxpqf",
+                retired: false,
+                allowsRegistration: true,
                 moduleIdentifier: "SE_19",
                 moduleId: "ckowza4ey10600wmmnzx2szpu",
                 title: "Web Technologies Basics",
@@ -1348,6 +1374,8 @@ describe("getMissingPrerequisites", () => {
               },
               module: {
                 id: "clcu7xnov194490wjw3sq20k08",
+                retired: false,
+                allowsRegistration: true,
                 moduleIdentifier: "SE_21",
                 moduleId: "ckowzkdn412780wmi0sv892zd",
                 title: "Mobile App Development",
@@ -1412,6 +1440,8 @@ describe("getMissingPrerequisites", () => {
               },
               module: {
                 id: "cljikxx3u0764bft8ltym9g59",
+                retired: false,
+                allowsRegistration: true,
                 moduleIdentifier: "IS_01",
                 moduleId: "ckoxyrclq08150vi8cz147m0f",
                 title: "Teamwork and Collaboration",
@@ -1458,6 +1488,8 @@ describe("getMissingPrerequisites", () => {
               },
               module: {
                 id: "clk8sjmuc070713mcatxr8hv3",
+                retired: false,
+                allowsRegistration: true,
                 moduleIdentifier: "PM_08",
                 moduleId: "ckowztsx931860wmi48hc8ijb",
                 title: "Product Strategy",
@@ -1504,6 +1536,8 @@ describe("getMissingPrerequisites", () => {
               },
               module: {
                 id: "cljpl7xtr830513l5ekbtr68h",
+                retired: false,
+                allowsRegistration: true,
                 moduleIdentifier: "SE_07",
                 moduleId: "ckowxge7k08580wmjox4czklz",
                 title: "Collaboration",
@@ -1550,6 +1584,8 @@ describe("getMissingPrerequisites", () => {
               },
               module: {
                 id: "clkaysbjt270613m79fuseq58",
+                retired: false,
+                allowsRegistration: true,
                 moduleIdentifier: "SE_09",
                 moduleId: "ckowxoz4p07430vl5xkra198h",
                 title: "Cyber Security",
@@ -1596,6 +1632,8 @@ describe("getMissingPrerequisites", () => {
               },
               module: {
                 id: "cljpkjdn3485313l1b15vjwv6",
+                retired: false,
+                allowsRegistration: true,
                 moduleIdentifier: "SE_10",
                 moduleId: "ckowxraek09260vmjenqlgeig",
                 title: "Automated Software Testing",
@@ -1642,6 +1680,8 @@ describe("getMissingPrerequisites", () => {
               },
               module: {
                 id: "clkauqlos1540513l1xntvi3a8",
+                retired: false,
+                allowsRegistration: true,
                 moduleIdentifier: "SE_08",
                 moduleId: "ckowxm9rp141420vmjkbfhwgld",
                 title: "Clean Code",
@@ -1688,6 +1728,8 @@ describe("getMissingPrerequisites", () => {
               },
               module: {
                 id: "clkay5a292575013jlg2zeil2l",
+                retired: false,
+                allowsRegistration: true,
                 moduleIdentifier: "SE_01",
                 moduleId: "ckox10ddy42870wl2i71msew3",
                 title: "Software Development Basics",
@@ -1734,6 +1776,8 @@ describe("getMissingPrerequisites", () => {
               },
               module: {
                 id: "clkaundxq012219jxhdvyjr6z",
+                retired: false,
+                allowsRegistration: true,
                 moduleIdentifier: "SE_05",
                 moduleId: "ckox0ydxa187570wmmxjludq3s",
                 title: "Relational Databases",
@@ -1780,6 +1824,8 @@ describe("getMissingPrerequisites", () => {
               },
               module: {
                 id: "clkbc7yi61133413l9jeoyz3df",
+                retired: false,
+                allowsRegistration: true,
                 moduleIdentifier: "SE_02",
                 moduleId: "ckox12owx67480wl2hggfmtj6",
                 title: "Algorithms and Data Structures",
@@ -1826,6 +1872,8 @@ describe("getMissingPrerequisites", () => {
               },
               module: {
                 id: "clkaymo3m2813413kws4ohubzw",
+                retired: false,
+                allowsRegistration: true,
                 moduleIdentifier: "SE_03",
                 moduleId: "ckox12mt766510wl2v1dsa79b",
                 title: "Concepts of Programming Languages",
@@ -1890,6 +1938,8 @@ describe("getMissingPrerequisites", () => {
               },
               module: {
                 id: "clr9gasql0008lc0hmmaimtrf",
+                retired: false,
+                allowsRegistration: true,
                 moduleIdentifier: "SE_09",
                 moduleId: "ckowxoz4p07430vl5xkra198h",
                 title: "Cyber Security",
@@ -1936,6 +1986,8 @@ describe("getMissingPrerequisites", () => {
               },
               module: {
                 id: "clpqtmwig0046t8peamzxb5q6",
+                retired: false,
+                allowsRegistration: true,
                 moduleIdentifier: "SE_24",
                 moduleId: "ckowzs5my07930vmnfns842m5",
                 title: "Distributed and Parallel Computing",
@@ -1982,6 +2034,8 @@ describe("getMissingPrerequisites", () => {
               },
               module: {
                 id: "clpqtmss5003gt8pe94owhfkk",
+                retired: false,
+                allowsRegistration: true,
                 moduleIdentifier: "SE_11",
                 moduleId: "ckowy6kyw23400wmobhm4zdsv",
                 title: "Hardware and Operating Systems",
@@ -2028,6 +2082,8 @@ describe("getMissingPrerequisites", () => {
               },
               module: {
                 id: "clpqtmqsq0032t8pewzgwknyk",
+                retired: false,
+                allowsRegistration: true,
                 moduleIdentifier: "SE_04",
                 moduleId: "ckox10kmr43820wl2wj4ptf16",
                 title: "Network Programming",
@@ -2074,6 +2130,8 @@ describe("getMissingPrerequisites", () => {
               },
               module: {
                 id: "clpqtmqiu0030t8peqvws89r9",
+                retired: false,
+                allowsRegistration: true,
                 moduleIdentifier: "SE_03",
                 moduleId: "ckox12mt766510wl2v1dsa79b",
                 title: "Concepts of Programming Languages",
@@ -2120,6 +2178,8 @@ describe("getMissingPrerequisites", () => {
               },
               module: {
                 id: "clrcm7hct0009ky0hk2fnv38a",
+                retired: false,
+                allowsRegistration: true,
                 moduleIdentifier: "SE_08",
                 moduleId: "ckowxm9rp141420vmjkbfhwgld",
                 title: "Clean Code",
@@ -2166,6 +2226,8 @@ describe("getMissingPrerequisites", () => {
               },
               module: {
                 id: "clrcmbhkl000ejq0haxwverpw",
+                retired: false,
+                allowsRegistration: true,
                 moduleIdentifier: "SE_05",
                 moduleId: "ckox0ydxa187570wmmxjludq3s",
                 title: "Relational Databases",
@@ -2251,6 +2313,8 @@ describe("getMissingPrerequisites", () => {
               id: "clrclpmfz0002jt0h7iwo9ob3",
               module: {
                 id: "clrclpmfz0002jt0h7iwo9ob3",
+                retired: false,
+                allowsRegistration: true,
                 moduleIdentifier: "SE_35",
                 moduleId: "ckowzn9c663520wmmmp11401x",
                 title: "Software Modeling and Design Patterns",
@@ -2287,6 +2351,8 @@ describe("getMissingPrerequisites", () => {
               id: "clqdsifk8000ekw0hsu7npgy8",
               module: {
                 id: "clqdsifk8000ekw0hsu7npgy8",
+                retired: false,
+                allowsRegistration: true,
                 moduleIdentifier: "ID_03",
                 moduleId: "ckowtgvw3273390wmdwbwb0qq9",
                 title: "Editorial Design",
@@ -2321,6 +2387,8 @@ describe("getMissingPrerequisites", () => {
               id: "clpqtmgts0015t8pe7z805ngo",
               module: {
                 id: "clpqtmgts0015t8pe7z805ngo",
+                retired: false,
+                allowsRegistration: true,
                 moduleIdentifier: "ID_19",
                 moduleId: "ckoxylb4003670vi862qamdj8",
                 title: "Responsive Design",
@@ -2373,6 +2441,8 @@ describe("getMissingPrerequisites", () => {
               id: "clqdsm69a0000jp0h9hp4m2gt",
               module: {
                 id: "clqdsm69a0000jp0h9hp4m2gt",
+                retired: false,
+                allowsRegistration: true,
                 moduleIdentifier: "ID_01",
                 moduleId: "ckowt8870215980wmd3l3tz5to",
                 title: "Composition",

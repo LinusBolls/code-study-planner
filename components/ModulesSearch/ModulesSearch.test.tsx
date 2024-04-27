@@ -67,6 +67,8 @@ describe("ModulesSearch", () => {
           modules={[
             {
               id: "1",
+              retired: false,
+              allowsRegistration: true,
               moduleIdentifier: "ID_01",
               moduleId: "1",
               title: "Composition",

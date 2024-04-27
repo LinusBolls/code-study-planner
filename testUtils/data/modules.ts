@@ -3,6 +3,8 @@ import { Module } from "@/components/util/types";
 export const highfiveSeHandbookV2Modules: Module[] = [
   {
     id: "clqdsm69a0000jp0h9hp4m2gt",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "ID_01",
     moduleId: "ckowt8870215980wmd3l3tz5to",
     title: "Composition",
@@ -32,6 +34,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clpqtmbxt0007t8pexdlk96ff",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "ID_02",
     moduleId: "ckowtekca271050wmd7h7q98po",
     title: "Generative Design",
@@ -61,6 +65,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clqdsifk8000ekw0hsu7npgy8",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "ID_03",
     moduleId: "ckowtgvw3273390wmdwbwb0qq9",
     title: "Editorial Design",
@@ -90,6 +96,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clr9adsk90000jq0h8au6aotl",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "ID_04",
     moduleId: "ckowtl8uu49680vmdbp169o1j",
     title: "Screen Design",
@@ -119,6 +127,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clqgs22az0007lc0h0h8v7hgd",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "ID_05",
     moduleId: "ckowtq32q2898211mdnzl7k2pd",
     title: "Design History",
@@ -148,6 +158,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clral06fo000ejr0hc7h09rpr",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "ID_06",
     moduleId: "ckowu006n416680vmljc7o9n6z",
     title: "Design Methods I",
@@ -177,6 +189,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clqdp89dt0000l50hhgw6somb",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "ID_08",
     moduleId: "ckowug7lc4002811mdoof9of59",
     title: "Experience and Behavior Design",
@@ -206,6 +220,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clrakv5ep0000l90hkfubbaci",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "ID_09",
     moduleId: "ckowuk0d028280wl2u8uq9e77",
     title: "Design Strategy",
@@ -235,6 +251,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clr9fr8ul0000ld0h35ie68e7",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "ID_10",
     moduleId: "ckowuqqv100540vl1frfgi96e",
     title: "Brand Design",
@@ -264,6 +282,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clpqtmeus000rt8pez0r2nx3f",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "ID_12",
     moduleId: "ckowuzpxc22070wih1bzs3o6y",
     title: "Infographics",
@@ -293,6 +313,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clraon9fe0000jq0gjnv6dlzc",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "ID_13",
     moduleId: "ckoxy95wo31270via0gqbs5mw",
     title: "Physical Interfaces I",
@@ -322,6 +344,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clr9auux90007jq0h4za18x95",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "ID_16",
     moduleId: "ckoxyf1uc01220vmhguc9kv2j",
     title: "Navigation Design",
@@ -351,6 +375,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clpqtmg4z0010t8pe5bmhi88a",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "ID_17",
     moduleId: "ckoxygz5s01060vi8pgyfl1r8",
     title: "Extended Realities",
@@ -380,6 +406,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clpqtmgts0015t8pe7z805ngo",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "ID_19",
     moduleId: "ckoxylb4003670vi862qamdj8",
     title: "Responsive Design",
@@ -409,6 +437,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clrbvw1au0007jw0hts2arav4",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "ID_20",
     moduleId: "ckoxyngki05660vi80yinfxrj",
     title: "Service Design",
@@ -438,6 +468,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "cls0k4wqx0000t8b1j312iyf8",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "ID_25",
     moduleId: "cls0k3hm50000t88u21aqmwy7",
     title: "Design Methods II",
@@ -467,6 +499,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clqatr60o0000t82rkjpb7unr",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "ID_26",
     moduleId: "clqasn20k0008t8cli161q979",
     title: "Animation",
@@ -496,6 +530,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clqatr69r0001t82r42r8v8gj",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "ID_27",
     moduleId: "clqasn2nj000ct8clszs5mmz6",
     title: "Storytelling through Video",
@@ -525,6 +561,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clrdqisaf000al60hoijvm6sd",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "ID_28",
     moduleId: "clqasn3ai000gt8clsckgwy5l",
     title: "Physical Interfaces II",
@@ -555,6 +593,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clqatr6kj0003t82rmdqknflq",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "ID_29",
     moduleId: "clqasn3y3000kt8cl6pn30842",
     title: "Artistic / Conceptual Project",
@@ -584,6 +624,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clrdqv2k50000la0hwfdvzpdn",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "ID_30",
     moduleId: "clqasn4l7000ot8cldp3n4q7t",
     title: "Artificial Intelligence in Design",
@@ -613,6 +655,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clr9866yf0000ju0h1ucddjre",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "IS_01",
     moduleId: "ckoxyrclq08150vi8cz147m0f",
     title: "Teamwork and Collaboration",
@@ -642,6 +686,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clrauakch0007jr0h8nztdp98",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "IS_02",
     moduleId: "ckoxyt7dw05460vmhk2jngiy1",
     title: "Leadership",
@@ -671,6 +717,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clpqtmihv001ht8pep5dftnpp",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "IS_03",
     moduleId: "ckoxyv83f28780vi88243u8x3",
     title: "Creative Problem-Solving",
@@ -700,6 +748,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clr6f6gd20000jx0ko4crrvuf",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "IS_04",
     moduleId: "ckoxyy6ad57630vmh7u08ihke",
     title: "Self-Directed (Curiosity-Driven) Learning",
@@ -729,6 +779,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clraqym3q0007jq0h02w1zmar",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "IS_05",
     moduleId: "ckoxz16f945290vi8dtpov9fe",
     title: "Sustainable Development",
@@ -758,6 +810,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clpqtmje4001nt8petym7olim",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "IS_06",
     moduleId: "ckoxz44vj42080viayambrjmj",
     title: "Intercultural Understanding",
@@ -787,6 +841,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clq4wslxi0000ju0hr3vmv1l6",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "OS_01",
     moduleId: "ckowsjos9158660vl99wfd8hkd",
     title: "Introduction to Software Engineering",
@@ -926,6 +982,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clraiq27v0007ky0h4jepjjky",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "OS_02",
     moduleId: "ckowsrimj272970vmlb2r6hm4q",
     title: "Introduction to Interaction Design",
@@ -1065,6 +1123,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clrgajrh30007l80hquivshmy",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "OS_03",
     moduleId: "ckowstiva162360wmdk06yq73h",
     title: "Introduction to Product Management",
@@ -1204,6 +1264,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clrar1g6i0000jq0g91alseur",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "OS_04",
     moduleId: "ckowsvvgt60710wl30sp7zbrf",
     title: "Introduction to Interpersonal Skills",
@@ -1343,6 +1405,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clragz1iu0000l40hjhmft9t2",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "OS_05",
     moduleId: "ckowt0zfm968411mdzdly7jmk",
     title: "Basic Methods of Project-Based Learning",
@@ -1482,6 +1546,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clrgcpu670000l80geb3bi7mv",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "PM_01",
     moduleId: "ckoxz6rlb10190vlc1xak0f6f",
     title: "Communication and Presentation",
@@ -1511,6 +1577,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clrgdfau00000l60h3z3pbpnk",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "PM_02",
     moduleId: "ckoxz9f6d14150vlciuure6r9",
     title: "Customer Discovery and Market Research",
@@ -1540,6 +1608,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clr937dt80008l90hjod9lclj",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "PM_03",
     moduleId: "ckoxzbpiu95590wmj5mn0lg8z",
     title: "Business Intelligence and Analytics",
@@ -1569,6 +1639,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clrakoog50000js0hdcyr922s",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "PM_04",
     moduleId: "ckoxzftyt27570vlc4km07rs7",
     title: "Product Marketing",
@@ -1598,6 +1670,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clrg650ih0000l80huj8oo74a",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "PM_05",
     moduleId: "ckowzisxq08290wmif9j6vzwg",
     title: "Requirements Engineering",
@@ -1627,6 +1701,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clrgecvnq0007jl0hfi3e2ib0",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "PM_06",
     moduleId: "ckowzm6qj15580wmi2c4q2j7z",
     title: "Product Innovation and Definition",
@@ -1656,6 +1732,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clrar8x8t000ejq0hlb5wr281",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "PM_07",
     moduleId: "ckowzp3db19690wmi8e3rfp4g",
     title: "Agile Process Management",
@@ -1685,6 +1763,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clras4b4m0000lc0h58x3uvfw",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "PM_08",
     moduleId: "ckowztsx931860wmi48hc8ijb",
     title: "Product Strategy",
@@ -1714,6 +1794,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clpqtmnv9002ht8peuzv6dgn4",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "PM_09",
     moduleId: "ckowzy7ev72040wl78acohn8u",
     title: "Strategic Partnerships and Third-Party Integration",
@@ -1743,6 +1825,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clraseln5000tjm0h733jib7t",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "PM_11",
     moduleId: "ckox071h320340vmn2k8r9kkc",
     title: "Consumer Psychology",
@@ -1772,6 +1856,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clr96uzuz0000js0hpgr0v9w6",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "PM_12",
     moduleId: "ckox0gx4e186210wl2oa93q5xc",
     title: "Business Model Design",
@@ -1801,6 +1887,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clr975mog0000ky0hmh8rztc5",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "PM_13",
     moduleId: "ckox0mq9f171400wmmpl8tzifp",
     title: "Finance and Controlling",
@@ -1830,6 +1918,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clraquzfa0000jv0hagrgkrkv",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "PM_14",
     moduleId: "ckox0q0s622930wl2uf71uekl",
     title: "Organizational Development",
@@ -1859,6 +1949,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clr93s9ka000ijo0gha50ip99",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "PM_15",
     moduleId: "ckox0sv0k48110vlbc8cha59q",
     title: "Economics",
@@ -1888,6 +1980,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clr93a4gw000fl90hadkqx6xh",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "PM_16",
     moduleId: "ckox0v6oc51920vlbwp1ix1j1",
     title: "How to Start a Startup",
@@ -1917,6 +2011,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clral30uk0007lf0hivgp8tqr",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "PM_17",
     moduleId: "ckox0y9bv186520wmm3wrnmvn3",
     title: "Product Sales",
@@ -1946,6 +2042,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clrenaog70000ji0h2ltcnina",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "PM_18",
     moduleId: "clqasnd310024t8clfqlnyal8",
     title: "Data Science and AI for Product Managers",
@@ -1975,6 +2073,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clran8qjx000zjr0hespqd1xz",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "PM_19",
     moduleId: "clqasndqc0028t8cl06f5pvue",
     title: "Entrepreneurial Excellence - Running Your Business",
@@ -2004,6 +2104,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clrasa3oy0000jm0hegzabu3g",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "PM_20",
     moduleId: "clqasnedc002ct8cl39pk75yc",
     title: "Product Management Speciality",
@@ -2033,6 +2135,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clrajl87u0000l80hhx91fg37",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "PM_26",
     moduleId: "clqasnf0g002gt8clzkdj0v7t",
     title: "Business and Financial Models",
@@ -2062,6 +2166,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clrawyccr0000l40haruyx44n",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "PM_27",
     moduleId: "clqasnfnt002kt8clp90bxt91",
     title: "Teamwork and Collaboration",
@@ -2091,6 +2197,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clrau7m5b0009l30g3nk4a4yt",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "PM_28",
     moduleId: "clqasngas002ot8cla858ibhw",
     title: "Leadership",
@@ -2120,6 +2228,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clrcbcghn0000jp0hcnod0xv2",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "SE_01",
     moduleId: "ckox10ddy42870wl2i71msew3",
     title: "Software Development Basics",
@@ -2149,6 +2259,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clrb8c7in0000la0hiexqa3n8",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "SE_02",
     moduleId: "ckox12owx67480wl2hggfmtj6",
     title: "Algorithms and Data Structures",
@@ -2178,6 +2290,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clpqtmqiu0030t8peqvws89r9",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "SE_03",
     moduleId: "ckox12mt766510wl2v1dsa79b",
     title: "Concepts of Programming Languages",
@@ -2207,6 +2321,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clpqtmqsq0032t8pewzgwknyk",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "SE_04",
     moduleId: "ckox10kmr43820wl2wj4ptf16",
     title: "Network Programming",
@@ -2236,6 +2352,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clrcmbhkl000ejq0haxwverpw",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "SE_05",
     moduleId: "ckox0ydxa187570wmmxjludq3s",
     title: "Relational Databases",
@@ -2265,6 +2383,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clqz878y80000l80hxcf031lb",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "SE_06",
     moduleId: "ckox0vxyo53930vlbz8uh08tx",
     title: "NoSQL Databases",
@@ -2294,6 +2414,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clrajcbnt000ejo0hef3ehl71",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "SE_07",
     moduleId: "ckowxge7k08580wmjox4czklz",
     title: "Collaboration",
@@ -2323,6 +2445,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clrcm7hct0009ky0hk2fnv38a",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "SE_08",
     moduleId: "ckowxm9rp141420vmjkbfhwgld",
     title: "Clean Code",
@@ -2352,6 +2476,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clr9gasql0008lc0hmmaimtrf",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "SE_09",
     moduleId: "ckowxoz4p07430vl5xkra198h",
     title: "Cyber Security",
@@ -2381,6 +2507,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clpqtmsn9003ft8peh8qvtzpv",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "SE_10",
     moduleId: "ckowxraek09260vmjenqlgeig",
     title: "Automated Software Testing",
@@ -2410,6 +2538,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clpqtmss5003gt8pe94owhfkk",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "SE_11",
     moduleId: "ckowy6kyw23400wmobhm4zdsv",
     title: "Hardware and Operating Systems",
@@ -2439,6 +2569,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clq0xtklh0000l60h6efgdtj3",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "SE_13",
     moduleId: "ckowyflhc71380vl4xg6a1mq7",
     title: "Autonomous Systems",
@@ -2468,6 +2600,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clq0xzvov000bl60hdur0vvsq",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "SE_14",
     moduleId: "ckowyi4v378470wl29uw923b2",
     title: "Artificial Intelligence Basics",
@@ -2497,6 +2631,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clpqtmu0q003pt8pe5mug4xhk",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "SE_15",
     moduleId: "ckowyojgz39280wl7xa5k9520",
     title: "Machine Learning",
@@ -2526,6 +2662,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clpqtmu5p003qt8peppwwl9gt",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "SE_16",
     moduleId: "ckowytii058210wl7glgolvjg",
     title: "Natural Language Processing",
@@ -2555,6 +2693,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clpqtmufi003st8pet4m8u8s5",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "SE_17",
     moduleId: "ckowz0qxr00180vmot7kbx1f2",
     title: "3D Rendering",
@@ -2584,6 +2724,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clpqtmuv3003vt8pej2xybxbo",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "SE_18",
     moduleId: "ckowz39p906140wl6h0bt53dn",
     title: "Image Processing",
@@ -2613,6 +2755,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clr8yap910007jx0hpoofzvqj",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "SE_19",
     moduleId: "ckowza4ey10600wmmnzx2szpu",
     title: "Web Technologies Basics",
@@ -2642,6 +2786,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "cluvacn4b0001l60gcdsyxzaw",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "SE_22",
     moduleId: "ckowzmb5s12350vl1hvesy4n2",
     title: "Web Backend Technologies",
@@ -2671,6 +2817,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clr6fgkbb000ijp0hbpd1z1zo",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "SE_23",
     moduleId: "ckowzp74r20630wmid9uvqdsq",
     title: "Continuous Delivery and Operations",
@@ -2700,6 +2848,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clpqtmwig0046t8peamzxb5q6",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "SE_24",
     moduleId: "ckowzs5my07930vmnfns842m5",
     title: "Distributed and Parallel Computing",
@@ -2729,6 +2879,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clpqtmxer004ct8pe434zhkgk",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "SE_27",
     moduleId: "ckowyfoup154840vlc4m7z33cm",
     title: "Data Engineering",
@@ -2758,6 +2910,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clrba2hm80007jo0h2jkqpkw8",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "SE_28",
     moduleId: "ckowyntxj33390wl73wlxssq4",
     title: "Linear Algebra",
@@ -2787,6 +2941,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clpqtmy3r004ht8peqja7urex",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "SE_29",
     moduleId: "ckowyt4ou56990wl7g1jlu2zr",
     title: "Multivariate Calculus",
@@ -2816,6 +2972,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clratziwv000njp0i6x5ao12s",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "SE_30",
     moduleId: "ckowz077559560wmms8nvusa6",
     title: "Probability and Statistics",
@@ -2845,6 +3003,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clpqtmykb004kt8pedqkulq10",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "SE_31",
     moduleId: "ckowzenud00900wmi71fzadgb",
     title: "Applied Scientific Research",
@@ -2874,6 +3034,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clrclpmfz0002jt0h7iwo9ob3",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "SE_35",
     moduleId: "ckowzn9c663520wmmmp11401x",
     title: "Software Modeling and Design Patterns",
@@ -2905,6 +3067,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clremyn730007l90h3xrzfrt4",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "SE_37",
     moduleId: "ckowzupko02590vlb4mulpsm4",
     title: "Optimization in Artificial Intelligence",
@@ -2934,6 +3098,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clpqtn098004wt8per3yijkgp",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "SE_38",
     moduleId: "ckowzzs1987390wl7n5kj8qkg",
     title: "Planning in Artificial Intelligence",
@@ -2963,6 +3129,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clqb0t6mi0008l10hvhndg6y3",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "SE_39",
     moduleId: "ckox0pqrn22090wl2noemiq96",
     title: "Publishing a Research Paper",
@@ -2992,6 +3160,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clrfeor2e0000l90hdyqy8jcp",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "SE_40",
     moduleId: "cl4po63rr35670wjuffguw6wb",
     title: "Essential Mathematical Methods",
@@ -3021,6 +3191,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clpqtn0x90050t8peu5ymzrk3",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "SE_41",
     moduleId: "cl4pokf2315940wmfny92r5tm",
     title: "Digital Fabrication",
@@ -3050,6 +3222,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clrfeesiw0000ig0hdlm82akb",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "SE_43",
     moduleId: "clqasn5v8000wt8clgxd8upa6",
     title: "Data Science",
@@ -3079,6 +3253,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clrettfqd0000ju0gyl4cdp4s",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "SE_44",
     moduleId: "clqasn0hu0000t8clg7xuqim5",
     title: "Embedded Development",
@@ -3108,6 +3284,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clqatr883000et82rocz34ct0",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "SE_45",
     moduleId: "clqasn6i60010t8clsptetdkc",
     title: "Web Frontend Technologies",
@@ -3137,6 +3315,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clqatr8fl000ft82rrd1cble2",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "SE_46",
     moduleId: "clqasn75v0014t8clufdmfg2t",
     title: "Web Backend Technologies",
@@ -3166,6 +3346,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clqb0wn450001l30h0an5qkv6",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "SE_47",
     moduleId: "clqasn7sw0018t8cl4x0oiqch",
     title: "Mobile App Development",
@@ -3195,6 +3377,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clr6g74050001jo0h10baww1o",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "SE_48",
     moduleId: "clqasn8g6001ct8clyoj9c1cc",
     title: "Cloud Computing",
@@ -3224,6 +3408,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clr9dz5jv0008jq0hgqie2ipc",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "SE_49",
     moduleId: "clqasn9r1001kt8cl2etoyzp0",
     title: "Blockchain",
@@ -3253,6 +3439,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clrdhdwgs0000js0h9vbtfo89",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "SE_51",
     moduleId: "clqasnae4001ot8clvok0u0g6",
     title: "Software Engineering Specialty",
@@ -3282,6 +3470,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clrdhf8960007jv0gpjkfwcu4",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "SE_52",
     moduleId: "clqasnb49001st8clx207xdxe",
     title: "Software Engineering Specialty",
@@ -3311,6 +3501,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clrdhgbxr000ljs0hwf45atl4",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "SE_53",
     moduleId: "clqasnbt3001wt8clorde95v7",
     title: "Software Engineering Specialty",
@@ -3340,6 +3532,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clrdhhf1g0000jo0h6dxy1k9m",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "SE_54",
     moduleId: "clqasncg30020t8cls6fqo0io",
     title: "Software Engineering Specialty",
@@ -3369,6 +3563,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clqatr9nz000nt82r72tgzy0i",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "SE_55",
     moduleId: "clqasn93x001gt8cl932ie22s",
     title: "Software Engineering Specialty",
@@ -3398,6 +3594,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clrdhj08u000llc0h1xhj0qp9",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "SE_56",
     moduleId: "clqasn1dg0004t8clvucj64rp",
     title: "Software Engineering Specialty",
@@ -3427,6 +3625,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clpqtn1gx0054t8pehgwuuk0v",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "STS_01",
     moduleId: "ckox08rjq25610vmnk8qkz5q5",
     title: "STS Essentials",
@@ -3450,6 +3650,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clpqtn1qq0056t8peysfal8ze",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "STS_02",
     moduleId: "ckox0fq2822310vlbtira8waz",
     title: "Academic Reading",
@@ -3479,6 +3681,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clpqtn1vo0057t8peq50sl3b4",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "STS_03",
     moduleId: "ckox0i66s40140vmnva3d3rid",
     title: "Research",
@@ -3508,6 +3712,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clpqtn2aa005at8ped03b0q7y",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "STS_04",
     moduleId: "ckox0klbf121080wl7u2aia0hc",
     title: "Presentation",
@@ -3537,6 +3743,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clpqtn2k9005ct8peam28retk",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "STS_05",
     moduleId: "ckox0mq6z35690vlbmuz9rq9b",
     title: "Judging Technology",
@@ -3566,6 +3774,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "cljikxx3u0764bft8ltym9g59",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "IS_01",
     moduleId: "ckoxyrclq08150vi8cz147m0f",
     title: "Teamwork and Collaboration",
@@ -3595,6 +3805,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clcz02j6p57540vmj8rh1c6s8",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "ID_16",
     moduleId: "ckoxyf1uc01220vmhguc9kv2j",
     title: "Navigation Design",
@@ -3624,6 +3836,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clkbc7yi61133413l9jeoyz3df",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "SE_02",
     moduleId: "ckox12owx67480wl2hggfmtj6",
     title: "Algorithms and Data Structures",
@@ -3653,6 +3867,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clkaymo3m2813413kws4ohubzw",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "SE_03",
     moduleId: "ckox12mt766510wl2v1dsa79b",
     title: "Concepts of Programming Languages",
@@ -3682,6 +3898,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clbf43e8y3521tct8m1gnxpr9",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "SE_03",
     moduleId: "ckox12mt766510wl2v1dsa79b",
     title: "Concepts of Programming Languages",
@@ -3711,6 +3929,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clkay5a292575013jlg2zeil2l",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "SE_01",
     moduleId: "ckox10ddy42870wl2i71msew3",
     title: "Software Development Basics",
@@ -3740,6 +3960,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clbf43g5i3728tct8z3jzmnat",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "SE_01",
     moduleId: "ckox10ddy42870wl2i71msew3",
     title: "Software Development Basics",
@@ -3769,6 +3991,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clkaundxq012219jxhdvyjr6z",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "SE_05",
     moduleId: "ckox0ydxa187570wmmxjludq3s",
     title: "Relational Databases",
@@ -3798,6 +4022,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clk8sjmuc070713mcatxr8hv3",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "PM_08",
     moduleId: "ckowztsx931860wmi48hc8ijb",
     title: "Product Strategy",
@@ -3827,6 +4053,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clcyjgzd6138120wmjlohe6kr9",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "SE_22",
     moduleId: "ckowzmb5s12350vl1hvesy4n2",
     title: "Web Backend Technologies",
@@ -3856,6 +4084,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clcu7xnov194490wjw3sq20k08",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "SE_21",
     moduleId: "ckowzkdn412780wmi0sv892zd",
     title: "Mobile App Development",
@@ -3885,6 +4115,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clcyjg1qr18580wmjp32hl4ug",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "SE_20",
     moduleId: "ckowzguhd03520vl1189y1hy7",
     title: "Web Frontend Technologies",
@@ -3914,6 +4146,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clcyjf5f103240vl7mntyxpqf",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "SE_19",
     moduleId: "ckowza4ey10600wmmnzx2szpu",
     title: "Web Technologies Basics",
@@ -3943,6 +4177,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "cljpkjdn3485313l1b15vjwv6",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "SE_10",
     moduleId: "ckowxraek09260vmjenqlgeig",
     title: "Automated Software Testing",
@@ -3972,6 +4208,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clkaysbjt270613m79fuseq58",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "SE_09",
     moduleId: "ckowxoz4p07430vl5xkra198h",
     title: "Cyber Security",
@@ -4001,6 +4239,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clbf42r5l1057tct851zuqfcu",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "SE_08",
     moduleId: "ckowxm9rp141420vmjkbfhwgld",
     title: "Clean Code",
@@ -4030,6 +4270,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "clkauqlos1540513l1xntvi3a8",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "SE_08",
     moduleId: "ckowxm9rp141420vmjkbfhwgld",
     title: "Clean Code",
@@ -4059,6 +4301,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "cljpl7xtr830513l5ekbtr68h",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "SE_07",
     moduleId: "ckowxge7k08580wmjox4czklz",
     title: "Collaboration",
@@ -4088,6 +4332,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "ckrgjnzsm58120vl0u6kb5aea",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "OS_05",
     moduleId: "ckowt0zfm968411mdzdly7jmk",
     title: "Basic Methods of Project-Based Learning",
@@ -4227,6 +4473,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "ckrg9q0yr47800vjlmbwng8xq",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "OS_04",
     moduleId: "ckowsvvgt60710wl30sp7zbrf",
     title: "Introduction to Interpersonal Skills",
@@ -4366,6 +4614,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "cl4pomtx403620wmjaykb4wtb",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "OS_04",
     moduleId: "ckowsvvgt60710wl30sp7zbrf",
     title: "Introduction to Interpersonal Skills",
@@ -4505,6 +4755,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "ckpdehqsb2257pmv8rsigo8us",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "OS_03",
     moduleId: "ckowstiva162360wmdk06yq73h",
     title: "Introduction to Product Management",
@@ -4644,6 +4896,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "ckpdehqnf2231pmv8dzavt6v8",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "OS_02",
     moduleId: "ckowsrimj272970vmlb2r6hm4q",
     title: "Introduction to Interaction Design",
@@ -4783,6 +5037,8 @@ export const highfiveSeHandbookV2Modules: Module[] = [
   },
   {
     id: "ckpdehqj32204pmv8haj4vqxv",
+    retired: false,
+    allowsRegistration: true,
     moduleIdentifier: "OS_01",
     moduleId: "ckowsjos9158660vl99wfd8hkd",
     title: "Introduction to Software Engineering",
