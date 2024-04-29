@@ -28,7 +28,7 @@ export const Department = {
   IS: {
     id: "IS",
     title: "Interpersonal Skills",
-    color: "#FEDD9A",
+    color: "#8957E5",
   },
 } satisfies Record<string, Department>;
 

@@ -59,8 +59,18 @@ export default function LoginModal({ onSubmit }: LoginModalProps) {
             value={token}
             onChange={(e) => setToken(e.target.value)}
           />
-          <Flex justify="end">
-            <Button type="primary" htmlType="submit" loading={isLoading}>
+          <Flex
+            justify="end"
+            style={{
+              marginTop: "0.5rem",
+            }}
+          >
+            <Button
+              type="primary"
+              htmlType="submit"
+              loading={isLoading}
+              disabled={isLoading}
+            >
               Submit
             </Button>
           </Flex>

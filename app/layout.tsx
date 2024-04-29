@@ -8,6 +8,7 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Study Planner for CODE",
   description: "Comfortably plan out your remaining semesters at CODE",
+  metadataBase: new URL(env.publicAppUrl),
   openGraph: {
     type: "website",
     url: env.publicAppUrl,

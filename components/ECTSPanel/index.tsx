@@ -26,7 +26,7 @@ const toStep = (module: SemesterModule): ECTSProgressStep => {
       module.module.ects +
       " ECTS",
     value: module.module.ects,
-    color: getDepartment(module.module.departmentId)?.color ?? "#FFFFFF",
+    color: getDepartment(module.module.departmentId)?.color ?? "#000000",
     isWeak: !isFinished,
   };
 };
@@ -95,7 +95,7 @@ export default function ECTSPanel({
               height: "0.5rem",
               borderRadius: "50%",
 
-              backgroundColor: "#35DAAD",
+              backgroundColor: getDepartment("ID")!.color,
             }}
           />
           <Typography.Text
@@ -113,7 +113,7 @@ export default function ECTSPanel({
               height: "0.5rem",
               borderRadius: "50%",
 
-              backgroundColor: "#4059AD",
+              backgroundColor: getDepartment("PM")!.color,
             }}
           />
           <Typography.Text>Product Management</Typography.Text>
@@ -125,7 +125,7 @@ export default function ECTSPanel({
               height: "0.5rem",
               borderRadius: "50%",
 
-              backgroundColor: "#FF4473",
+              backgroundColor: getDepartment("SE")!.color,
             }}
           />
           <Typography.Text>Software Engineering</Typography.Text>
@@ -137,7 +137,7 @@ export default function ECTSPanel({
               height: "0.5rem",
               borderRadius: "50%",
 
-              backgroundColor: "#FEDD9A",
+              backgroundColor: getDepartment("STS")!.color,
             }}
           />
           <Typography.Text>STS, IS</Typography.Text>

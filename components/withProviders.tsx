@@ -21,7 +21,7 @@ export default function withProviders(Component: () => ReactNode) {
       },
       components: {
         Button: {
-          borderRadius: 0,
+          // borderRadius: 0,
         },
       },
     };
