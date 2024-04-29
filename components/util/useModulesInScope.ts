@@ -1,5 +1,6 @@
 import { useLearningPlatformCurrentUser } from "@/services/learningPlatform/hooks/useLearningPlatformCurrentUser";
 import { useLearningPlatformModules } from "@/services/learningPlatform/hooks/useLearningPlatformModules";
+import { useLearningPlatformModulesById } from "@/services/learningPlatform/hooks/useLearningPlatformModulesById";
 import { useLearningPlatformMyStudies } from "@/services/learningPlatform/hooks/useLearningPlatformMyStudies";
 import { useLearningPlatformSemesterModules } from "@/services/learningPlatform/hooks/useLearningPlatformSemesterModules";
 import { toModule } from "@/services/learningPlatform/mapping";
@@ -47,7 +48,18 @@ export function useModulesInScope() {
     .concat(retiredAttemptedModules)
     .map(toModule(mandatoryModuleIds));
 
+  const allPrerequisites = modules.flatMap((i) => i.prerequisites);
+
+  const uniqueMissingPrerequisites = allPrerequisites
+    .filter(isUnique)
+    .filter((i) => modules.find((j) => j.moduleId === i) == null);
+
+  const missingModules =
+    useLearningPlatformModulesById(uniqueMissingPrerequisites)?.data?.modules ??
+    [];
+
   return {
+    missingModules,
     modules,
     isLoading:
       modulesQuery.isLoading ||

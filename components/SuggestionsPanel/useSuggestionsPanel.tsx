@@ -17,7 +17,10 @@ const getModuleName = (module?: LP.Module | null | Module) =>
   module ? module.moduleIdentifier + " " + module.title : "Unknown Module";
 
 const ModuleLink = ({ module }: { module?: LP.Module | null | Module }) => (
-  <Link href={getModuleUrl(module?.moduleIdentifier!, module?.shortCode!)}>
+  <Link
+    href={getModuleUrl(module?.moduleIdentifier!, module?.shortCode!)}
+    target="_blank"
+  >
     {getModuleName(module)}
   </Link>
 );
@@ -28,7 +31,7 @@ const ModuleLink = ({ module }: { module?: LP.Module | null | Module }) => (
 export function useSuggestions() {
   const { semesters } = useSemestersList();
 
-  const { modules } = useModulesInScope();
+  const { modules, missingModules } = useModulesInScope();
 
   const currentUserQuery = useLearningPlatformCurrentUser();
 
@@ -57,7 +60,7 @@ export function useSuggestions() {
     modules,
     mandatoryModuleIds,
     compulsoryElectivePairings
-  ).concat(getMissingPrerequisites(semesters, modules));
+  ).concat(getMissingPrerequisites(semesters, modules, missingModules));
 
   const fromId = (moduleId: string) =>
     modules.find((i) => i.moduleId === moduleId);
@@ -115,7 +118,7 @@ export function useSuggestions() {
           </>
         ),
       };
-    } else {
+    } else if (issue.type === "missing_prerequisite") {
       return {
         title: "Missing prerequisite",
         level: "error",
@@ -127,6 +130,38 @@ export function useSuggestions() {
           </>
         ),
       };
+    } else if (issue.type === "retired_module") {
+      return {
+        title: "Retired module",
+        level: "error",
+        description: (
+          <>
+            <ModuleLink module={fromId(issue.module)} /> is retired.
+            Registrations are only possible if one has any prior attempts.
+          </>
+        ),
+      };
+    } else if (issue.type === "might_not_be_offered") {
+      const thisModule = modules.find((i) => i.moduleId === issue.module);
+      return {
+        title: "Module might not be offered",
+        level: "warning",
+        description: (
+          <>
+            You might not be able to get assessed for{" "}
+            <ModuleLink module={fromId(issue.module)} /> in {issue.semesterName}
+            . Consider checking this with{" "}
+            <Link href={thisModule?.coordinatorUrl} target="_blank">
+              {thisModule?.coordinatorName}
+            </Link>
+            .
+          </>
+        ),
+      };
+    } else {
+      throw new Error(
+        "[useSuggestions] received invalid issue.type " + JSON.stringify(issue)
+      );
     }
   });
 

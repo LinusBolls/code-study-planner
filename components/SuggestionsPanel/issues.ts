@@ -11,6 +11,15 @@ export type Issue =
   | {
       type: "missing_compulsory_electives";
       modules: string[];
+    }
+  | {
+      type: "retired_module";
+      module: string;
+    }
+  | {
+      type: "might_not_be_offered";
+      module: string;
+      semesterName: string;
     };
 
 export type SuggestionFix =
