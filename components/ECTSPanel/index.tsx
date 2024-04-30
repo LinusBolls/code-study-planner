@@ -140,7 +140,19 @@ export default function ECTSPanel({
               backgroundColor: getDepartment("STS")!.color,
             }}
           />
-          <Typography.Text>STS, IS</Typography.Text>
+          <Typography.Text>STS</Typography.Text>
+        </Flex>
+        <Flex gap="small" align="center">
+          <div
+            style={{
+              width: "0.5rem",
+              height: "0.5rem",
+              borderRadius: "50%",
+
+              backgroundColor: getDepartment("IS")!.color,
+            }}
+          />
+          <Typography.Text>IS</Typography.Text>
         </Flex>
       </div>
       <Statistic title="Total" value={totalEcts + " ECTS"} />
