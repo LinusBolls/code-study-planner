@@ -10,7 +10,7 @@ import {
 } from "@/services/learningPlatform/util/isDefined";
 
 /**
- * combines (1) modules that currently show up in the "Modules" tab of the learning platform and (2) modules that the user took in the past which might not be available anymore
+ * combines (1) modules that currently show up in the "Modules" tab of the learning platform (2) modules that the user took in the past which might not be available anymore (3) prerequisite modules that might not be available anymore
  */
 export function useModulesInScope() {
   const myStudiesQuery = useLearningPlatformMyStudies();
@@ -27,13 +27,6 @@ export function useModulesInScope() {
     modulesQuery.data?.currentSemesterModules ?? [];
 
   const attemptedModuleIds = myPastModules
-    // this filters only the modules ones that are retired (the web modules)
-    // .filter(
-    //   (i) =>
-    //     currentSemesterModules.find(
-    //       (j) => j.moduleIdentifier === i.moduleIdentifier
-    //     ) == null
-    // )
     .flatMap((i) => i.assessments!.map((j) => j.semesterModule!.id))
     .filter(isDefined)
     .filter(isUnique);
@@ -50,21 +43,24 @@ export function useModulesInScope() {
 
   const allPrerequisites = modules.flatMap((i) => i.prerequisites);
 
-  const uniqueMissingPrerequisites = allPrerequisites
+  const deprecatedPrerequisiteIds = allPrerequisites
     .filter(isUnique)
     .filter((i) => modules.find((j) => j.moduleId === i) == null);
 
-  const missingModules =
-    useLearningPlatformModulesById(uniqueMissingPrerequisites)?.data?.modules ??
-    [];
+  const deprecatedPrerequisitesQuery = useLearningPlatformModulesById(
+    deprecatedPrerequisiteIds
+  );
+  const deprecatedModules = deprecatedPrerequisitesQuery.data?.modules ?? [];
 
   return {
-    missingModules,
+    /** these modules aren't available anymore, but they are prerequisites for other modules. this is important for generating the "Missing Prerequisite" suggestion in the Suggestions panel. */
+    deprecatedModules,
     modules,
     isLoading:
       modulesQuery.isLoading ||
       myStudiesQuery.isLoading ||
       currentUserQuery.isLoading ||
-      retiredAttemptedModulesQuery.isLoading,
+      retiredAttemptedModulesQuery.isLoading ||
+      deprecatedPrerequisitesQuery.isLoading,
   };
 }

@@ -31,7 +31,7 @@ const ModuleLink = ({ module }: { module?: LP.Module | null | Module }) => (
 export function useSuggestions() {
   const { semesters } = useSemestersList();
 
-  const { modules, missingModules } = useModulesInScope();
+  const { modules, deprecatedModules } = useModulesInScope();
 
   const currentUserQuery = useLearningPlatformCurrentUser();
 
@@ -60,7 +60,7 @@ export function useSuggestions() {
     modules,
     mandatoryModuleIds,
     compulsoryElectivePairings
-  ).concat(getMissingPrerequisites(semesters, modules, missingModules));
+  ).concat(getMissingPrerequisites(semesters, modules, deprecatedModules));
 
   const fromId = (moduleId: string) =>
     modules.find((i) => i.moduleId === moduleId);

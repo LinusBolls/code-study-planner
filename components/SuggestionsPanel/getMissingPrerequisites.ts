@@ -8,7 +8,7 @@ const OS_04_ID = "ckowsvvgt60710wl30sp7zbrf";
 export const getMissingPrerequisites = (
   semesters: Semester[],
   modules: Module[],
-  missingModules: {
+  deprecatedModules: {
     id: string;
     moduleIdentifier?: string | null;
   }[]
@@ -71,13 +71,12 @@ export const getMissingPrerequisites = (
 
     const missingPrerequisiteIds =
       coord.module.module?.prerequisites.filter((id) => {
-        // TODO: prerequisite might not be offered anymore (so we kinda need to query every module ever lol)
         const thisModule = modules.find((i) => i.moduleId === id);
 
-        const missingModule = (missingModules ?? []).find((i) => i.id === id);
+        const deprecated = deprecatedModules.find((i) => i.id === id);
 
         const moduleIdentifier =
-          thisModule?.moduleIdentifier ?? missingModule?.moduleIdentifier;
+          thisModule?.moduleIdentifier ?? deprecated?.moduleIdentifier;
 
         if (id === OS_04_ID) return false;
 
