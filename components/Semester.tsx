@@ -4,6 +4,7 @@ import ModulesListSection from "./ModulesListSection";
 import { memo, useState } from "react";
 import { Droppable } from "@hello-pangea/dnd";
 import { getRelativeSemesterTime } from "@/services/learningPlatform/mapping";
+import Link from "antd/es/typography/Link";
 
 // feature flag
 const ADD_ITEM_BUTTON = false;
@@ -94,12 +95,26 @@ function SemesterCard({
                 style={{ height: "3.75rem !important" }}
                 justify="flex-end"
               >
-                <Typography.Text
-                  type="secondary"
-                  style={{ lineHeight: "0.75rem", fontSize: "0.75rem" }}
-                >
-                  {getRelativeSemesterTime(offsetToCurrentSemester)}
-                </Typography.Text>
+                {offsetToCurrentSemester === 0 ? (
+                  <Link
+                    href="https://app.code.berlin/modules?table=semester"
+                    target="_blank"
+                    style={{
+                      lineHeight: "0.75rem",
+                      fontSize: "0.75rem",
+                    }}
+                  >
+                    {getRelativeSemesterTime(offsetToCurrentSemester)}
+                  </Link>
+                ) : (
+                  <Typography.Text
+                    type="secondary"
+                    style={{ lineHeight: "0.75rem", fontSize: "0.75rem" }}
+                  >
+                    {getRelativeSemesterTime(offsetToCurrentSemester)}
+                  </Typography.Text>
+                )}
+
                 <Row align="middle">
                   <Typography.Title
                     ref={provided.innerRef}

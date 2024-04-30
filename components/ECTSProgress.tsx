@@ -42,19 +42,47 @@ export default function ECTSProgress({
           borderRadius: "0.25rem",
         }}
       >
-        {steps.map((step) => (
-          <Tooltip title={step.title} key={step.id}>
-            <div
-              style={{
-                width: 100 / (max / step.value) + "%",
-                height: "100%",
-                backgroundColor: step.color,
-                opacity: step.isWeak ? 0.5 : 1,
-              }}
-            ></div>
-          </Tooltip>
-        ))}
+        {steps.map((step) => {
+          return (
+            <Tooltip title={step.title} key={step.id}>
+              <div
+                style={{
+                  width: 100 / (max / step.value) + "%",
+                  height: "100%",
+                  borderRadius: "1px",
+                  background: step.isWeak
+                    ? hatchedBackground(step.color)
+                    : step.color,
+                  backgroundRepeat: "repeat",
+                }}
+              ></div>
+            </Tooltip>
+          );
+        })}
       </div>
     </Flex>
   );
 }
+
+export const getDiagonalHatchDataUrl = (
+  color: string,
+  hatchColor?: string
+): string => {
+  const svgContent = `
+    <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="8" height="8" fill="${color}" fill-opacity="0.75"/>
+      <path d="M4 0L0 8H4L8 0H4Z" fill="${
+        hatchColor ?? color
+      }" fill-opacity="1"/>
+    </svg>
+  `;
+  const encodedSvg = encodeURIComponent(svgContent.replace(/\n/g, "").trim());
+  return `data:image/svg+xml;charset=utf-8,${encodedSvg}`;
+};
+
+export const hatchedBackground = (
+  color: string,
+  hatchColor?: string
+): string => {
+  return `url("${getDiagonalHatchDataUrl(color, hatchColor)}")`;
+};

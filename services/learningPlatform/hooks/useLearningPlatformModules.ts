@@ -6,6 +6,11 @@ import consumePaginatedQuery from "../consumePaginatedQuery";
 import { useLearningPlatform } from "../useLearningPlatform";
 import { readFromCache } from "@/services/caching";
 
+/**
+ * used by the `Modules` tab of the Learning Platform
+ *
+ * returns all modules that can currently be taken
+ */
 export const useLearningPlatformModules = () => {
   const { learningPlatform, enabled } = useLearningPlatform();
 

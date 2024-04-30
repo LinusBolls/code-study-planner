@@ -44,6 +44,7 @@ export default function LoginModal({ onSubmit }: LoginModalProps) {
             showErrorMessage(
               "Login failed: " + (err as Error).message ?? "Unknown Error"
             );
+            setIsLoading(false);
           }
         }}
       >

@@ -3,14 +3,17 @@ import { QueryRes } from "code-university";
 import { useLearningPlatform } from "../useLearningPlatform";
 import { readFromCache } from "@/services/caching";
 
+/**
+ * used by the `My ECTS by Module Type` section on the `Dashboard` tab of the Learning Platform
+ */
 export const useLearningPlatformMyModuleData = () => {
   const { learningPlatform, enabled } = useLearningPlatform();
 
-  return useQuery<QueryRes<"myModuleData">>({
+  return useQuery<QueryRes<"myModuleData" | "studyPathReport">>({
     queryFn: async () => {
-      const data = await learningPlatform!.raw.query(
-        useLearningPlatformMyModuleDataQuery
-      );
+      const data = await learningPlatform!.raw.query<
+        "myModuleData" | "studyPathReport"
+      >(useLearningPlatformMyModuleDataQuery);
       return data;
     },
     queryKey: ["learningPlatform", "myModuleData"],
@@ -49,6 +52,15 @@ export const useLearningPlatformMyModuleDataQuery = `query myModuleData {
         ...MyECTSStatsData
         __typename
       }
+      __typename
+    }
+
+    studyPathReport {
+      user
+      modules
+      ects
+      handbook
+      semesterNumber
       __typename
     }
   }

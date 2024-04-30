@@ -5,6 +5,9 @@ import consumePaginatedQuery from "../consumePaginatedQuery";
 import { useLearningPlatform } from "../useLearningPlatform";
 import { readFromCache } from "@/services/caching";
 
+/**
+ * used by the `Assessments` tab of the Learning Platform
+ */
 export const useLearningPlatformAssessmentTable = () => {
   const { learningPlatform, enabled } = useLearningPlatform();
 
