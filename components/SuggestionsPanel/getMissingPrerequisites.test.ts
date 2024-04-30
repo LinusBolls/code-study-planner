@@ -2480,7 +2480,7 @@ describe("getMissingPrerequisites", () => {
     ];
 
     expect(
-      getMissingPrerequisites(semesters, highfiveSeHandbookV2Modules)
+      getMissingPrerequisites(semesters, highfiveSeHandbookV2Modules, [])
     ).toEqual([
       {
         type: "missing_prerequisite",

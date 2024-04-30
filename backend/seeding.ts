@@ -45,11 +45,52 @@ const moduleMeta: Record<string, { proficiency: number }> = {
   STS_04: { proficiency: 0 },
   STS_05: { proficiency: 0 },
 
+  ID_01: { proficiency: 0 },
+  ID_02: { proficiency: 0 },
+  ID_03: { proficiency: 0 },
+  ID_04: { proficiency: 0 },
+  ID_05: { proficiency: 0 },
+  ID_06: { proficiency: 0 },
+  ID_08: { proficiency: 0 },
+  ID_09: { proficiency: 0 },
+  ID_10: { proficiency: 0 },
+  ID_12: { proficiency: 0 },
+  ID_13: { proficiency: 0 },
+  ID_16: { proficiency: 0 },
+  ID_17: { proficiency: 0 },
+  ID_19: { proficiency: 0 },
+  ID_20: { proficiency: 0 },
+  ID_25: { proficiency: 0 },
+  ID_26: { proficiency: 0 },
+  ID_27: { proficiency: 0 },
+  ID_28: { proficiency: 0 },
+  ID_29: { proficiency: 0 },
+  ID_30: { proficiency: 0 },
+
+  PM_01: { proficiency: 0 },
+  PM_02: { proficiency: 0 },
+  PM_03: { proficiency: 0 },
+  PM_04: { proficiency: 0 },
+  PM_05: { proficiency: 0 },
+  PM_06: { proficiency: 0 },
+  PM_07: { proficiency: 0 },
+  PM_08: { proficiency: 0 },
+  PM_09: { proficiency: 0 },
   PM_11: { proficiency: 0 },
+  PM_12: { proficiency: 0 },
+  PM_13: { proficiency: 0 },
+  PM_14: { proficiency: 0 },
+  PM_15: { proficiency: 0 },
+  PM_16: { proficiency: 0 },
+  PM_17: { proficiency: 0 },
+  PM_18: { proficiency: 0 },
+  PM_19: { proficiency: 0 },
+  PM_20: { proficiency: 0 },
   PM_21: { proficiency: 0 },
   PM_22: { proficiency: 0 },
   PM_24: { proficiency: 0 },
   PM_25: { proficiency: 0 },
+  PM_26: { proficiency: 0 },
   PM_27: { proficiency: 0 },
   PM_28: { proficiency: 0 },
 
@@ -150,7 +191,7 @@ async function main() {
     CompulsoryElectivePairing
   );
 
-  const learningPlatform = await LearningPlatformClient.fromAccessToken(
+  const learningPlatform = await LearningPlatformClient.fromRefreshToken(
     env.lp.accessToken!
   );
 

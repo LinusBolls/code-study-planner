@@ -6,6 +6,8 @@ import {
 import { useEffect } from "react";
 import { create } from "zustand";
 
+let isActuallyLoadingTheSession = false;
+
 interface LearningPlatformStore {
   client: LearningPlatformClientType | null;
   hasAttemptedSessionLoad: boolean;
@@ -78,7 +80,7 @@ export const useLearningPlatform = () => {
   async function signInWithAccessToken(accessToken: string) {
     store.actions.startLoadingSession();
 
-    const client = await LearningPlatformClient.fromAccessToken(accessToken, {
+    const client = await LearningPlatformClient.fromRefreshToken(accessToken, {
       fetch: async (url, init) => {
         const res = await fetch("/api/learning-platform-proxy", {
           method: "POST",
@@ -115,10 +117,14 @@ export const useLearningPlatform = () => {
   }
 
   useEffect(() => {
-    if (!store.hasAttemptedSessionLoad) {
-      loadSessionFromStorage();
+    if (!store.hasAttemptedSessionLoad && !isActuallyLoadingTheSession) {
+      isActuallyLoadingTheSession = true;
+
+      loadSessionFromStorage().then(() => {
+        isActuallyLoadingTheSession = false;
+      });
     }
-  }, []);
+  }, [isActuallyLoadingTheSession]);
 
   async function signOut() {
     await asyncStorage.deleteItemAsync(storageKey);
