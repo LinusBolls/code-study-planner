@@ -14,7 +14,8 @@ import { useDragDropContext } from "./util/useDragDropContext";
 import useHeader from "./Header/useHeader";
 
 function HomePage() {
-  const { signInWithAccessToken, isAuthenticated } = useLearningPlatform();
+  const { signInWithAccessToken, isAuthenticated, isLoadingSession } =
+    useLearningPlatform();
 
   const { onDragStart, onDragEnd } = useDragDropContext();
 
@@ -39,7 +40,9 @@ function HomePage() {
 
   return (
     <>
-      {!isAuthenticated && <LoginModal onSubmit={signIn} />}
+      {!isAuthenticated && !isLoadingSession && (
+        <LoginModal onSubmit={signIn} />
+      )}
       <Layout className="h-screen">
         <Header {...useHeader()} />
         <Layout.Content className="h-full">

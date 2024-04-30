@@ -133,7 +133,7 @@ export const useLearningPlatform = () => {
   }
 
   return {
-    isLoadingSession,
+    isLoadingSession: isActuallyLoadingTheSession,
     /** whether we are authenticated and can make queries */
     enabled: !isDown && isAuthenticated,
     isDown,
