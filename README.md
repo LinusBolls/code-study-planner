@@ -52,3 +52,18 @@ study planner is open to PRs, issues, and general feedback!
 - drag and drop modules into your study plan
 - preview your study progress and bachelor's grade
 - get suggestions for your study plan
+
+## clean code principles
+
+### container/presentation pattern
+
+components are as logic-less as possible and only used for presentation. logic is handled in hooks (e.g. ECTSPanel, useECTSPanel)
+
+### encapsulation
+
+logic for interacting with logic like useChatSelection or useLearningPlatform are encapsulated to make it easier to consume.
+the StudyPlannerApiClient class is also an example of this, providing type safety for interacting with our api endpoints
+
+### interface segregation
+
+components don't depend on the inferred types of the database entities, but have their own types defined in `types.ts`, and are transformed into them in `mapping.ts`. this allows us to compute our own fields more easily and only have to react to learning platform api changes in a single place.
