@@ -132,6 +132,11 @@ export const useLearningPlatform = () => {
     store.actions.signOut();
   }
 
+  console.log("isAuthenticated:", isAuthenticated);
+  console.log("isLoadingSession:", isActuallyLoadingTheSession);
+  console.log("isDown:", isDown);
+  console.log("isUnderMaintanance:", isUnderMaintanance);
+
   return {
     isLoadingSession: isActuallyLoadingTheSession,
     /** whether we are authenticated and can make queries */
