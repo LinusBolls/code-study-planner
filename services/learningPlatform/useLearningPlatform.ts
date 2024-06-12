@@ -3,7 +3,7 @@ import {
   LearningPlatformClientOptions,
   LearningPlatformClientType,
 } from "code-university";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { create } from "zustand";
 
 let isActuallyLoadingTheSession = false;
@@ -124,14 +124,20 @@ export const useLearningPlatform = () => {
     }
   }
 
+  // dirty hack because we want to rerender when setting `isActuallyLoadingTheSession = false`
+  const [_, setShouldRerender] = useState(false);
+
   useEffect(() => {
     if (!store.hasAttemptedSessionLoad && !isActuallyLoadingTheSession) {
+      // TODO: why is this triggering more than once
       isActuallyLoadingTheSession = true;
 
       loadSessionFromStorage().then(() => {
         console.log("isActuallyLoadingTheSession = false");
 
         isActuallyLoadingTheSession = false;
+
+        setShouldRerender((prev) => !prev);
       });
     }
   }, [isActuallyLoadingTheSession]);
