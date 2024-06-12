@@ -98,13 +98,21 @@ export const useLearningPlatform = () => {
   }
 
   async function loadSessionFromStorage() {
+    console.log("[loadSessionFromStorage]");
     try {
       const storageValue = await asyncStorage.getItemAsync(storageKey);
+
+      console.log("[loadSessionFromStorage] storageValue:", storageValue);
+
       if (storageValue) {
         const session = JSON.parse(storageValue);
 
+        console.log("[loadSessionFromStorage] session:", session);
+
         await signInWithAccessToken(session.accessToken);
       } else {
+        console.log("[loadSessionFromStorage] aborting");
+
         store.actions.abortLoadingSession();
       }
     } catch (err) {
@@ -121,6 +129,8 @@ export const useLearningPlatform = () => {
       isActuallyLoadingTheSession = true;
 
       loadSessionFromStorage().then(() => {
+        console.log("isActuallyLoadingTheSession = false");
+
         isActuallyLoadingTheSession = false;
       });
     }
