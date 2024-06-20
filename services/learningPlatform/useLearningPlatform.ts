@@ -129,6 +129,12 @@ export const useLearningPlatform = () => {
 
   useEffect(() => {
     if (!store.hasAttemptedSessionLoad && !isActuallyLoadingTheSession) {
+      store.actions.startLoadingSession();
+      console.log(
+        "[useEffect] store.hasAttemptedSessionLoad:",
+        store.hasAttemptedSessionLoad,
+        isActuallyLoadingTheSession
+      );
       // TODO: why is this triggering more than once
       isActuallyLoadingTheSession = true;
 
