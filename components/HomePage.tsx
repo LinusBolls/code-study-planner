@@ -12,6 +12,7 @@ import Header from "@/components/Header";
 import withProviders from "@/components/withProviders";
 import { useDragDropContext } from "./util/useDragDropContext";
 import useHeader from "./Header/useHeader";
+import { LearningPlatformClient } from "code-university";
 
 function HomePage() {
   const { signInWithAccessToken, isAuthenticated, isLoadingSession } =
@@ -40,11 +41,22 @@ function HomePage() {
 
     await signInWithAccessToken(learningPlatformAccessToken);
   }
+  async function signInWithGoogleToken(googleToken: string) {
+    const client = await LearningPlatformClient.fromGoogleAccessToken(
+      googleToken
+    );
+    const learningPlatformAccessToken = client.accessToken!;
+
+    await signIn(learningPlatformAccessToken);
+  }
 
   return (
     <>
       {!isAuthenticated && !isLoadingSession && (
-        <LoginModal onSubmit={signIn} />
+        <LoginModal
+          onSubmit={signIn}
+          signInWithGoogleToken={signInWithGoogleToken}
+        />
       )}
       <Layout className="h-screen">
         <Header {...useHeader()} />

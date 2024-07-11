@@ -1,26 +1,26 @@
-import {
-  Button,
-  Collapse,
-  Flex,
-  Image,
-  Input,
-  Modal,
-  Steps,
-  Typography,
-} from "antd";
+import { Button, Flex, Image, Input, Modal, Steps, Typography } from "antd";
 import Link from "next/link";
 import { useState } from "react";
 import { useMessages } from "./util/useMessages";
+import { GoogleLogin } from "@react-oauth/google";
 
 export interface LoginModalProps {
   onSubmit: (token: string) => Promise<void>;
+  signInWithGoogleToken: (token: string) => Promise<void>;
 }
-export default function LoginModal({ onSubmit }: LoginModalProps) {
+export default function LoginModal({
+  onSubmit,
+  signInWithGoogleToken,
+}: LoginModalProps) {
   const [token, setToken] = useState("");
 
   const [isLoading, setIsLoading] = useState(false);
 
   const { showErrorMessage } = useMessages();
+
+  const showGoogleAuthOption =
+    typeof window !== "undefined" &&
+    localStorage.getItem("experimental:google-auth");
 
   return (
     <Modal
@@ -51,6 +51,25 @@ export default function LoginModal({ onSubmit }: LoginModalProps) {
         <Typography.Title level={2}>Welcome to Study Planner</Typography.Title>
         Thank you for using Study Planner! We just need one thing from you:
         <Flex vertical gap="medium">
+          {showGoogleAuthOption && (
+            <GoogleLogin
+              onSuccess={(credentialResponse) => {
+                const googleToken = credentialResponse.credential;
+
+                if (!googleToken) {
+                  console.error(
+                    "missing credential in credentialResponse:",
+                    credentialResponse
+                  );
+                } else {
+                  signInWithGoogleToken(googleToken);
+                }
+              }}
+              onError={() => {
+                console.log("google login Failed");
+              }}
+            />
+          )}
           <Input
             disabled={isLoading}
             type="password"
