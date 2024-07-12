@@ -80,9 +80,8 @@ function ModulesListSection({
             >
               {title}
             </Typography.Title>
-            {onAddItem && (
+            {onAddItem && showAddItemButton && (
               <Button
-                hidden={!showAddItemButton}
                 size="small"
                 type="text"
                 icon={<PlusOutlined />}
