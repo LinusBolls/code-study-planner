@@ -48,7 +48,7 @@ export default function Header({ isLoading = false, user }: HeaderProps) {
         </div>
         <Row>
           <Link
-            href="#"
+            href="/about"
             className="hover:bg-gray-100"
             style={{
               display: "flex",

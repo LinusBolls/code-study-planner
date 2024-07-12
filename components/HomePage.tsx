@@ -45,7 +45,7 @@ function HomePage() {
     const client = await LearningPlatformClient.fromGoogleAccessToken(
       googleToken
     );
-    const learningPlatformAccessToken = client.accessToken!;
+    const learningPlatformAccessToken = client.refreshToken!;
 
     await signIn(learningPlatformAccessToken);
   }

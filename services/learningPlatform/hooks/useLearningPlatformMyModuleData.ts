@@ -54,15 +54,6 @@ export const useLearningPlatformMyModuleDataQuery = `query myModuleData {
       }
       __typename
     }
-
-    studyPathReport {
-      user
-      modules
-      ects
-      handbook
-      semesterNumber
-      __typename
-    }
   }
   
   fragment MyECTSStatsData on MyECTSStats {
@@ -70,3 +61,13 @@ export const useLearningPlatformMyModuleDataQuery = `query myModuleData {
     totalECTSNeeded
     __typename
   }`;
+
+// this query used to be fine, but now returns an "Unauthorised" error
+// studyPathReport {
+//   user
+//   modules
+//   ects
+//   handbook
+//   semesterNumber
+//   __typename
+// }
