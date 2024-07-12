@@ -22,6 +22,7 @@
     "code-university": "^1.5.2",
     "dayjs": "^1.11.10",
     "fuzzy-search": "^3.2.1",
+    "gapi-script": "^1.2.0",
     "jose": "^5.2.3",
     "jsonpath-ts": "^0.1.1",
     "next": "14.1.3",

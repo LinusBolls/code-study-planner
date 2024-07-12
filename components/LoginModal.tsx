@@ -1,8 +1,9 @@
 import { Button, Flex, Image, Input, Modal, Steps, Typography } from "antd";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMessages } from "./util/useMessages";
 import { GoogleLogin } from "@react-oauth/google";
+import { gapi } from "gapi-script";
 
 export interface LoginModalProps {
   onSubmit: (token: string) => Promise<void>;
@@ -21,6 +22,38 @@ export default function LoginModal({
   const showGoogleAuthOption =
     typeof window !== "undefined" &&
     localStorage.getItem("experimental:google-auth");
+
+  useEffect(() => {
+    const initClient = async () => {
+      console.log("[initClient] step 1");
+
+      await gapi.client.init({
+        clientId:
+          "358660676559-02rrefr671bdi1chqtd3l0c44mc8jt9p.apps.googleusercontent.com",
+        scope: "email profile",
+      });
+      console.log("[initClient] step 2");
+
+      const authInstance = gapi.auth2.getAuthInstance();
+
+      console.log("[initClient] step 3");
+
+      if (authInstance.isSignedIn.get()) {
+        console.log("[initClient] step 4");
+
+        const currentUser = authInstance.currentUser.get();
+
+        console.log("[initClient] step 5");
+
+        const token = currentUser.getAuthResponse().access_token;
+
+        console.log("[initClient] Access Token:", token);
+      } else {
+        console.log("[initClient] step 4 failed");
+      }
+    };
+    gapi.load("client:auth2", initClient);
+  }, []);
 
   return (
     <Modal
