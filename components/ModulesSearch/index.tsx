@@ -88,6 +88,8 @@ export default function ModulesSearch({
   ];
   const activeTab = modulesTabs.find((tab) => tab.value === modulesTab);
 
+  const hasSearchQuery = (searchQuery?.length ?? 0) > 0;
+
   const rowRenderer: ListRowRenderer = ({ key, index, style }) => {
     if (index === 0) {
       return (
@@ -110,18 +112,23 @@ export default function ModulesSearch({
             value={searchQuery}
             onChange={(value) => onSearchQueryChange?.(value)}
             allowClear
-            options={[
-              {
-                label: "Some things you could search for",
-                options: getOptions([
-                  "se 10 ects",
-                  "fatma meawad",
-                  "requires project",
-                  "mandatory",
-                  "level 0",
-                ]),
-              },
-            ]}
+            options={
+              // don't show search suggestions if there is a search term because that would be annoying
+              hasSearchQuery
+                ? undefined
+                : [
+                    {
+                      label: "Some things you could search for",
+                      options: getOptions([
+                        "se 10 ects",
+                        "fatma meawad",
+                        "requires project",
+                        "mandatory",
+                        "level 0",
+                      ]),
+                    },
+                  ]
+            }
           />
           <Checkbox
             checked={onlyMandaryOrCompulsoryElective}

@@ -17,10 +17,12 @@ export const useUpdateSemesterModule = () => {
       >(api),
     mutationKey: ["studyPlanner", "studyPlan"],
     onMutate(variables) {
-      const prev: StudyPlan = queryClient.getQueryData([
+      const prev = queryClient.getQueryData<StudyPlan>([
         "studyPlanner",
         "studyPlan",
-      ])!;
+      ]);
+      if (!prev) return;
+
       for (const semester of prev.semesters) {
         semester.modules = variables[semester.id];
       }
@@ -30,5 +32,6 @@ export const useUpdateSemesterModule = () => {
       // TODO: rollback the optimistic update
       showErrorMessage("Failed to update study plan");
     },
+    retry: 2,
   });
 };
