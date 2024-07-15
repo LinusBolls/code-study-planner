@@ -98,21 +98,14 @@ export const useLearningPlatform = () => {
   }
 
   async function loadSessionFromStorage() {
-    console.log("[loadSessionFromStorage]");
     try {
       const storageValue = await asyncStorage.getItemAsync(storageKey);
-
-      console.log("[loadSessionFromStorage] storageValue:", storageValue);
 
       if (storageValue) {
         const session = JSON.parse(storageValue);
 
-        console.log("[loadSessionFromStorage] session:", session);
-
         await signInWithAccessToken(session.accessToken);
       } else {
-        console.log("[loadSessionFromStorage] aborting");
-
         store.actions.abortLoadingSession();
       }
     } catch (err) {
@@ -130,17 +123,10 @@ export const useLearningPlatform = () => {
   useEffect(() => {
     if (!store.hasAttemptedSessionLoad && !isActuallyLoadingTheSession) {
       store.actions.startLoadingSession();
-      console.log(
-        "[useEffect] store.hasAttemptedSessionLoad:",
-        store.hasAttemptedSessionLoad,
-        isActuallyLoadingTheSession
-      );
       // TODO: why is this triggering more than once
       isActuallyLoadingTheSession = true;
 
       loadSessionFromStorage().then(() => {
-        console.log("isActuallyLoadingTheSession = false");
-
         isActuallyLoadingTheSession = false;
 
         setShouldRerender((prev) => !prev);
@@ -153,11 +139,6 @@ export const useLearningPlatform = () => {
 
     store.actions.signOut();
   }
-
-  console.log("isAuthenticated:", isAuthenticated);
-  console.log("isLoadingSession:", isActuallyLoadingTheSession);
-  console.log("isDown:", isDown);
-  console.log("isUnderMaintanance:", isUnderMaintanance);
 
   return {
     isLoadingSession: isActuallyLoadingTheSession,

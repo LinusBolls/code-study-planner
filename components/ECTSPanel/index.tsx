@@ -1,9 +1,13 @@
-import { Divider, Flex, Statistic, Typography } from "antd";
+import { Button, Divider, Flex, Statistic, Switch, Typography } from "antd";
 import ECTSProgress, { ECTSProgressStep } from "../ECTSProgress";
 import { SemesterModule } from "@/components/util/types";
 import { getDepartment } from "@/data/departments";
 import Link from "antd/es/typography/Link";
 import { LP } from "code-university";
+import StatusCard from "./StatusCard";
+import StudyProgramLegend from "./StudyProgramLegend";
+import StatusText from "./StatusText";
+import { InfoCircleOutlined } from "@ant-design/icons";
 
 const isFailed = (module: SemesterModule) => {
   return (
@@ -36,12 +40,17 @@ export interface ECTSPanelProps {
   modules: SemesterModule[];
   averageGrade: number;
   isLoading?: boolean;
+
+  previewStudyPlan: boolean;
+  onPreviewStudyPlanChange: (value: boolean) => void;
 }
 export default function ECTSPanel({
   myModuleData,
   modules,
   averageGrade,
   isLoading = false,
+  previewStudyPlan,
+  onPreviewStudyPlanChange,
 }: ECTSPanelProps) {
   if (isLoading)
     return (
@@ -60,13 +69,42 @@ export default function ECTSPanel({
       </Flex>
     );
 
-  const totalEcts = modules.reduce(
+  const totalOrientationECTSNeeded =
+    myModuleData?.orientation.totalECTSNeeded ?? 0;
+
+  const totalOrientationECTS = myModuleData?.orientation.collectedECTS ?? 0;
+
+  const hasCompletedOrientation =
+    totalOrientationECTS >= totalOrientationECTSNeeded;
+
+  const totalCoreECTSNeeded =
+    (myModuleData?.mandatory.totalECTSNeeded ?? 0) +
+    (myModuleData?.compulsoryElective.totalECTSNeeded ?? 0) +
+    (myModuleData?.elective.totalECTSNeeded ?? 0) +
+    (myModuleData?.sts.totalECTSNeeded ?? 0);
+
+  const totalCoreECTS = modules.reduce(
     (acc, module) =>
-      module.module != null && !isFailed(module)
+      module.module != null &&
+      !module.module.moduleIdentifier?.startsWith("OS_") &&
+      !isFailed(module) &&
+      !(!previewStudyPlan && module.type === "planned")
         ? acc + module.module.ects
         : acc,
     0
   );
+
+  const hasCompletedCore = totalCoreECTS >= totalCoreECTSNeeded;
+
+  const totalSynthesisECTSNeeded =
+    (myModuleData?.thesis.totalECTSNeeded ?? 0) +
+    (myModuleData?.capstone.totalECTSNeeded ?? 0);
+
+  const totalSynthesisECTS =
+    (myModuleData?.thesis.collectedECTS ?? 0) +
+    (myModuleData?.capstone.collectedECTS ?? 0);
+
+  const hasCompletedSynthesis = totalSynthesisECTS >= totalSynthesisECTSNeeded;
 
   return (
     <Flex
@@ -79,157 +117,197 @@ export default function ECTSPanel({
         overflowY: "scroll",
       }}
     >
-      <div
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-
-          rowGap: "0.25rem",
-          columnGap: "1rem",
-        }}
-      >
-        <Flex gap="small" align="center">
-          <div
-            style={{
-              width: "0.5rem",
-              height: "0.5rem",
-              borderRadius: "50%",
-
-              backgroundColor: getDepartment("ID")!.color,
-            }}
-          />
-          <Typography.Text
-            style={{
-              fontSize: "0.875rem",
-            }}
+      <Flex vertical>
+        <Typography.Title level={5} style={{ margin: 0 }}>
+          Preview your study plan
+        </Typography.Title>
+        <Switch
+          style={{ width: "fit-content" }}
+          onChange={onPreviewStudyPlanChange}
+          value={previewStudyPlan}
+        />
+      </Flex>
+      <StudyProgramLegend />
+      <StatusCard
+        status={hasCompletedOrientation ? "success" : undefined}
+        disabled={hasCompletedOrientation}
+        title={
+          <>
+            Orientation Semester
+            <Button
+              type="link"
+              href="https://www.notion.so/codeuniversitywiki/Orientation-Semester-dd5226207b1440ddac7cb2338269ff5e"
+              target="_blank"
+              icon={<InfoCircleOutlined style={{ fontSize: "14px" }} />}
+              style={{
+                color: hasCompletedOrientation
+                  ? "rgba(0, 0, 0, 0.45)"
+                  : "rgba(0, 0, 0, 0.88)",
+              }}
+            />
+          </>
+        }
+        extra={
+          <StatusText
+            strong
+            status={hasCompletedOrientation ? "success" : "error"}
           >
-            Interaction Design
-          </Typography.Text>
-        </Flex>
-        <Flex gap="small" align="center">
-          <div
-            style={{
-              width: "0.5rem",
-              height: "0.5rem",
-              borderRadius: "50%",
-
-              backgroundColor: getDepartment("PM")!.color,
-            }}
-          />
-          <Typography.Text>Product Management</Typography.Text>
-        </Flex>
-        <Flex gap="small" align="center">
-          <div
-            style={{
-              width: "0.5rem",
-              height: "0.5rem",
-              borderRadius: "50%",
-
-              backgroundColor: getDepartment("SE")!.color,
-            }}
-          />
-          <Typography.Text>Software Engineering</Typography.Text>
-        </Flex>
-        <Flex gap="small" align="center">
-          <div
-            style={{
-              width: "0.5rem",
-              height: "0.5rem",
-              borderRadius: "50%",
-
-              backgroundColor: getDepartment("STS")!.color,
-            }}
-          />
-          <Typography.Text>STS</Typography.Text>
-        </Flex>
-        <Flex gap="small" align="center">
-          <div
-            style={{
-              width: "0.5rem",
-              height: "0.5rem",
-              borderRadius: "50%",
-
-              backgroundColor: getDepartment("IS")!.color,
-            }}
-          />
-          <Typography.Text>IS</Typography.Text>
-        </Flex>
-      </div>
-      <Statistic title="Total" value={totalEcts + " ECTS"} />
-      <ECTSProgress
-        title="Orientation Semester"
-        steps={modules
-          .filter(
-            (module) =>
-              module.module != null &&
-              !isFailed(module) &&
-              module.module.shortCode.startsWith("OS_")
-          )
-          .map(toStep)}
-        max={myModuleData?.orientation.totalECTSNeeded ?? 0}
-      />
-      <ECTSProgress
-        title="Mandatory Modules"
-        steps={modules
-          .filter(
-            (module) =>
-              module.module != null &&
-              !isFailed(module) &&
-              module.module.isMandatory &&
-              !module.module.shortCode.startsWith("OS_") &&
-              module.module.departmentId !== "STS"
-          )
-          .map(toStep)}
-        max={myModuleData?.mandatory.totalECTSNeeded ?? 0}
-      />
-      <ECTSProgress
-        title="Compulsory Elective Modules"
-        steps={modules
-          .filter(
-            (module) =>
-              module.module != null &&
-              !isFailed(module) &&
-              module.module.isCompulsoryElective
-          )
-          .map(toStep)}
-        max={myModuleData?.compulsoryElective.totalECTSNeeded ?? 0}
-      />
-      <ECTSProgress
-        title="Elective Modules"
-        steps={modules
-          .filter(
-            (module) =>
-              module.module != null &&
-              !isFailed(module) &&
-              !(module.module.isMandatory || module.module.isCompulsoryElective)
-          )
-          .map(toStep)}
-        max={myModuleData?.elective.totalECTSNeeded ?? 0}
-      />
-      <ECTSProgress
-        title="Mandatory STS Modules"
-        steps={modules
-          .filter(
-            (module) =>
-              module.module != null &&
-              !isFailed(module) &&
-              (module.module.isMandatory ||
-                module.module.isCompulsoryElective) &&
-              module.module.departmentId === "STS"
-          )
-          .map(toStep)}
-        max={myModuleData?.sts.totalECTSNeeded ?? 0}
-      />
-      <ECTSProgress
-        title="Thesis"
-        steps={[]}
-        max={myModuleData?.thesis.totalECTSNeeded ?? 0}
-      />
-      <ECTSProgress
-        title="Capstone Project"
-        steps={[]}
-        max={myModuleData?.capstone.totalECTSNeeded ?? 0}
-      />
+            {totalOrientationECTS} / {totalOrientationECTSNeeded} ECTS
+          </StatusText>
+        }
+      >
+        <ECTSProgress
+          title="Orientation Semester"
+          steps={modules
+            .filter(
+              (module) =>
+                module.module != null &&
+                !isFailed(module) &&
+                module.module.shortCode.startsWith("OS_") &&
+                !(!previewStudyPlan && module.type === "planned")
+            )
+            .map(toStep)}
+          max={myModuleData?.orientation.totalECTSNeeded ?? 0}
+          isRequired={true}
+          disabled={hasCompletedOrientation}
+        />
+      </StatusCard>
+      <StatusCard
+        status={hasCompletedCore ? "success" : undefined}
+        disabled={hasCompletedCore}
+        // title="Core Semesters"
+        extra={
+          <StatusText strong status={hasCompletedCore ? "success" : "error"}>
+            {totalCoreECTS} / {totalCoreECTSNeeded} ECTS
+          </StatusText>
+        }
+        title={
+          <>
+            Core Semesters
+            <Button
+              type="link"
+              href="https://www.notion.so/codeuniversitywiki/Core-Semester-0a4e8d50d1514fe2b219e13785d21124"
+              target="_blank"
+              icon={<InfoCircleOutlined style={{ fontSize: "14px" }} />}
+              style={{
+                color: hasCompletedCore
+                  ? "rgba(0, 0, 0, 0.45)"
+                  : "rgba(0, 0, 0, 0.88)",
+              }}
+            />
+          </>
+        }
+      >
+        <ECTSProgress
+          title="Mandatory Modules"
+          steps={modules
+            .filter(
+              (module) =>
+                module.module != null &&
+                !isFailed(module) &&
+                module.module.isMandatory &&
+                !module.module.shortCode.startsWith("OS_") &&
+                module.module.departmentId !== "STS" &&
+                !(!previewStudyPlan && module.type === "planned")
+            )
+            .map(toStep)}
+          max={myModuleData?.mandatory.totalECTSNeeded ?? 0}
+          isRequired={true}
+          disabled={hasCompletedCore}
+        />
+        <ECTSProgress
+          title="Compulsory Elective Modules"
+          steps={modules
+            .filter(
+              (module) =>
+                module.module != null &&
+                !isFailed(module) &&
+                module.module.isCompulsoryElective &&
+                !(!previewStudyPlan && module.type === "planned")
+            )
+            .map(toStep)}
+          max={myModuleData?.compulsoryElective.totalECTSNeeded ?? 0}
+          isRequired={true}
+          disabled={hasCompletedCore}
+        />
+        <ECTSProgress
+          title="Elective Modules"
+          steps={modules
+            .filter(
+              (module) =>
+                module.module != null &&
+                !isFailed(module) &&
+                !(
+                  module.module.isMandatory ||
+                  module.module.isCompulsoryElective
+                ) &&
+                !(!previewStudyPlan && module.type === "planned")
+            )
+            .map(toStep)}
+          max={myModuleData?.elective.totalECTSNeeded ?? 0}
+          isRequired={true}
+          disabled={hasCompletedCore}
+        />
+        <ECTSProgress
+          title="Mandatory STS Modules"
+          steps={modules
+            .filter(
+              (module) =>
+                module.module != null &&
+                !isFailed(module) &&
+                (module.module.isMandatory ||
+                  module.module.isCompulsoryElective) &&
+                module.module.departmentId === "STS" &&
+                !(!previewStudyPlan && module.type === "planned")
+            )
+            .map(toStep)}
+          max={myModuleData?.sts.totalECTSNeeded ?? 0}
+          isRequired={true}
+          disabled={hasCompletedCore}
+        />
+      </StatusCard>
+      <StatusCard
+        title={
+          <>
+            Synthesis Semesters
+            <Button
+              type="link"
+              href="https://www.notion.so/codeuniversitywiki/Synthesis-Semester-5a16d9427c4942f7813ce10648e0ad52"
+              target="_blank"
+              icon={<InfoCircleOutlined style={{ fontSize: "14px" }} />}
+              style={{
+                color: !hasCompletedCore
+                  ? "rgba(0, 0, 0, 0.45)"
+                  : "rgba(0, 0, 0, 0.88)",
+              }}
+            />
+          </>
+        }
+        extra={
+          <StatusText
+            strong
+            status={hasCompletedSynthesis ? "success" : "error"}
+          >
+            {totalSynthesisECTS} / {totalSynthesisECTSNeeded} ECTS
+          </StatusText>
+        }
+        disabled={!hasCompletedCore}
+      >
+        <ECTSProgress
+          title="Thesis"
+          steps={[]}
+          max={myModuleData?.thesis.totalECTSNeeded ?? 0}
+          isRequired={true}
+          disabled={!hasCompletedCore}
+        />
+        <ECTSProgress
+          title="Capstone Project"
+          steps={[]}
+          max={myModuleData?.capstone.totalECTSNeeded ?? 0}
+          isRequired={true}
+          disabled={!hasCompletedCore}
+        />
+      </StatusCard>
       <Divider />
       <Statistic
         title="Average grade based on your modules"
@@ -247,6 +325,12 @@ export default function ECTSPanel({
         </Link>
         .
       </Typography>
+      <Typography>
+        Pass / Fail modules don&apos;t get counted towards your bachelor&apos;s
+        grade at all.
+      </Typography>
+
+      <Typography.Title level={5}>Scholarships</Typography.Title>
       <Typography>
         Pass / Fail modules don&apos;t get counted towards your bachelor&apos;s
         grade at all.

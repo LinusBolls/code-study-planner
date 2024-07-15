@@ -1,4 +1,6 @@
+import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
 import { Flex, Tooltip, Typography } from "antd";
+import StatusText from "./ECTSPanel/StatusText";
 
 export interface ECTSProgressStep {
   id: string;
@@ -13,22 +15,33 @@ export interface ECTSProgressProps {
   trackColor?: string;
   max: number;
   steps: ECTSProgressStep[];
+  isRequired?: boolean;
+  disabled?: boolean;
 }
 export default function ECTSProgress({
   title,
   trackColor = "#F0F0F0",
   max,
   steps,
+  isRequired = false,
+  disabled = false,
 }: ECTSProgressProps) {
   const stepsSum = steps.reduce((sum, step) => sum + step.value, 0);
 
   return (
     <Flex vertical gap="small">
       <Flex justify="space-between" align="flex-end">
-        <Typography.Text strong>{title}</Typography.Text>
-        <Typography.Text type="secondary" style={{ fontSize: "0.75rem" }}>
-          {stepsSum} / {max} ECTS
+        <Typography.Text strong type={disabled ? "secondary" : undefined}>
+          {title}
         </Typography.Text>
+        <StatusText
+          disabled={disabled}
+          status={
+            isRequired ? (stepsSum >= max ? "success" : "error") : undefined
+          }
+        >
+          {stepsSum} / {max} ECTS
+        </StatusText>
       </Flex>
       <div
         style={{
@@ -40,6 +53,8 @@ export default function ECTSProgress({
 
           backgroundColor: trackColor,
           borderRadius: "0.25rem",
+
+          filter: disabled ? "saturate(95%) brightness(95%)" : undefined,
         }}
       >
         {steps.map((step) => {

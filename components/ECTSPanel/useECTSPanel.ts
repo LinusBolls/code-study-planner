@@ -6,6 +6,7 @@ import { getBachelorsGrade } from "@/services/learningPlatform/util/getBachelors
 import { useModulesInScope } from "../util/useModulesInScope";
 import dayjs from "dayjs";
 import { useLearningPlatformMyModuleData } from "@/services/learningPlatform/hooks/useLearningPlatformMyModuleData";
+import { useState } from "react";
 
 export function useECTSPanel(): ECTSPanelProps {
   const semestersListQuery = useSemestersList();
@@ -59,6 +60,8 @@ export function useECTSPanel(): ECTSPanelProps {
 
   const averageGrade = getBachelorsGrade(Object.values(gradeInputModules));
 
+  const [previewStudyPlan, setPreviewStudyPlan] = useState(false);
+
   return {
     myModuleData: myModuleDataQuery.data?.myModuleData,
     modules: modulesTakenByUser,
@@ -67,5 +70,7 @@ export function useECTSPanel(): ECTSPanelProps {
       semestersListQuery.isLoading ||
       myModuleDataQuery.isLoading ||
       modulesInScopeQuery.isLoading,
+    previewStudyPlan,
+    onPreviewStudyPlanChange: setPreviewStudyPlan,
   };
 }
