@@ -84,7 +84,7 @@ export default function Header({
                           top: "3px",
                         }}
                       />
-                      {!isMobile && <span>Linus Bolls</span>}
+                      <span>Linus Bolls</span>
                     </a>
                   ),
                   menu: {
@@ -244,14 +244,16 @@ export default function Header({
                 marginRight: "0.5rem",
               }}
             />
-            <Typography.Text
-              style={{
-                fontSize: "1rem",
-                lineHeight: "4rem",
-              }}
-            >
-              {user?.username}
-            </Typography.Text>
+            {!isMobile && (
+              <Typography.Text
+                style={{
+                  fontSize: "1rem",
+                  lineHeight: "4rem",
+                }}
+              >
+                {user?.username}
+              </Typography.Text>
+            )}
           </Button>
         </Dropdown>
       )}

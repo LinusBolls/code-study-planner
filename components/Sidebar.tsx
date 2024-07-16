@@ -1,15 +1,21 @@
-import { Badge, Button, Flex, Tabs, TabsProps } from "antd";
-import { useRef } from "react";
+import { Badge, Button, Flex, Modal, Tabs, TabsProps } from "antd";
+import { useRef, useState } from "react";
 import { ImperativePanelHandle, Panel } from "react-resizable-panels";
 import ECTSPanel from "./ECTSPanel";
 import SuggestionsPanel from "./SuggestionsPanel";
 import ModulesSearch from "./ModulesSearch";
 import { useModulesSearch } from "./ModulesSearch/useModulesSearch";
-import { DoubleLeftOutlined, DoubleRightOutlined } from "@ant-design/icons";
+import {
+  DoubleLeftOutlined,
+  DoubleRightOutlined,
+  SettingOutlined,
+} from "@ant-design/icons";
 import { urlParams } from "@/services/learningPlatform/util/urlParams";
 import { create } from "zustand";
 import { useECTSPanel } from "./ECTSPanel/useECTSPanel";
 import { useSuggestions } from "@/components/SuggestionsPanel/useSuggestionsPanel";
+import { EXPERIMENTAL_STUDY_PLAN_SHARING } from "@/experimental";
+import StudyPlanSettings from "./StudyPlanSettings";
 
 const isBrowser = typeof window !== "undefined";
 
@@ -46,6 +52,8 @@ export default function Sidebar({}: SidebarProps) {
   const sidebarCollapsedWidth = 3 * rem;
 
   const suggestionsPanelProps = useSuggestions();
+
+  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
 
   const items: TabsProps["items"] = [
     {
@@ -104,6 +112,7 @@ export default function Sidebar({}: SidebarProps) {
             padding: "0 1rem",
             height: "3rem",
             alignItems: "center",
+            justifyContent: "space-between",
           }}
         >
           <Button
@@ -122,6 +131,14 @@ export default function Sidebar({}: SidebarProps) {
                 : sidebarRef.current?.collapse()
             }
           />
+          {EXPERIMENTAL_STUDY_PLAN_SHARING && !isSidebarCollapsed && (
+            <Button
+              type="text"
+              size="small"
+              icon={<SettingOutlined style={{ color: "#8C8C8C" }} />}
+              onClick={() => setIsSettingsModalOpen(true)}
+            />
+          )}
         </Flex>
         {isSidebarCollapsed ? null : (
           <Flex
@@ -142,6 +159,20 @@ export default function Sidebar({}: SidebarProps) {
           </Flex>
         )}
       </Flex>
+      {isSettingsModalOpen && (
+        <Modal
+          onOk={() => setIsSettingsModalOpen(false)}
+          onCancel={() => setIsSettingsModalOpen(false)}
+          title="Share this study plan"
+          open={true} // onOk={handleOk}
+          width="72rem"
+          cancelButtonProps={{
+            style: { display: "none" },
+          }}
+        >
+          <StudyPlanSettings />
+        </Modal>
+      )}
     </Panel>
   );
 }
