@@ -1,9 +1,8 @@
 import { Button, Flex, Image, Input, Modal, Steps, Typography } from "antd";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useMessages } from "./util/useMessages";
 import { GoogleLogin } from "@react-oauth/google";
-import { gapi } from "gapi-script";
 import { EXPERIMENTAL_GOOGLE_AUTH } from "@/experimental";
 
 export interface LoginModalProps {
@@ -19,33 +18,6 @@ export default function LoginModal({
   const [isLoading, setIsLoading] = useState(false);
 
   const { showErrorMessage } = useMessages();
-
-  useEffect(() => {
-    const initClient = async () => {
-      await gapi.client.init({
-        clientId:
-          "358660676559-02rrefr671bdi1chqtd3l0c44mc8jt9p.apps.googleusercontent.com",
-        scope: "email profile",
-      });
-      const authInstance = gapi.auth2.getAuthInstance();
-
-      if (authInstance.isSignedIn.get()) {
-        const currentUser = authInstance.currentUser.get();
-
-        const token = currentUser.getAuthResponse().access_token;
-
-        console.log(
-          "[initClient] access token:",
-          currentUser,
-          currentUser.getAuthResponse(),
-          token
-        );
-      } else {
-        console.log("[initClient] step 4 failed");
-      }
-    };
-    gapi.load("client:auth2", initClient);
-  }, []);
 
   return (
     <Modal

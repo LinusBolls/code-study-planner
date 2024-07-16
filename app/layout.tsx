@@ -1,3 +1,4 @@
+import { config as codeUniversityConfig } from "code-university";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Metadata } from "next";
@@ -34,7 +35,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <GoogleOAuthProvider clientId="358660676559-02rrefr671bdi1chqtd3l0c44mc8jt9p.apps.googleusercontent.com">
+        <GoogleOAuthProvider
+          clientId={codeUniversityConfig.learningPlatformGoogleClientId}
+        >
           {children}
         </GoogleOAuthProvider>
       </body>

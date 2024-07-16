@@ -6,6 +6,14 @@ import {
 import { useEffect, useState } from "react";
 import { create } from "zustand";
 
+export const fetchProxy: typeof fetch = async (url, init) => {
+  const res = await fetch("/api/learning-platform-proxy", {
+    method: "POST",
+    body: JSON.stringify({ url, init }),
+  });
+  return res;
+};
+
 let isActuallyLoadingTheSession = false;
 
 interface LearningPlatformStore {
@@ -81,13 +89,7 @@ export const useLearningPlatform = () => {
     store.actions.startLoadingSession();
 
     const client = await LearningPlatformClient.fromRefreshToken(accessToken, {
-      fetch: async (url, init) => {
-        const res = await fetch("/api/learning-platform-proxy", {
-          method: "POST",
-          body: JSON.stringify({ url, init }),
-        });
-        return res;
-      },
+      fetch: fetchProxy,
     });
     store.actions.finishLoadingSession(client);
 

@@ -2,7 +2,10 @@
 
 import { DragDropContext } from "@hello-pangea/dnd";
 import { PanelGroup, PanelResizeHandle } from "react-resizable-panels";
-import { useLearningPlatform } from "@/services/learningPlatform/useLearningPlatform";
+import {
+  fetchProxy,
+  useLearningPlatform,
+} from "@/services/learningPlatform/useLearningPlatform";
 import LoginModal from "@/components/LoginModal";
 import Sidebar from "@/components/Sidebar";
 import { Layout } from "antd";
@@ -41,7 +44,8 @@ function HomePage() {
   }
   async function signInWithGoogleToken(googleToken: string) {
     const client = await LearningPlatformClient.fromGoogleAccessToken(
-      googleToken
+      googleToken,
+      { fetch: fetchProxy }
     );
     const learningPlatformAccessToken = client.refreshToken!;
 

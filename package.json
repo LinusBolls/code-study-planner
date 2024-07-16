@@ -20,7 +20,7 @@
     "@tanstack/react-virtual": "^3.3.0",
     "antd": "^5.15.2",
     "classnames": "^2.5.1",
-    "code-university": "^1.5.2",
+    "code-university": "^1.6.0",
     "dayjs": "^1.11.10",
     "fuzzy-search": "^3.2.1",
     "gapi-script": "^1.2.0",
