@@ -119,13 +119,7 @@ export default function ModulesSearch({
                 : [
                     {
                       label: "Some things you could search for",
-                      options: getOptions([
-                        "se 10 ects",
-                        "fatma meawad",
-                        "requires project",
-                        "mandatory",
-                        "level 0",
-                      ]),
+                      options: getOptions(["pm", "se 10 ects", "fatma meawad"]),
                     },
                   ]
             }
