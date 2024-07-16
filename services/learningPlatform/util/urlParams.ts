@@ -19,14 +19,26 @@ class UrlParams {
       return new URL(location.href).searchParams.get(key);
     }
   }
-  public set(key: Param, value: string | boolean) {
+  public setMany(record: Partial<Record<Param, string | boolean>>) {
     if (typeof window === "undefined") return;
 
     const url = new URL(location.href);
 
-    if (value)
+    for (const [key, value] of Object.entries(record)) {
+      if (value) {
+        url.searchParams.set(key, JSON.stringify(value).replace(/"/g, ""));
+      } else url.searchParams.delete(key);
+    }
+    history.pushState({}, "", url.toString());
+  }
+  public set(key: Param, value?: string | boolean) {
+    if (typeof window === "undefined") return;
+
+    const url = new URL(location.href);
+
+    if (value) {
       url.searchParams.set(key, JSON.stringify(value).replace(/"/g, ""));
-    else url.searchParams.delete(key);
+    } else url.searchParams.delete(key);
 
     history.pushState({}, "", url.toString());
   }

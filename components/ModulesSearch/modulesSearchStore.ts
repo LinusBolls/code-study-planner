@@ -113,15 +113,26 @@ export function useModulesSearchStore() {
   const store = modulesSearchStore();
 
   useEffect(() => {
-    urlParams.set("q", store.searchQuery);
-    urlParams.set("mandatory", store.filters.onlyMandatoryOrCompulsoryElective);
-    urlParams.set("alternative", store.filters.onlyAlternativeAssessment);
-    urlParams.set("early", store.filters.onlyEarlyAssessment);
-    urlParams.set("passed", store.filters.onlyPassed);
-    urlParams.set("failed", store.filters.onlyFailed);
-    urlParams.set("my-studies", store.filters.onlyMyStudies);
-    urlParams.set("my-semester", store.filters.onlyMySemester);
-    urlParams.set("not-taken", store.filters.onlyNotTaken);
+    urlParams.setMany({
+      q: store.searchQuery,
+      mandatory: store.filters.onlyMandatoryOrCompulsoryElective,
+      alternative: store.filters.onlyAlternativeAssessment,
+      early: store.filters.onlyEarlyAssessment,
+      passed: store.filters.onlyPassed,
+      failed: store.filters.onlyFailed,
+      "my-studies": store.filters.onlyMyStudies,
+      "my-semester": store.filters.onlyMySemester,
+      "not-taken": store.filters.onlyNotTaken,
+    });
+    // urlParams.set("q", store.searchQuery);
+    // urlParams.set("mandatory", store.filters.onlyMandatoryOrCompulsoryElective);
+    // urlParams.set("alternative", store.filters.onlyAlternativeAssessment);
+    // urlParams.set("early", store.filters.onlyEarlyAssessment);
+    // urlParams.set("passed", store.filters.onlyPassed);
+    // urlParams.set("failed", store.filters.onlyFailed);
+    // urlParams.set("my-studies", store.filters.onlyMyStudies);
+    // urlParams.set("my-semester", store.filters.onlyMySemester);
+    // urlParams.set("not-taken", store.filters.onlyNotTaken);
   }, [
     store.searchQuery,
     store.filters.onlyAlternativeAssessment,
