@@ -329,12 +329,6 @@ export default function ECTSPanel({
         Pass / Fail modules don&apos;t get counted towards your bachelor&apos;s
         grade at all.
       </Typography>
-
-      <Typography.Title level={5}>Scholarships</Typography.Title>
-      <Typography>
-        Pass / Fail modules don&apos;t get counted towards your bachelor&apos;s
-        grade at all.
-      </Typography>
     </Flex>
   );
 }
