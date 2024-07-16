@@ -16,6 +16,7 @@ import { useECTSPanel } from "./ECTSPanel/useECTSPanel";
 import { useSuggestions } from "@/components/SuggestionsPanel/useSuggestionsPanel";
 import { EXPERIMENTAL_STUDY_PLAN_SHARING } from "@/experimental";
 import StudyPlanSettings from "./StudyPlanSettings";
+import useScreenSize from "./util/useScreenSize";
 
 const isBrowser = typeof window !== "undefined";
 
@@ -59,7 +60,7 @@ export default function Sidebar({}: SidebarProps) {
     {
       key: "modules",
       label: "Modules",
-      children: <ModulesSearch {...useModulesSearch()} />,
+      children: <ModulesSearch {...useModulesSearch()} {...useScreenSize()} />,
     },
     {
       key: "suggestions",

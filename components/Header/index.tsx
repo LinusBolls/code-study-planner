@@ -124,8 +124,8 @@ export default function Header({
           ) : (
             <Image
               src="/fullLogo.svg"
-              width={180}
-              height={44}
+              width={isMobile ? 120 : 180}
+              height={isMobile ? 29 : 44}
               alt="Study Planner Logo"
               style={{
                 position: "relative",

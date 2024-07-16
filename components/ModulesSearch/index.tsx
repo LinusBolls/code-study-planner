@@ -1,6 +1,13 @@
 import { AutoSizer, List, ListRowRenderer } from "react-virtualized";
 import { Droppable } from "@hello-pangea/dnd";
-import { AutoComplete, Checkbox, Flex, Segmented, Typography } from "antd";
+import {
+  AutoComplete,
+  Checkbox,
+  Flex,
+  Segmented,
+  Select,
+  Typography,
+} from "antd";
 import ModulesListItem from "../ModulesListItem";
 import { Module } from "@/components/util/types";
 import { SegmentedLabeledOption, SegmentedOptions } from "antd/es/segmented";
@@ -32,6 +39,7 @@ export interface ModulesSearchProps {
 
   isLoading?: boolean;
   currentTabIsEmpty?: boolean;
+  isMobile?: boolean;
 }
 export default function ModulesSearch({
   modules = [],
@@ -54,6 +62,7 @@ export default function ModulesSearch({
 
   isLoading = false,
   currentTabIsEmpty = false,
+  isMobile = false,
 }: ModulesSearchProps) {
   const modulesTabs: (SegmentedLabeledOption & {
     description?: string;
@@ -95,12 +104,20 @@ export default function ModulesSearch({
       return (
         <Flex vertical gap="middle">
           <Flex vertical gap="small">
-            <Segmented
-              options={modulesTabs as SegmentedOptions<string>}
-              block
-              onChange={onModulesTabChange}
-              value={modulesTab}
-            />
+            {isMobile ? (
+              <Select
+                options={modulesTabs}
+                onChange={onModulesTabChange}
+                value={modulesTab}
+              />
+            ) : (
+              <Segmented
+                options={modulesTabs as SegmentedOptions<string>}
+                onChange={onModulesTabChange}
+                value={modulesTab}
+                block
+              />
+            )}
             {activeTab?.description && (
               <Typography.Text type="secondary">
                 {activeTab.description}
