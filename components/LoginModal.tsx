@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useMessages } from "./util/useMessages";
 import { GoogleLogin } from "@react-oauth/google";
 import { gapi } from "gapi-script";
+import { EXPERIMENTAL_GOOGLE_AUTH } from "@/experimental";
 
 export interface LoginModalProps {
   onSubmit: (token: string) => Promise<void>;
@@ -18,10 +19,6 @@ export default function LoginModal({
   const [isLoading, setIsLoading] = useState(false);
 
   const { showErrorMessage } = useMessages();
-
-  const showGoogleAuthOption =
-    typeof window !== "undefined" &&
-    localStorage.getItem("experimental:google-auth");
 
   useEffect(() => {
     const initClient = async () => {
@@ -84,7 +81,7 @@ export default function LoginModal({
         <Typography.Title level={2}>Welcome to Study Planner</Typography.Title>
         Thank you for using Study Planner! We just need one thing from you:
         <Flex vertical gap="medium">
-          {showGoogleAuthOption && (
+          {EXPERIMENTAL_GOOGLE_AUTH && (
             <GoogleLogin
               onSuccess={(credentialResponse) => {
                 const googleToken = credentialResponse.credential;
