@@ -22,29 +22,24 @@ export default function LoginModal({
 
   useEffect(() => {
     const initClient = async () => {
-      console.log("[initClient] step 1");
-
       await gapi.client.init({
         clientId:
           "358660676559-02rrefr671bdi1chqtd3l0c44mc8jt9p.apps.googleusercontent.com",
         scope: "email profile",
       });
-      console.log("[initClient] step 2");
-
       const authInstance = gapi.auth2.getAuthInstance();
 
-      console.log("[initClient] step 3");
-
       if (authInstance.isSignedIn.get()) {
-        console.log("[initClient] step 4");
-
         const currentUser = authInstance.currentUser.get();
-
-        console.log("[initClient] step 5");
 
         const token = currentUser.getAuthResponse().access_token;
 
-        console.log("[initClient] Access Token:", token);
+        console.log(
+          "[initClient] access token:",
+          currentUser,
+          currentUser.getAuthResponse(),
+          token
+        );
       } else {
         console.log("[initClient] step 4 failed");
       }
@@ -84,6 +79,7 @@ export default function LoginModal({
           {EXPERIMENTAL_GOOGLE_AUTH && (
             <GoogleLogin
               onSuccess={(credentialResponse) => {
+                console.log("received credentialResponse:", credentialResponse);
                 const googleToken = credentialResponse.credential;
 
                 if (!googleToken) {
@@ -91,12 +87,15 @@ export default function LoginModal({
                     "missing credential in credentialResponse:",
                     credentialResponse
                   );
+                  throw new Error(
+                    "Google login failed: missing credential in credentialsResponse"
+                  );
                 } else {
                   signInWithGoogleToken(googleToken);
                 }
               }}
               onError={() => {
-                console.log("google login Failed");
+                throw new Error("Google login failed");
               }}
             />
           )}

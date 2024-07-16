@@ -19,9 +19,6 @@ function HomePage() {
   const { signInWithAccessToken, isAuthenticated, isLoadingSession } =
     useLearningPlatform();
 
-  console.log("[home] isAuthenticated:", isAuthenticated);
-  console.log("[home] isLoadingSession:", isLoadingSession);
-
   const { onDragStart, onDragEnd } = useDragDropContext();
 
   async function signIn(learningPlatformAccessToken: string) {
