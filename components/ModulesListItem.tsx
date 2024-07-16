@@ -198,14 +198,13 @@ function InnerModulesListItem({
               width: "100%",
             }}
           >
-            <Row align="middle">
-              {/* <Typography.Text
-              type="secondary"
+            <Row
+              align="middle"
               style={{
-                overflow: "ellipsis",
-                whiteSpace: "nowrap",
+                overflow: "hidden",
+                flexWrap: "nowrap",
               }}
-            > */}
+            >
               <Tag
                 color={departmentColor}
                 style={{
@@ -220,11 +219,20 @@ function InnerModulesListItem({
               <Typography.Text
                 type="secondary"
                 style={{
-                  overflow: "ellipsis",
+                  overflow: "hidden",
                   whiteSpace: "nowrap",
                 }}
               >
-                <Link target="_blank" href={module.url}>
+                <Link
+                  target="_blank"
+                  href={module.url}
+                  style={{
+                    display: "block",
+
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                  }}
+                >
                   {module.title}
                 </Link>
               </Typography.Text>
@@ -247,7 +255,6 @@ function InnerModulesListItem({
                 </Popover>
               )}
             </Row>
-            {/* </Typography.Text> */}
 
             <Flex gap="small" align="center">
               <Typography.Text
