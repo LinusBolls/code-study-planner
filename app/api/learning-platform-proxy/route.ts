@@ -20,7 +20,10 @@ export async function POST(req: NextRequest) {
 
   const data = await fetchRes.json();
 
-  const res = NextResponse.json(data, { status: fetchRes.status });
+  const res = NextResponse.json(data, {
+    status: fetchRes.status,
+    headers: fetchRes.headers,
+  });
 
   res.headers.set("cache-control", "max-age=300, private");
 

@@ -32,6 +32,7 @@ function HomePage() {
       },
       body: JSON.stringify({ learningPlatformAccessToken }),
     });
+    console.log("signed in");
 
     if (!res.ok) {
       throw new Error("Failed to sign in");
@@ -43,11 +44,14 @@ function HomePage() {
     await signInWithAccessToken(learningPlatformAccessToken);
   }
   async function signInWithGoogleToken(googleToken: string) {
+    console.log("signInWithGoogleToken:", googleToken);
     const client = await LearningPlatformClient.fromGoogleAccessToken(
       googleToken,
       { fetch: fetchProxy }
     );
     const learningPlatformAccessToken = client.refreshToken!;
+
+    console.log("learningPlatformAccessToken:", learningPlatformAccessToken);
 
     await signIn(learningPlatformAccessToken);
   }
