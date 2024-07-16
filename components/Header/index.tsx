@@ -1,6 +1,20 @@
+import { EXPERIMENTAL_STUDY_PLAN_SHARING } from "@/experimental";
 import { clearCache } from "@/services/caching";
-import { PoweroffOutlined } from "@ant-design/icons";
-import { Avatar, Button, Dropdown, Layout, Row, Typography } from "antd";
+import {
+  BugOutlined,
+  ExperimentOutlined,
+  InfoCircleOutlined,
+  PoweroffOutlined,
+} from "@ant-design/icons";
+import {
+  Avatar,
+  Breadcrumb,
+  Button,
+  Dropdown,
+  Layout,
+  Row,
+  Typography,
+} from "antd";
 import Link from "antd/es/typography/Link";
 import Image from "next/image";
 
@@ -10,8 +24,13 @@ export interface HeaderProps {
     username: string;
     avatarUrl: string;
   } | null;
+  isMobile?: boolean;
 }
-export default function Header({ isLoading = false, user }: HeaderProps) {
+export default function Header({
+  isLoading = false,
+  user,
+  isMobile = false,
+}: HeaderProps) {
   return (
     <Layout.Header
       style={{
@@ -26,7 +45,15 @@ export default function Header({ isLoading = false, user }: HeaderProps) {
         zIndex: 1,
       }}
     >
-      <Row>
+      <Row
+        style={{
+          justifyContent: EXPERIMENTAL_STUDY_PLAN_SHARING
+            ? "space-between"
+            : undefined,
+
+          width: "100%",
+        }}
+      >
         <div
           style={{
             display: "flex",
@@ -35,16 +62,77 @@ export default function Header({ isLoading = false, user }: HeaderProps) {
             height: "100%",
           }}
         >
-          <Image
-            src="/fullLogo.svg"
-            width={180}
-            height={44}
-            alt="Study Planner Logo"
-            style={{
-              position: "relative",
-              right: "0.9rem",
-            }}
-          />
+          {EXPERIMENTAL_STUDY_PLAN_SHARING ? (
+            <Breadcrumb
+              items={[
+                {
+                  title: <a href="/study-plans">Study Plans</a>,
+                },
+                {
+                  title: (
+                    <a href="/users/6bc2df6e-382c-4835-8ecd-dca943cd59be">
+                      <img
+                        alt="Linus Bolls' Avatar"
+                        src={user?.avatarUrl}
+                        style={{
+                          width: "1rem",
+                          height: "1rem",
+                          borderRadius: "2px",
+                          marginRight: "6px",
+
+                          position: "relative",
+                          top: "3px",
+                        }}
+                      />
+                      {!isMobile && <span>Linus Bolls</span>}
+                    </a>
+                  ),
+                  menu: {
+                    items: [
+                      {
+                        key: "1",
+                        label: (
+                          <a href="/users/6bc2df6e-382c-4835-8ecd-dca943cd59be">
+                            Oskar Küch
+                          </a>
+                        ),
+                      },
+                      {
+                        key: "2",
+                        label: (
+                          <a href="/users/6bc2df6e-382c-4835-8ecd-dca943cd59be">
+                            Silas Maughn
+                          </a>
+                        ),
+                      },
+                      {
+                        key: "3",
+                        label: (
+                          <a href="/users/6bc2df6e-382c-4835-8ecd-dca943cd59be">
+                            Laurin Notemann
+                          </a>
+                        ),
+                      },
+                    ],
+                  },
+                },
+                {
+                  title: "BSc_SE_v2",
+                },
+              ]}
+            />
+          ) : (
+            <Image
+              src="/fullLogo.svg"
+              width={180}
+              height={44}
+              alt="Study Planner Logo"
+              style={{
+                position: "relative",
+                right: "0.9rem",
+              }}
+            />
+          )}
         </div>
         <Row>
           <Link
@@ -62,7 +150,7 @@ export default function Header({ isLoading = false, user }: HeaderProps) {
               color: "rgb(51, 51, 51)",
             }}
           >
-            About
+            {isMobile ? <InfoCircleOutlined /> : "About"}
           </Link>
           <Link
             target="_blank"
@@ -80,7 +168,7 @@ export default function Header({ isLoading = false, user }: HeaderProps) {
               color: "rgb(51, 51, 51)",
             }}
           >
-            Request a feature
+            {isMobile ? <ExperimentOutlined /> : "Request a feature"}
           </Link>
           <Link
             target="_blank"
@@ -98,7 +186,7 @@ export default function Header({ isLoading = false, user }: HeaderProps) {
               color: "rgb(51, 51, 51)",
             }}
           >
-            Report a bug
+            {isMobile ? <BugOutlined /> : "Report a bug"}
           </Link>
         </Row>
       </Row>

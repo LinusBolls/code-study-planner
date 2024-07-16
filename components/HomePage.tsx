@@ -13,6 +13,7 @@ import withProviders from "@/components/withProviders";
 import { useDragDropContext } from "./util/useDragDropContext";
 import useHeader from "./Header/useHeader";
 import { LearningPlatformClient } from "code-university";
+import useScreenSize from "./util/useScreenSize";
 
 function HomePage() {
   const { signInWithAccessToken, isAuthenticated, isLoadingSession } =
@@ -59,7 +60,7 @@ function HomePage() {
         />
       )}
       <Layout className="h-screen">
-        <Header {...useHeader()} />
+        <Header {...useHeader()} {...useScreenSize()} />
         <Layout.Content className="h-full">
           <DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
             <div className="bg-white w-full h-full flex">
