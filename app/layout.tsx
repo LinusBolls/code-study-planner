@@ -34,7 +34,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <GoogleOAuthProvider clientId="912378602813-h1773l42pcc0af4o64rc9butriur48bj.apps.googleusercontent.com">
+        <GoogleOAuthProvider clientId="358660676559-02rrefr671bdi1chqtd3l0c44mc8jt9p.apps.googleusercontent.com">
           {children}
         </GoogleOAuthProvider>
       </body>
