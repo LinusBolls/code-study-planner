@@ -7,7 +7,7 @@ import Image from "next/image";
 
 export default function Page() {
   return (
-    <Layout className="min-h-screen">
+    <Layout className="min-h-screen bg-white">
       <Header />
       <Layout.Content className="h-full max-w-prose left-10 relative">
         <Typography.Title level={1}>Study Planner for CODE</Typography.Title>

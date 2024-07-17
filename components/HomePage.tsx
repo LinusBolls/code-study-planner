@@ -64,7 +64,7 @@ function HomePage() {
           signInWithGoogleToken={signInWithGoogleToken}
         />
       )}
-      <Layout className="h-screen">
+      <Layout className="h-screen bg-white">
         <Header {...useHeader()} {...useScreenSize()} />
         <Layout.Content className="h-full">
           <DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
