@@ -16,16 +16,32 @@ export async function POST(req: NextRequest) {
       { status: 400 }
     );
   }
-  const fetchRes = await fetch(url, init);
+  try {
+    const fetchRes = await fetch(url, init);
 
-  const data = await fetchRes.json();
+    const data = await fetchRes.json();
 
-  const res = NextResponse.json(data, {
-    status: fetchRes.status,
-    headers: fetchRes.headers,
-  });
+    const res = NextResponse.json(data, {
+      status: fetchRes.status,
+      headers: fetchRes.headers,
+    });
+    res.headers.set("cache-control", "max-age=300, private");
 
-  res.headers.set("cache-control", "max-age=300, private");
-
-  return res;
+    return res;
+  } catch (err) {
+    try {
+      console.error(
+        `[learning-platform-proxy] failed to fetch learning platform:`,
+        // @ts-ignore
+        JSON.parse(init.body),
+        init.headers
+      );
+    } catch (err) {
+      console.error(
+        `[learning-platform-proxy] failed to fetch learning platform:`,
+        init
+      );
+    }
+    throw new Error("Failed to fetch learning platform");
+  }
 }
