@@ -85,12 +85,19 @@ export default function LoginModal({
                 <Button
                   type="link"
                   style={{
-                    fontSize: "0.75rem",
                     padding: 0,
                   }}
                   onClick={() => setAuthMethod("bearer_token")}
                 >
-                  Switch to bearer token login.
+                  <Typography.Text
+                    type="secondary"
+                    style={{
+                      fontSize: "0.75rem",
+                      textDecoration: "underline",
+                    }}
+                  >
+                    Switch to bearer token login.
+                  </Typography.Text>
                 </Button>
               </Typography.Text>
             </>
@@ -125,12 +132,19 @@ export default function LoginModal({
                 <Button
                   type="link"
                   style={{
-                    fontSize: "0.75rem",
                     padding: 0,
                   }}
                   onClick={() => setAuthMethod("google")}
                 >
-                  Switch to Google login.
+                  <Typography.Text
+                    type="secondary"
+                    style={{
+                      fontSize: "0.75rem",
+                      textDecoration: "underline",
+                    }}
+                  >
+                    Switch to Google login.
+                  </Typography.Text>
                 </Button>
               </Typography.Text>
             </>
