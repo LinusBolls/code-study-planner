@@ -122,16 +122,18 @@ export default function Header({
               ]}
             />
           ) : (
-            <Image
-              src="/fullLogo.svg"
-              width={isMobile ? 120 : 180}
-              height={isMobile ? 29 : 44}
-              alt="Study Planner Logo"
-              style={{
-                position: "relative",
-                right: "0.9rem",
-              }}
-            />
+            <a href="/" style={{ display: "flex" }}>
+              <Image
+                src="/fullLogo.svg"
+                width={isMobile ? 120 : 180}
+                height={isMobile ? 29 : 44}
+                alt="Study Planner Logo"
+                style={{
+                  position: "relative",
+                  right: "0.9rem",
+                }}
+              />
+            </a>
           )}
         </div>
         <Row>
