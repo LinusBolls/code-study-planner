@@ -414,6 +414,8 @@ function InnerModulesListItem({
                     {module.isGraded
                       ? assessment.passed
                         ? `Level ${assessment.level}, Grade ${assessment.grade}`
+                        : assessment.grade == null
+                        ? "Failed"
                         : `Failed, Grade ${assessment.grade}`
                       : assessment.passed
                       ? "Passed"
