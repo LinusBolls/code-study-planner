@@ -9,8 +9,8 @@ export default function Page() {
   return (
     <Layout className="min-h-screen bg-white">
       <Header />
-      <Layout.Content className="h-full max-w-prose left-10 relative">
-        <Typography.Title level={1}>Study Planner for CODE</Typography.Title>
+      <Layout.Content className="h-full max-w-prose left-10 relative ml-44 pb-20">
+        <Typography.Title level={1}>Study Planner</Typography.Title>
         <Typography.Paragraph>
           An editor to guide you towards your degree at CODE.
         </Typography.Paragraph>
@@ -31,22 +31,26 @@ export default function Page() {
           }}
         />
         <Typography.Paragraph>
-          Hi, I&apos;m Linus, a #highfive Software Engineering student at CODE,
-          and the creator of Study Planner. Study Planner is{" "}
-          <b>in no way officially associated with CODE</b>, I&apos;m the only
-          one working on it. This means that even though I do my best to give
-          you good advice, I don&apos;t take any responsibility for any
+          Hi, I&apos;m Linus, a #highfive Software Engineering student at CODE!
+        </Typography.Paragraph>
+        <Typography.Paragraph>
+          My goal with this app is to provide some sense of direction to the
+          very free-form learning experience at CODE, and to give students an
+          overview about where they&apos;re at in their studies. I&apos;ll add
+          more features in the future (star reviews for modules anyone? 👀), so
+          stay tuned 🤙
+        </Typography.Paragraph>
+        <Typography.Paragraph>
+          Study Planner is in no way officially associated with CODE, I&apos;m
+          the only one working on it. This means that even though I do my best
+          to give you good advice, I don&apos;t take any responsibility for
           inaccurate information. You should always reference official resources
-          before making important decisions regarding your studies. But you can
-          join the team! The goal of Study Planner is to provide some sense of
-          direction to the very free-form learning experience at CODE.
+          before making important decisions regarding your studies.
         </Typography.Paragraph>
 
-        <Typography.Title level={2}>
-          Technical stuff and data protection
-        </Typography.Title>
+        <Typography.Title level={2}>Technical details</Typography.Title>
         <Typography.Paragraph>
-          Study Planner uses a package built by me,{" "}
+          Study Planner uses a custom library,{" "}
           <Link
             href="https://github.com/linusbolls/code-university-sdk"
             target="_blank"
@@ -56,9 +60,19 @@ export default function Page() {
           , to interact with the GraphQL API of the CODE Learning Platform. This
           means that it&apos;s vulnerable to breaking changes.
         </Typography.Paragraph>
-        <Typography.Title level={2}>Contributing</Typography.Title>
         <Typography.Paragraph>
-          Right now it&apos;s just me, but you could join the team! Just contact
+          The planner itself is also{" "}
+          <Link
+            href="https://github.com/linusbolls/code-study-planner"
+            target="_blank"
+          >
+            open source
+          </Link>
+          .
+        </Typography.Paragraph>
+        <Typography.Title level={2}>How you can help</Typography.Title>
+        <Typography.Paragraph>
+          Right now it&apos;s just me, but you can join the team! Just contact
           me on{" "}
           <Link
             href="https://codeuniversity.slack.com/team/U02B3P8T6N7"
@@ -66,12 +80,19 @@ export default function Page() {
           >
             Slack
           </Link>
-          . If you don&apos;t want to commit this hard, just open a{" "}
+          . Or if you just want to propose a small change, feel free to open a{" "}
           <Link
             href="https://github.com/LinusBolls/code-study-planner"
             target="_blank"
           >
             pull request
+          </Link>{" "}
+          or an{" "}
+          <Link
+            href="https://github.com/LinusBolls/code-study-planner/issues/new"
+            target="_blank"
+          >
+            issue
           </Link>{" "}
           and I&apos;ll check it out.
         </Typography.Paragraph>
