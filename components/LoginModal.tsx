@@ -1,8 +1,18 @@
-import { Button, Flex, Image, Input, Modal, Steps, Typography } from "antd";
+import {
+  Button,
+  Flex,
+  Image,
+  Input,
+  Modal,
+  Row,
+  Steps,
+  Typography,
+} from "antd";
 import Link from "next/link";
 import { useState } from "react";
 import { useMessages } from "./util/useMessages";
 import { GoogleLogin } from "@react-oauth/google";
+import { LoadingOutlined } from "@ant-design/icons";
 
 export interface LoginModalProps {
   onSubmit: (token: string) => Promise<void>;
@@ -22,6 +32,8 @@ export default function LoginModal({
     "google" | "bearer_token" | "credentials"
   >("google");
 
+  const [isAuthInProgress, setIsAuthInProgress] = useState(false);
+
   return (
     <Modal
       open
@@ -29,6 +41,11 @@ export default function LoginModal({
       okButtonProps={{ style: { display: "none" } }}
       cancelButtonProps={{ style: { display: "none" } }}
       width="42rem"
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
     >
       <form
         onSubmit={async (e) => {
@@ -48,20 +65,57 @@ export default function LoginModal({
           }
         }}
       >
-        <Typography.Title level={2}>Welcome to Study Planner</Typography.Title>
-        <Flex vertical gap="middle">
+        <Flex
+          vertical
+          gap="middle"
+          align="center"
+          style={{
+            maxWidth: "32rem",
+
+            padding: "0.5rem 1.5rem",
+          }}
+        >
+          <Typography.Title
+            level={2}
+            style={{
+              textAlign: "center",
+              margin: 0,
+            }}
+          >
+            Welcome to Study Planner
+          </Typography.Title>
+
           {authMethod === "google" && (
             <>
-              <Typography.Text>
-                Thank you for using Study Planner! Use your CODE Google Account
-                to sign-in.
+              <Typography.Text
+                style={{
+                  marginBottom: "1rem",
+                  textAlign: "center",
+                }}
+              >
+                {isAuthInProgress ? (
+                  <LoadingOutlined
+                    spin
+                    size={48}
+                    style={{
+                      color: "rgb(22, 119, 255)",
+                    }}
+                  />
+                ) : (
+                  "Use your CODE Google Account to sign in."
+                )}
               </Typography.Text>
               <GoogleLogin
-                onSuccess={(credentialResponse) => {
-                  console.log(
-                    "received credentialResponse:",
-                    credentialResponse
-                  );
+                click_listener={() => setIsAuthInProgress(true)}
+                containerProps={{
+                  style: {
+                    display: "flex",
+                    justifyContent: "center",
+
+                    width: "100%",
+                  },
+                }}
+                onSuccess={async (credentialResponse) => {
                   const googleToken = credentialResponse.credential;
 
                   if (!googleToken) {
@@ -73,18 +127,30 @@ export default function LoginModal({
                       "Google login failed: missing credential in credentialsResponse"
                     );
                   } else {
-                    signInWithGoogleToken(googleToken);
+                    try {
+                      await signInWithGoogleToken(googleToken);
+                    } finally {
+                      setIsAuthInProgress(false);
+                    }
                   }
                 }}
                 onError={() => {
+                  setIsAuthInProgress(false);
+
                   throw new Error("Google login failed");
                 }}
               />
-              <Typography.Text type="secondary" style={{ fontSize: "0.75rem" }}>
-                Don&apos;t have a CODE Google account?{" "}
+              <Flex
+                justify="space-between"
+                style={{
+                  width: "100%",
+                }}
+              >
                 <Button
                   type="link"
                   style={{
+                    display: "flex",
+                    height: "1rem",
                     padding: 0,
                   }}
                   onClick={() => setAuthMethod("bearer_token")}
@@ -96,10 +162,28 @@ export default function LoginModal({
                       textDecoration: "underline",
                     }}
                   >
-                    Switch to bearer token login.
+                    Login with token
                   </Typography.Text>
                 </Button>
-              </Typography.Text>
+                <Link
+                  href="/about"
+                  style={{
+                    display: "flex",
+                    height: "1rem",
+                    padding: 0,
+                  }}
+                >
+                  <Typography.Text
+                    type="secondary"
+                    style={{
+                      fontSize: "0.75rem",
+                      textDecoration: "underline",
+                    }}
+                  >
+                    About
+                  </Typography.Text>
+                </Link>
+              </Flex>
             </>
           )}
           {authMethod === "bearer_token" && (
