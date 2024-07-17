@@ -88,7 +88,7 @@ export const useLearningPlatform = () => {
   async function signInWithAccessToken(accessToken: string) {
     store.actions.startLoadingSession();
 
-    const client = await LearningPlatformClient.fromRefreshToken(accessToken, {
+    const client = await LearningPlatformClient.fromAccessToken(accessToken, {
       fetch: fetchProxy,
     });
     store.actions.finishLoadingSession(client);

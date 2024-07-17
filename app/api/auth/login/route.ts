@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
 
   const body: { learningPlatformAccessToken: string } = await req.json();
 
-  const learningPlatform = await LearningPlatformClient.fromRefreshToken(
+  const learningPlatform = await LearningPlatformClient.fromAccessToken(
     body.learningPlatformAccessToken
   );
   const learningPlatformUser = await learningPlatform!.raw

@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
     const res = NextResponse.json(data, {
       status: fetchRes.status,
       headers: {
-        "Set-Cookie": fetchRes.headers.get("Set-Cookie")!,
+        "Set-Cookie": fetchRes.headers.getSetCookie().join("; "),
       },
     });
     res.headers.set("cache-control", "max-age=300, private");
