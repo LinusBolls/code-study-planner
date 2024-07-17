@@ -17,6 +17,7 @@ import { useDragDropContext } from "./util/useDragDropContext";
 import useHeader from "./Header/useHeader";
 import { LearningPlatformClient } from "code-university";
 import useScreenSize from "./util/useScreenSize";
+import { loginscreenMockSemesters } from "./util/mock";
 
 function HomePage() {
   const { signInWithAccessToken, isAuthenticated, isLoadingSession } =
@@ -69,9 +70,7 @@ function HomePage() {
           <DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
             <div className="bg-white w-full h-full flex">
               <PanelGroup autoSaveId="semester-planner" direction="horizontal">
-                <SemestersList {...useSemestersList()} />
-                <PanelResizeHandle />
-                <Sidebar />
+                {isAuthenticated ? <AuthedPage /> : <UnauthedPage />}
               </PanelGroup>
             </div>
           </DragDropContext>
@@ -81,3 +80,16 @@ function HomePage() {
   );
 }
 export default withProviders(HomePage);
+
+function AuthedPage() {
+  return (
+    <>
+      <SemestersList {...useSemestersList()} />
+      <PanelResizeHandle />
+      <Sidebar />
+    </>
+  );
+}
+function UnauthedPage() {
+  return <SemestersList semesters={loginscreenMockSemesters} />;
+}
