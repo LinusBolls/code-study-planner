@@ -70,7 +70,7 @@ export default function LoginModal({
           gap="middle"
           align="center"
           style={{
-            maxWidth: "32rem",
+            maxWidth: "34rem",
 
             padding: "0.5rem 1.5rem",
           }}
@@ -102,7 +102,7 @@ export default function LoginModal({
                     }}
                   />
                 ) : (
-                  "Use your CODE Google Account to sign in."
+                  <>Use your CODE Google Account to sign in.</>
                 )}
               </Typography.Text>
               <GoogleLogin
@@ -140,6 +140,27 @@ export default function LoginModal({
                   throw new Error("Google login failed");
                 }}
               />
+              <Typography.Text
+                type="secondary"
+                style={{
+                  fontSize: "0.75rem",
+                }}
+              >
+                By signing in, you grant Study Planner unrestricted access to
+                your{" "}
+                <Link href="https://app.code.berlin" target="_blank">
+                  <Typography.Text
+                    type="secondary"
+                    style={{
+                      fontSize: "0.75rem",
+                      textDecoration: "underline",
+                    }}
+                  >
+                    Learning Platform
+                  </Typography.Text>
+                </Link>{" "}
+                account.
+              </Typography.Text>
               <Flex
                 justify="space-between"
                 style={{
