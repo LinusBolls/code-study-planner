@@ -1,26 +1,28 @@
-"use client";
+"use server";
 
 import Header from "@/components/Header";
-import { Layout, Typography } from "antd";
+import { Layout } from "antd";
 import Link from "antd/es/typography/Link";
+import Title from "antd/lib/typography/Title";
+import Paragraph from "antd/lib/typography/Paragraph";
 import Image from "next/image";
 
-export default function Page() {
+export default async function Page() {
   return (
-    <Layout className="min-h-screen bg-white">
+    <Layout className="min-h-screen">
       <Header />
-      <Layout.Content className="h-full max-w-prose left-10 relative ml-44 pb-20">
-        <Typography.Title level={1}>Study Planner</Typography.Title>
-        <Typography.Paragraph>
+      <main className="h-full max-w-prose left-10 relative ml-44 pb-20">
+        <Title level={1}>Study Planner</Title>
+        <Paragraph>
           An editor to guide you towards your degree at CODE.
-        </Typography.Paragraph>
+        </Paragraph>
         <Image
           src="/studyPlannerScreenshot.webp"
           alt="Study Planner"
           width={512}
           height={256}
         />
-        <Typography.Title level={2}>About</Typography.Title>
+        <Title level={2}>About</Title>
         <Image
           src="/linus.webp"
           alt="Me"
@@ -30,26 +32,26 @@ export default function Page() {
             borderRadius: "99rem",
           }}
         />
-        <Typography.Paragraph>
+        <Paragraph>
           Hi, I&apos;m Linus, a #highfive Software Engineering student at CODE!
-        </Typography.Paragraph>
-        <Typography.Paragraph>
+        </Paragraph>
+        <Paragraph>
           My goal with this app is to provide some sense of direction to the
           very free-form learning experience at CODE, and to give students an
           overview about where they&apos;re at in their studies. I&apos;ll add
           more features in the future (star reviews for modules anyone? 👀), so
           stay tuned 🤙
-        </Typography.Paragraph>
-        <Typography.Paragraph>
+        </Paragraph>
+        <Paragraph>
           Study Planner is in no way officially associated with CODE, I&apos;m
           the only one working on it. This means that even though I do my best
           to give you good advice, I don&apos;t take any responsibility for
           inaccurate information. You should always reference official resources
           before making important decisions regarding your studies.
-        </Typography.Paragraph>
+        </Paragraph>
 
-        <Typography.Title level={2}>Technical details</Typography.Title>
-        <Typography.Paragraph>
+        <Title level={2}>Technical details</Title>
+        <Paragraph>
           Study Planner uses a custom library,{" "}
           <Link
             href="https://github.com/linusbolls/code-university-sdk"
@@ -59,8 +61,8 @@ export default function Page() {
           </Link>
           , to interact with the GraphQL API of the CODE Learning Platform. This
           means that it&apos;s vulnerable to breaking changes.
-        </Typography.Paragraph>
-        <Typography.Paragraph>
+        </Paragraph>
+        <Paragraph>
           The planner itself is also{" "}
           <Link
             href="https://github.com/linusbolls/code-study-planner"
@@ -69,9 +71,9 @@ export default function Page() {
             open source
           </Link>
           .
-        </Typography.Paragraph>
-        <Typography.Title level={2}>How you can help</Typography.Title>
-        <Typography.Paragraph>
+        </Paragraph>
+        <Title level={2}>How you can help</Title>
+        <Paragraph>
           Right now it&apos;s just me, but you can join the team! Just contact
           me on{" "}
           <Link
@@ -95,8 +97,8 @@ export default function Page() {
             issue
           </Link>{" "}
           and I&apos;ll check it out.
-        </Typography.Paragraph>
-      </Layout.Content>
+        </Paragraph>
+      </main>
     </Layout>
   );
 }

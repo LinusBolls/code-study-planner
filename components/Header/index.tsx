@@ -1,3 +1,5 @@
+"use client";
+
 import { EXPERIMENTAL_STUDY_PLAN_SHARING } from "@/experimental";
 import { clearCache } from "@/services/caching";
 import {

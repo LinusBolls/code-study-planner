@@ -4,6 +4,7 @@ import "./globals.css";
 import { Metadata } from "next";
 import { env } from "@/backend/env";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import { AntdRegistry } from "@ant-design/nextjs-registry";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -38,7 +39,7 @@ export default function RootLayout({
         <GoogleOAuthProvider
           clientId={codeUniversityConfig.learningPlatformGoogleClientId}
         >
-          {children}
+          <AntdRegistry>{children}</AntdRegistry>
         </GoogleOAuthProvider>
       </body>
     </html>

@@ -1,19 +1,20 @@
-"use client";
+"use server";
 
 import Header from "@/components/Header";
-import { ExportOutlined } from "@ant-design/icons";
-import { Layout, Typography } from "antd";
+import { Layout } from "antd";
 import Link from "antd/es/typography/Link";
+import Title from "antd/lib/typography/Title";
+import Paragraph from "antd/lib/typography/Paragraph";
 
-export default function Page() {
+export default async function Page() {
   return (
-    <Layout className="min-h-screen bg-white">
+    <Layout className="min-h-screen">
       <Header />
-      <Layout.Content className="h-full max-w-prose left-10 relative ml-44 pb-20">
-        <Typography.Title level={1}>Privacy policy</Typography.Title>
-        <Typography.Paragraph>Last updated July 18th 2024</Typography.Paragraph>
+      <main className="h-full max-w-prose left-10 relative ml-44 pb-20">
+        <Title level={1}>Privacy policy</Title>
+        <Paragraph>Last updated July 18th 2024</Paragraph>
         <br />
-        <Typography.Paragraph>
+        <Paragraph>
           The Study Planner team is passionate about consumer protection. Please
           don&apos;t hesitate to reach out to us regarding your rights as a
           user. We also encourage you to take a look at the{" "}
@@ -24,37 +25,38 @@ export default function Page() {
             source code
           </Link>{" "}
           in order to verify the technical claims listed here.
-        </Typography.Paragraph>
-        <Typography.Title level={2} id="data-controller">
+        </Paragraph>
+
+        <Title level={2} id="data-controller">
           Data controller
-        </Typography.Title>
-        <Typography.Paragraph
+        </Title>
+        <Paragraph
           style={{
             whiteSpace: "pre",
           }}
         >
           {`Linus Bolls (linus.bolls@code.berlin)\nCODE University of Applied Sciences\nKarl-Marx-Straße 101\n12043 Berlin\nGermany`}
-        </Typography.Paragraph>
-        <Typography.Title id="data-processing" level={2}>
+        </Paragraph>
+        <Title id="data-processing" level={2}>
           Data collection and processing
-        </Typography.Title>
-        <Typography.Title level={3} id="data-processing-vercel">
+        </Title>
+        <Title level={3} id="data-processing-vercel">
           Vercel{" "}
           {/* <Link href="#" target="_blank">
             <ExportOutlined />
           </Link> */}
-        </Typography.Title>
-        <Typography.Paragraph>
+        </Title>
+        <Paragraph>
           A cloud provider we use for web hosting. The server our website,
           including backend, runs on is located in Frankfurt, Germany.{" "}
           <Link href="https://vercel.com/legal/privacy-policy" target="_blank">
             Relevant privacy policy
           </Link>
-        </Typography.Paragraph>
-        <Typography.Title level={3} id="data-processing-scaleway">
+        </Paragraph>
+        <Title level={3} id="data-processing-scaleway">
           Scaleway
-        </Typography.Title>
-        <Typography.Paragraph>
+        </Title>
+        <Paragraph>
           A cloud provider we use for hosting our SQL database. The server our
           database runs on is located in Amsterdam, Netherlands.{" "}
           <Link
@@ -63,11 +65,11 @@ export default function Page() {
           >
             Relevant privacy policy
           </Link>
-        </Typography.Paragraph>
-        <Typography.Title level={3} id="data-processing-sentry">
+        </Paragraph>
+        <Title level={3} id="data-processing-sentry">
           Sentry
-        </Typography.Title>
-        <Typography.Paragraph>
+        </Title>
+        <Paragraph>
           Used for automated error reports. The servers our Sentry project runs
           on are located in the European Union. Sentry receives logs about you
           including date and time of access, your ip address, and information
@@ -76,11 +78,11 @@ export default function Page() {
           <Link href="https://sentry.io/privacy/" target="_blank">
             Relevant privacy policy
           </Link>
-        </Typography.Paragraph>
-        <Typography.Title level={3} id="data-processing-learning-platform">
+        </Paragraph>
+        <Title level={3} id="data-processing-learning-platform">
           Learning platform
-        </Typography.Title>
-        <Typography.Paragraph>
+        </Title>
+        <Paragraph>
           When you sign into Study Planner using Google SSO or a bearer token,
           we use the same authentication mechanism as the Learning Platform.
           <br />
@@ -89,20 +91,20 @@ export default function Page() {
           them both from your browser and from our own servers. This token gives
           us unrestricted access to your LP account and doesn&apos;t get stored
           on our servers.
-        </Typography.Paragraph>
-        <Typography.Paragraph>
+        </Paragraph>
+        <Paragraph>
           We never modify any of your data stored by the Learning Platform, we
           just access it. This may change in the future as we expand the scope
           of Study Planner to allow users to e.g. sign up for modules and
           assessments.
-        </Typography.Paragraph>
-        <Typography.Paragraph>
+        </Paragraph>
+        <Paragraph>
           Requests we make from your browser to the LP servers get proxied over
           our own servers. This means that we have temporary access to all data
           the Study Planner requests from the LP as the data passes through our
           servers. Most of this data doesn&apos;t get permanently stored.
-        </Typography.Paragraph>
-        <Typography.Paragraph>
+        </Paragraph>
+        <Paragraph>
           Data we request from the LP in your name and have <b>temporary</b>{" "}
           access to includes:
           <ul>
@@ -113,8 +115,8 @@ export default function Page() {
               including assessment results
             </li>
           </ul>
-        </Typography.Paragraph>
-        <Typography.Paragraph>
+        </Paragraph>
+        <Paragraph>
           Data we <b>permanently</b> store in our database includes:
           <ul>
             <li>
@@ -126,15 +128,15 @@ export default function Page() {
           </ul>
           Both of these lists are subject to change as we add new features to
           the Study Planner.
-        </Typography.Paragraph>
-        <Typography.Paragraph>
+        </Paragraph>
+        <Paragraph>
           You can find the privacy policy of the learning platform attached to
           the email with your study contract you got from CODE back when you
           enrolled. Search your emails for &quot;CODE Study Contract&quot;.
-        </Typography.Paragraph>
-        {/* <Typography.Title level={3} id="cookies-and-tracking">
+        </Paragraph>
+        {/* <Title level={3} id="cookies-and-tracking">
           Cookies and tracking
-        </Typography.Title>
+        </Title>
         <table style={{ borderCollapse: "collapse" }}>
           <tr>
             <th style={{ padding: "1rem" }}>Cookie</th>
@@ -164,17 +166,17 @@ export default function Page() {
         We also store Learning Platform data locally to speed up the page
         loading. This data can be found in the local storage, with the keys
         being prefixed with `cache:`. */}
-        <Typography.Title level={2} id="data-subject-rights">
+        <Title level={2} id="data-subject-rights">
           Your data subject rights
-        </Typography.Title>
-        <Typography.Paragraph>
+        </Title>
+        <Paragraph>
           As defined in{" "}
           <Link href="https://gdpr-info.eu/art-15-gdpr/" target="_blank">
             articles 15 - 21 of the GDPR
           </Link>
           , you have the following rights:
-        </Typography.Paragraph>
-        <Typography.Paragraph>
+        </Paragraph>
+        <Paragraph>
           <ul>
             <li>
               <b>Right of Access (Article 15)</b> You have the right to obtain
@@ -213,8 +215,8 @@ export default function Page() {
               providing a reason.
             </li>
           </ul>
-        </Typography.Paragraph>
-      </Layout.Content>
+        </Paragraph>
+      </main>
     </Layout>
   );
 }
