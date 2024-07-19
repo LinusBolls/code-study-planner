@@ -17,8 +17,12 @@ import { LearningPlatformClient } from "code-university";
 import { loginscreenMockSemesters } from "./util/mock";
 
 export default function HomePage() {
-  const { signInWithAccessToken, isAuthenticated, isLoadingSession } =
-    useLearningPlatform();
+  const {
+    signInWithAccessToken,
+    isAuthenticated,
+    isLoadingSession,
+    isSignedOut,
+  } = useLearningPlatform();
 
   const { onDragStart, onDragEnd } = useDragDropContext();
 
@@ -55,7 +59,7 @@ export default function HomePage() {
 
   return (
     <>
-      {!isAuthenticated && !isLoadingSession && (
+      {((!isAuthenticated && !isLoadingSession) || isSignedOut) && (
         <LoginModal
           onSubmit={signIn}
           signInWithGoogleToken={signInWithGoogleToken}

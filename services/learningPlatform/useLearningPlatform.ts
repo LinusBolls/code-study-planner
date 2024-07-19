@@ -85,6 +85,11 @@ export const useLearningPlatform = () => {
   const isDown = noNetwork || isUnderMaintanance;
   const isLoadingSession = store.isLoadingSession;
 
+  const isSignedOut =
+    typeof window === "undefined"
+      ? true
+      : localStorage.getItem(storageKey) == null;
+
   async function signInWithAccessToken(accessToken: string) {
     store.actions.startLoadingSession();
 
@@ -151,6 +156,7 @@ export const useLearningPlatform = () => {
     isAuthenticated,
     accessToken: store.client?.accessToken!,
     learningPlatform: store.client!,
+    isSignedOut,
 
     signInWithAccessToken,
     signOut,
