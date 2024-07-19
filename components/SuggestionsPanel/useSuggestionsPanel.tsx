@@ -29,9 +29,13 @@ const ModuleLink = ({ module }: { module?: LP.Module | null | Module }) => (
  * generates the contents of the `Suggestions` panel based on the user's session and their study plan
  */
 export function useSuggestions() {
-  const { semesters } = useSemestersList();
+  const { semesters, isLoading: isSemestersListLoading } = useSemestersList();
 
-  const { modules, deprecatedModules } = useModulesInScope();
+  const {
+    modules,
+    deprecatedModules,
+    isLoading: isModulesInScopeLoading,
+  } = useModulesInScope();
 
   const currentUserQuery = useLearningPlatformCurrentUser();
 
@@ -209,5 +213,10 @@ export function useSuggestions() {
   return {
     suggestions,
     applyFix,
+    isLoading:
+      isSemestersListLoading ||
+      isModulesInScopeLoading ||
+      currentUserQuery.isLoading ||
+      modulesMetaQuery.isLoading,
   };
 }

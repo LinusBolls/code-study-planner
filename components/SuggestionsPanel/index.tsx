@@ -5,11 +5,28 @@ import { Suggestion, SuggestionFix } from "./issues";
 export interface SuggestionsPanelProps {
   suggestions: Suggestion[];
   applyFix: (args: SuggestionFix) => void;
+  isLoading?: boolean;
 }
 export default function SuggestionsPanel({
   suggestions,
   applyFix,
+  isLoading = false,
 }: SuggestionsPanelProps) {
+  if (isLoading)
+    return (
+      <Flex
+        vertical
+        gap="middle"
+        style={{
+          height: "calc(100vh - 10rem)",
+          padding: "1rem 1.5rem 0 1.5rem",
+          overflowY: "scroll",
+        }}
+      >
+        <Typography style={{ paddingTop: "5rem" }}>Loading...</Typography>
+      </Flex>
+    );
+
   return (
     <Flex
       vertical

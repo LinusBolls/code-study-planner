@@ -8,6 +8,7 @@ import { useModulesSearch } from "./ModulesSearch/useModulesSearch";
 import {
   DoubleLeftOutlined,
   DoubleRightOutlined,
+  LoadingOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
 import { urlParams } from "@/services/learningPlatform/util/urlParams";
@@ -67,13 +68,15 @@ export default function Sidebar({}: SidebarProps) {
       label: (
         <Flex gap="0.25rem">
           Suggestions
-          <Badge
-            count={suggestionsPanelProps.suggestions.length}
-            color="#E6E6E6"
-            style={{
-              color: "#5D5D5D",
-            }}
-          />
+          {!suggestionsPanelProps.isLoading && (
+            <Badge
+              count={suggestionsPanelProps.suggestions.length}
+              color="#E6E6E6"
+              style={{
+                color: "#5D5D5D",
+              }}
+            />
+          )}
         </Flex>
       ),
       children: <SuggestionsPanel {...suggestionsPanelProps} />,

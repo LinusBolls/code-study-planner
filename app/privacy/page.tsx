@@ -80,7 +80,7 @@ export default async function Page() {
           </Link>
         </Paragraph>
         <Title level={3} id="data-processing-learning-platform">
-          Learning platform
+          CODE Learning platform
         </Title>
         <Paragraph>
           When you sign into Study Planner using Google SSO or a bearer token,

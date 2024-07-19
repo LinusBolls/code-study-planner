@@ -1,4 +1,4 @@
-import { Flex } from "antd";
+import { Button, Flex, Typography } from "antd";
 import { Panel } from "react-resizable-panels";
 import SemestersListSkeletonLoader from "./SemestersListSkeletonLoader";
 import { Semester } from "@/components/util/types";
@@ -79,6 +79,10 @@ export default function SemestersList({
           gap="2rem"
           style={{
             padding: "1.5rem",
+            minWidth:
+              !isLoading && Object.values(semesters).length === 0
+                ? "100%"
+                : undefined,
             ...(isZoomedOut
               ? {
                   transformOrigin: "top left",
@@ -88,6 +92,25 @@ export default function SemestersList({
           }}
         >
           {isLoading && <SemestersListSkeletonLoader />}
+          {!isLoading && Object.values(semesters).length === 0 && (
+            <Typography.Text
+              type="secondary"
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                textAlign: "center",
+
+                width: "100%",
+                gap: "1rem",
+              }}
+            >
+              Failed to load semesters, this isn&apos;t supposed to happen.
+              Please try refreshing the page.{" "}
+              <Button onClick={() => window.location.reload()}>Refresh</Button>
+            </Typography.Text>
+          )}
           {Object.values(semesters).map((semester, idx) => (
             <SemesterCard
               key={semester.id}
