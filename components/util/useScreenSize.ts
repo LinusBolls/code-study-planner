@@ -1,9 +1,13 @@
+"use client";
+
 import { useState, useEffect } from "react";
+
+const isPrerender = typeof window === "undefined";
 
 const useScreenSize = () => {
   const [screenSize, setScreenSize] = useState({
-    width: window.innerWidth,
-    height: window.innerHeight,
+    width: isPrerender ? 0 : window.innerWidth,
+    height: isPrerender ? 0 : window.innerHeight,
   });
 
   useEffect(() => {

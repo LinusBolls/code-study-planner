@@ -11,15 +11,12 @@ import Sidebar from "@/components/Sidebar";
 import { Layout } from "antd";
 import SemestersList from "@/components/SemestersList";
 import { useSemestersList } from "@/components/SemestersList/useSemestersList";
-import Header from "@/components/Header";
-import withProviders from "@/components/withProviders";
+import { StatefulHeader } from "@/components/Header";
 import { useDragDropContext } from "./util/useDragDropContext";
-import useHeader from "./Header/useHeader";
 import { LearningPlatformClient } from "code-university";
-import useScreenSize from "./util/useScreenSize";
 import { loginscreenMockSemesters } from "./util/mock";
 
-function HomePage() {
+export default function HomePage() {
   const { signInWithAccessToken, isAuthenticated, isLoadingSession } =
     useLearningPlatform();
 
@@ -65,7 +62,7 @@ function HomePage() {
         />
       )}
       <Layout className="h-screen">
-        <Header {...useHeader()} {...useScreenSize()} />
+        <StatefulHeader />
         <Layout.Content className="h-full">
           <DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
             <div className="bg-white w-full h-full flex">
@@ -79,7 +76,6 @@ function HomePage() {
     </>
   );
 }
-export default withProviders(HomePage);
 
 function AuthedPage() {
   return (

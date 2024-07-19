@@ -5,6 +5,7 @@ import { Metadata } from "next";
 import { env } from "@/backend/env";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
+import { ConfigProvider, ThemeConfig } from "antd";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -28,6 +29,17 @@ export const metadata: Metadata = {
   },
 };
 
+const antTheme: ThemeConfig = {
+  token: {
+    borderRadius: 2,
+  },
+  components: {
+    Button: {
+      // borderRadius: 0,
+    },
+  },
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -39,7 +51,9 @@ export default function RootLayout({
         <GoogleOAuthProvider
           clientId={codeUniversityConfig.learningPlatformGoogleClientId}
         >
-          <AntdRegistry>{children}</AntdRegistry>
+          <AntdRegistry>
+            <ConfigProvider theme={antTheme}>{children}</ConfigProvider>
+          </AntdRegistry>
         </GoogleOAuthProvider>
       </body>
     </html>

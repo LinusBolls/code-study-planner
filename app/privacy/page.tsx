@@ -1,15 +1,18 @@
 "use server";
 
-import Header from "@/components/Header";
+import { StatefulHeader } from "@/components/Header";
 import { Layout } from "antd";
 import Link from "antd/es/typography/Link";
 import Title from "antd/lib/typography/Title";
 import Paragraph from "antd/lib/typography/Paragraph";
+import { WithProviders } from "@/components/withProviders";
 
 export default async function Page() {
   return (
     <Layout className="min-h-screen">
-      <Header />
+      <WithProviders>
+        <StatefulHeader />
+      </WithProviders>
       <div
         className="flex justify-center px-4"
         style={{

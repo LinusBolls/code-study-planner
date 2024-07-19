@@ -20,6 +20,8 @@ import {
 } from "antd";
 import Link from "antd/es/typography/Link";
 import Image from "next/image";
+import useScreenSize from "../util/useScreenSize";
+import useHeader from "./useHeader";
 
 export interface HeaderProps {
   isLoading?: boolean;
@@ -281,4 +283,8 @@ export default function Header({
       )}
     </Layout.Header>
   );
+}
+
+export function StatefulHeader() {
+  return <Header {...useHeader()} {...useScreenSize()} />;
 }
