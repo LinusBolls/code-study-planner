@@ -188,24 +188,6 @@ export default function LoginModal({
                 </Button>
                 <Flex gap="middle">
                   <Link
-                    href="/privacy"
-                    style={{
-                      display: "flex",
-                      height: "1rem",
-                      padding: 0,
-                    }}
-                  >
-                    <Typography.Text
-                      type="secondary"
-                      style={{
-                        fontSize: "0.75rem",
-                        textDecoration: "underline",
-                      }}
-                    >
-                      Privacy
-                    </Typography.Text>
-                  </Link>
-                  <Link
                     href="/about"
                     style={{
                       display: "flex",
@@ -221,6 +203,24 @@ export default function LoginModal({
                       }}
                     >
                       About
+                    </Typography.Text>
+                  </Link>
+                  <Link
+                    href="/privacy"
+                    style={{
+                      display: "flex",
+                      height: "1rem",
+                      padding: 0,
+                    }}
+                  >
+                    <Typography.Text
+                      type="secondary"
+                      style={{
+                        fontSize: "0.75rem",
+                        textDecoration: "underline",
+                      }}
+                    >
+                      Privacy
                     </Typography.Text>
                   </Link>
                 </Flex>

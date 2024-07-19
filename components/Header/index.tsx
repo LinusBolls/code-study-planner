@@ -1,6 +1,7 @@
 import { EXPERIMENTAL_STUDY_PLAN_SHARING } from "@/experimental";
 import { clearCache } from "@/services/caching";
 import {
+  AuditOutlined,
   BugOutlined,
   ExperimentOutlined,
   InfoCircleOutlined,
@@ -153,6 +154,23 @@ export default function Header({
             }}
           >
             {isMobile ? <InfoCircleOutlined /> : "About"}
+          </Link>
+          <Link
+            href="/privacy"
+            className="hover:bg-gray-100"
+            style={{
+              display: "flex",
+              alignItems: "center",
+
+              flex: 1,
+              padding: "0 1rem",
+
+              whiteSpace: "nowrap",
+
+              color: "rgb(51, 51, 51)",
+            }}
+          >
+            {isMobile ? <AuditOutlined /> : "Privacy"}
           </Link>
           <Link
             target="_blank"

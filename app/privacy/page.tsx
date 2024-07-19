@@ -25,7 +25,7 @@ export default function Page() {
           </Link>{" "}
           in order to verify the technical claims listed here.
         </Typography.Paragraph>
-        <Typography.Title level={2} id="contact">
+        <Typography.Title level={2} id="data-controller">
           Data controller
         </Typography.Title>
         <Typography.Paragraph
