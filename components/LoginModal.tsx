@@ -186,24 +186,44 @@ export default function LoginModal({
                     Login with token
                   </Typography.Text>
                 </Button>
-                <Link
-                  href="/about"
-                  style={{
-                    display: "flex",
-                    height: "1rem",
-                    padding: 0,
-                  }}
-                >
-                  <Typography.Text
-                    type="secondary"
+                <Flex gap="middle">
+                  <Link
+                    href="/privacy"
                     style={{
-                      fontSize: "0.75rem",
-                      textDecoration: "underline",
+                      display: "flex",
+                      height: "1rem",
+                      padding: 0,
                     }}
                   >
-                    About
-                  </Typography.Text>
-                </Link>
+                    <Typography.Text
+                      type="secondary"
+                      style={{
+                        fontSize: "0.75rem",
+                        textDecoration: "underline",
+                      }}
+                    >
+                      Privacy
+                    </Typography.Text>
+                  </Link>
+                  <Link
+                    href="/about"
+                    style={{
+                      display: "flex",
+                      height: "1rem",
+                      padding: 0,
+                    }}
+                  >
+                    <Typography.Text
+                      type="secondary"
+                      style={{
+                        fontSize: "0.75rem",
+                        textDecoration: "underline",
+                      }}
+                    >
+                      About
+                    </Typography.Text>
+                  </Link>
+                </Flex>
               </Flex>
             </>
           )}
