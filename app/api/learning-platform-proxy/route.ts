@@ -21,8 +21,12 @@ export async function POST(req: NextRequest) {
 
     const data = await fetchRes.json();
 
-    // @ts-ignore
-    console.log("fetched learning platform:", JSON.parse(init.body), data);
+    if (init?.body) {
+      // @ts-ignore
+      console.log("fetched learning platform:", JSON.parse(init.body), data);
+    } else {
+      console.log("fetched learning platform:", data);
+    }
 
     const res = NextResponse.json(data, {
       status: fetchRes.status,
