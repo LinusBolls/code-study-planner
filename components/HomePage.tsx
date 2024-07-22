@@ -49,7 +49,7 @@ export default function HomePage() {
       googleToken,
       { fetch: fetchProxy }
     );
-    const learningPlatformAccessToken = client.accessToken;
+    const learningPlatformAccessToken = client.refreshToken;
 
     if (!learningPlatformAccessToken) {
       throw new Error("Failed to sign in: no access token");
