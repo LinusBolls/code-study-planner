@@ -26,4 +26,7 @@ export const env = {
   lp: {
     accessToken: process.env.LP_ACCESS_TOKEN,
   },
+  sentry: {
+    dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
+  },
 };
