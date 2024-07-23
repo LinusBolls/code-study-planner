@@ -111,6 +111,7 @@ export const useLearningPlatform = () => {
       if (storageValue) {
         const session = JSON.parse(storageValue);
 
+        // in case the stored token is expired, but the `cid` cookie is set, this will still work.
         await signInWithToken(session.accessToken);
       } else {
         store.actions.abortLoadingSession();
