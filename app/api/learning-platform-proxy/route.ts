@@ -16,6 +16,16 @@ export async function POST(req: NextRequest) {
       { status: 400 }
     );
   }
+
+  // @ts-expect-error
+  if (init && !init?.headers?.Cookie) {
+    if (!init.headers) {
+      init.headers = {};
+    }
+    // @ts-expect-error
+    init.headers.Cookie = req.headers.get("Cookie");
+  }
+
   try {
     const fetchRes = await fetch(url, init);
 
