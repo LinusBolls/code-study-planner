@@ -90,10 +90,10 @@ export const useLearningPlatform = () => {
       ? true
       : localStorage.getItem(storageKey) == null;
 
-  async function signInWithAccessToken(accessToken: string) {
+  async function signInWithToken(accessToken: string) {
     store.actions.startLoadingSession();
 
-    const client = await LearningPlatformClient.fromRefreshToken(accessToken, {
+    const client = await LearningPlatformClient.fromAnyToken(accessToken, {
       fetch: fetchProxy,
     });
     store.actions.finishLoadingSession(client);
@@ -111,7 +111,7 @@ export const useLearningPlatform = () => {
       if (storageValue) {
         const session = JSON.parse(storageValue);
 
-        await signInWithAccessToken(session.accessToken);
+        await signInWithToken(session.accessToken);
       } else {
         store.actions.abortLoadingSession();
       }
@@ -158,7 +158,7 @@ export const useLearningPlatform = () => {
     learningPlatform: store.client!,
     isSignedOut,
 
-    signInWithAccessToken,
+    signInWithToken,
     signOut,
   };
 };

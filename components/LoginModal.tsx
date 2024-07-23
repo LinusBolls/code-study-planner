@@ -14,25 +14,27 @@ import { useMessages } from "./util/useMessages";
 import { GoogleLogin } from "@react-oauth/google";
 import { LoadingOutlined } from "@ant-design/icons";
 
+const removeAllWhitespace = (str: string) => str.replace(/\s/g, "");
+
 export interface LoginModalProps {
-  onSubmit: (token: string) => Promise<void>;
+  signInWithLpToken: (token: string) => Promise<void>;
   signInWithGoogleToken: (token: string) => Promise<void>;
 }
 export default function LoginModal({
-  onSubmit,
+  signInWithLpToken,
   signInWithGoogleToken,
 }: LoginModalProps) {
-  const [token, setToken] = useState("");
-
-  const [isLoading, setIsLoading] = useState(false);
-
   const { showErrorMessage } = useMessages();
 
   const [authMethod, setAuthMethod] = useState<
     "google" | "bearer_token" | "credentials"
   >("google");
 
-  const [isAuthInProgress, setIsAuthInProgress] = useState(false);
+  const [token, setToken] = useState("");
+
+  const [isGoogleAuthInProgress, setIsGoogleAuthInProgress] = useState(false);
+
+  const [isTokenAuthInProgress, setIsTokenAuthInProgress] = useState(false);
 
   return (
     <Modal
@@ -52,16 +54,15 @@ export default function LoginModal({
           try {
             e.preventDefault();
 
-            setIsLoading(true);
+            setIsTokenAuthInProgress(true);
 
-            await onSubmit(token.replace(/\s/g, ""));
-
-            setIsLoading(false);
+            await signInWithLpToken(removeAllWhitespace(token));
           } catch (err) {
             showErrorMessage(
               "Login failed: " + (err as Error).message ?? "Unknown Error"
             );
-            setIsLoading(false);
+          } finally {
+            setIsTokenAuthInProgress(false);
           }
         }}
       >
@@ -93,7 +94,7 @@ export default function LoginModal({
                   textAlign: "center",
                 }}
               >
-                {isAuthInProgress ? (
+                {isGoogleAuthInProgress ? (
                   <LoadingOutlined
                     spin
                     size={48}
@@ -106,7 +107,7 @@ export default function LoginModal({
                 )}
               </Typography.Text>
               <GoogleLogin
-                click_listener={() => setIsAuthInProgress(true)}
+                click_listener={() => setIsGoogleAuthInProgress(true)}
                 containerProps={{
                   style: {
                     display: "flex",
@@ -116,28 +117,32 @@ export default function LoginModal({
                   },
                 }}
                 onSuccess={async (credentialResponse) => {
-                  const googleToken = credentialResponse.credential;
+                  try {
+                    const googleToken = credentialResponse.credential;
 
-                  if (!googleToken) {
-                    console.error(
-                      "missing credential in credentialResponse:",
-                      credentialResponse
-                    );
-                    throw new Error(
-                      "Google login failed: missing credential in credentialsResponse"
-                    );
-                  } else {
-                    try {
-                      await signInWithGoogleToken(googleToken);
-                    } finally {
-                      setIsAuthInProgress(false);
+                    if (!googleToken) {
+                      console.error(
+                        "missing credential in credentialResponse:",
+                        credentialResponse
+                      );
+                      throw new Error(
+                        "Missing credential in credentialsResponse"
+                      );
                     }
+                    await signInWithGoogleToken(googleToken);
+                  } catch (err) {
+                    showErrorMessage(
+                      "Google login failed: " + (err as Error).message ??
+                        "Unknown Error"
+                    );
+                  } finally {
+                    setIsGoogleAuthInProgress(false);
                   }
                 }}
                 onError={() => {
-                  setIsAuthInProgress(false);
+                  setIsGoogleAuthInProgress(false);
 
-                  throw new Error("Google login failed");
+                  showErrorMessage("Google login failed");
                 }}
               />
               <Typography.Text
@@ -230,7 +235,7 @@ export default function LoginModal({
           {authMethod === "bearer_token" && (
             <>
               <Input
-                disabled={isLoading}
+                disabled={isTokenAuthInProgress}
                 type="password"
                 placeholder="Your access token for the CODE Learning Platform"
                 size="large"
@@ -246,8 +251,8 @@ export default function LoginModal({
                 <Button
                   type="primary"
                   htmlType="submit"
-                  loading={isLoading}
-                  disabled={isLoading}
+                  loading={isTokenAuthInProgress}
+                  disabled={isTokenAuthInProgress}
                 >
                   Submit
                 </Button>

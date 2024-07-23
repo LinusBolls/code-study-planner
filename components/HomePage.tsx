@@ -17,61 +17,66 @@ import { LearningPlatformClient } from "code-university";
 import { loginscreenMockSemesters } from "./util/mock";
 
 export default function HomePage() {
-  const {
-    signInWithAccessToken,
-    isAuthenticated,
-    isLoadingSession,
-    isSignedOut,
-  } = useLearningPlatform();
+  const { signInWithToken, isAuthenticated, isLoadingSession, isSignedOut } =
+    useLearningPlatform();
 
   const { onDragStart, onDragEnd } = useDragDropContext();
 
-  async function signIn(learningPlatformAccessToken: string) {
+  /**
+   * accepts both refresh token and access token
+   */
+  async function signInWithLpToken(learningPlatformToken: string) {
     const res = await fetch("/api/auth/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ learningPlatformAccessToken }),
+      body: JSON.stringify({ learningPlatformToken }),
     });
 
     if (!res.ok) {
-      throw new Error("Failed to sign in");
+      throw new Error("Invalid server response");
     }
     const data = await res.json();
 
     localStorage.setItem("study-planner:session", data.accessToken);
 
-    await signInWithAccessToken(learningPlatformAccessToken);
+    await signInWithToken(learningPlatformToken);
   }
   async function signInWithGoogleToken(googleToken: string) {
     const client = await LearningPlatformClient.fromGoogleAccessToken(
       googleToken,
       { fetch: fetchProxy }
     );
-    const learningPlatformAccessToken = client.refreshToken;
+    const lpAccessToken = client.accessToken;
 
-    if (!learningPlatformAccessToken) {
-      throw new Error("Failed to sign in: no access token");
+    if (!lpAccessToken) {
+      throw new Error("No access token");
     }
-    await signIn(learningPlatformAccessToken);
+    await signInWithLpToken(lpAccessToken);
   }
+  const showLoginScreen =
+    (!isAuthenticated && !isLoadingSession) || isSignedOut;
 
   return (
     <>
-      {((!isAuthenticated && !isLoadingSession) || isSignedOut) && (
-        <LoginModal
-          onSubmit={signIn}
-          signInWithGoogleToken={signInWithGoogleToken}
-        />
-      )}
       <Layout className="h-screen">
         <StatefulHeader />
         <Layout.Content className="h-full">
           <DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
             <div className="bg-white w-full h-full flex">
               <PanelGroup autoSaveId="semester-planner" direction="horizontal">
-                {isAuthenticated ? <AuthedPage /> : <UnauthedPage />}
+                {showLoginScreen ? (
+                  <>
+                    <LoginModal
+                      signInWithLpToken={signInWithLpToken}
+                      signInWithGoogleToken={signInWithGoogleToken}
+                    />
+                    <UnauthedPage />
+                  </>
+                ) : (
+                  <AuthedPage />
+                )}
               </PanelGroup>
             </div>
           </DragDropContext>

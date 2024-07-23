@@ -12,10 +12,10 @@ import { issueAccessToken } from "@/backend/jwt";
 export async function POST(req: NextRequest) {
   await connectToDatabase();
 
-  const body: { learningPlatformAccessToken: string } = await req.json();
+  const body: { learningPlatformToken: string } = await req.json();
 
-  const learningPlatform = await LearningPlatformClient.fromRefreshToken(
-    body.learningPlatformAccessToken
+  const learningPlatform = await LearningPlatformClient.fromAnyToken(
+    body.learningPlatformToken
   );
   const learningPlatformUser = await learningPlatform!.raw
     .query<"me">(`query currentUser {
