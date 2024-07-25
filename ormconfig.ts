@@ -8,6 +8,7 @@ import { StudyPlan } from "./backend/entities/studyPlan.entity";
 import { StudyProgram } from "./backend/entities/studyProgram.entity";
 import { ModuleHandbook } from "./backend/entities/moduleHandbook.entity";
 import { CompulsoryElectivePairing } from "./backend/entities/compulsoryElectivePairing.entity";
+import { StudyPlanCollaborator } from "./backend/entities/studyPlanCollaborator.entity";
 
 const dataSourceOptions: DataSourceOptions = {
   type: "postgres",
@@ -25,6 +26,7 @@ const dataSourceOptions: DataSourceOptions = {
     User,
     StudyPlan,
     StudyProgram,
+    StudyPlanCollaborator,
     ModuleHandbook,
     CompulsoryElectivePairing,
   ],

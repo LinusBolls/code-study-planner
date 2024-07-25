@@ -1,27 +1,24 @@
 import {
   Entity,
   PrimaryGeneratedColumn,
-  OneToMany,
   CreateDateColumn,
   UpdateDateColumn,
-  type Relation,
-  OneToOne,
-  ManyToOne,
-  JoinColumn,
   Column,
+  OneToOne,
+  type Relation,
+  OneToMany,
 } from "typeorm";
 import { User } from "./user.entity";
 import { Semester } from "./semester.entity";
-import { ModuleHandbook } from "./moduleHandbook.entity";
 
-export enum StudyPlanScope {
-  Public = "public",
-  Faculty = "facultyOnly",
-  Private = "private",
+export enum CollaboratorRole {
+  Viewer = "viewer",
+  Editor = "editor",
+  Owner = "owner"
 }
 
-@Entity({ name: "study_plans" })
-export class StudyPlan {
+@Entity({ name: "study_plan_collaborator" })
+export class StudyPlanCollaborator {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 
@@ -40,16 +37,11 @@ export class StudyPlan {
   semesters!: Relation<Semester>[];
 
   @Column()
-  moduleHandbookId!: string;
+  hasAccepted!: boolean;
 
   @Column({
     type: "enum",
-    enum: StudyPlanScope,
-    default: StudyPlanScope.Private
+    enum: CollaboratorRole,
   })
-  scope!: StudyPlanScope;
-
-  @ManyToOne(() => ModuleHandbook, (handbook) => handbook.studyPlans)
-  @JoinColumn({ name: "moduleHandbookId" })
-  moduleHandbook!: Relation<ModuleHandbook>;
+  role!: CollaboratorRole;
 }
