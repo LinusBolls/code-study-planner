@@ -15,6 +15,12 @@ import { ModuleHandbook } from "./moduleHandbook.entity";
 import { Semester } from "./semester.entity";
 import { User } from "./user.entity";
 
+export enum StudyPlanScope {
+  Public = "public",
+  Faculty = "facultyOnly",
+  Private = "private",
+}
+
 @Entity({ name: "study_plans" })
 export class StudyPlan {
   @PrimaryGeneratedColumn("uuid")
@@ -36,6 +42,13 @@ export class StudyPlan {
 
   @Column()
   moduleHandbookId!: string;
+
+  @Column({
+    type: "enum",
+    enum: StudyPlanScope,
+    default: StudyPlanScope.Private
+  })
+  scope!: StudyPlanScope;
 
   @ManyToOne(() => ModuleHandbook, (handbook) => handbook.studyPlans)
   @JoinColumn({ name: "moduleHandbookId" })
