@@ -1,3 +1,6 @@
+import dayjs from "dayjs";
+import { NextRequest, NextResponse } from "next/server";
+
 import { AppDataSource } from "@/backend/datasource";
 import { StudyPlanDTO } from "@/backend/dtos/study-plan.dto";
 import { Semester } from "@/backend/entities/semester.entity";
@@ -8,8 +11,6 @@ import {
   StudyPlanCollaborator,
 } from "@/backend/entities/studyPlanCollaborator.entity";
 import { getUser } from "@/backend/getUser";
-import dayjs from "dayjs";
-import { NextRequest, NextResponse } from "next/server";
 
 const byIndex = (a: SemesterModule, b: SemesterModule) => a.index - b.index;
 

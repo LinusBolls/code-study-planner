@@ -1,16 +1,17 @@
 import {
-  Entity,
-  PrimaryGeneratedColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
   Column,
-  OneToOne,
-  type Relation,
-  ManyToOne,
+  CreateDateColumn,
+  Entity,
   JoinColumn,
+  ManyToOne,
+  OneToOne,
+  PrimaryGeneratedColumn,
+  type Relation,
+  UpdateDateColumn,
 } from "typeorm";
-import { User } from "./user.entity";
+
 import { StudyPlan } from "./studyPlan.entity";
+import { User } from "./user.entity";
 
 export enum CollaboratorRole {
   Viewer = "viewer",

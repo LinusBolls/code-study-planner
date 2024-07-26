@@ -1,16 +1,17 @@
 import {
-  Entity,
-  PrimaryGeneratedColumn,
-  OneToMany,
-  CreateDateColumn,
-  UpdateDateColumn,
-  type Relation,
-  ManyToOne,
-  JoinColumn,
   Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  type Relation,
+  UpdateDateColumn,
 } from "typeorm";
-import { Semester } from "./semester.entity";
+
 import { ModuleHandbook } from "./moduleHandbook.entity";
+import { Semester } from "./semester.entity";
 import { StudyPlanCollaborator } from "./studyPlanCollaborator.entity";
 
 export enum StudyPlanScope {

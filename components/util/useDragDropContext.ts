@@ -1,14 +1,16 @@
+import { OnDragEndResponder, OnDragStartResponder } from "@hello-pangea/dnd";
+
+import { getChatSelectionState } from "@/components/util/useChatSelection";
+import { useModulesInScope } from "@/components/util/useModulesInScope";
 import {
   SemesterModuleCategory,
   UpdateSemesterModuleInput,
 } from "@/services/apiClient";
 import { useStudyPlan } from "@/services/apiClient/hooks/useStudyPlan";
 import { useUpdateSemesterModule } from "@/services/apiClient/hooks/useUpdateSemesterModules";
-import { getChatSelectionState } from "@/components/util/useChatSelection";
-import { OnDragEndResponder, OnDragStartResponder } from "@hello-pangea/dnd";
-import { useModulesInScope } from "@/components/util/useModulesInScope";
-import { useMessages } from "./useMessages";
+
 import { useSemestersList } from "../SemestersList/useSemestersList";
+import { useMessages } from "./useMessages";
 
 /**
  * keeps track of what module is currently being dragged, and updates the study plan when a drag has been completed.
@@ -25,7 +27,7 @@ export function useDragDropContext() {
   const { semesters } = useSemestersList();
 
   const flattenedModules = semesters.flatMap((i) =>
-    Object.values(i.modules).flat()
+    Object.values(i.modules).flat(),
   );
 
   const onDragStart: OnDragStartResponder = (e) => {
@@ -36,7 +38,7 @@ export function useDragDropContext() {
     const draggedModule = modules.find((i) => i.id === draggedModuleId);
 
     const existingModules = flattenedModules.filter(
-      (i) => i.module.moduleIdentifier === draggedModule?.moduleIdentifier
+      (i) => i.module.moduleIdentifier === draggedModule?.moduleIdentifier,
     );
     const isPlanned = existingModules.some((i) => i.type === "planned");
 
@@ -64,30 +66,30 @@ export function useDragDropContext() {
 
             if (canGradeBeImproved) {
               showInfoMessage(
-                `You already got a ${grade} in this module, but you can retake it to level up 🍄`
+                `You already got a ${grade} in this module, but you can retake it to level up 🍄`,
               );
             } else {
               showInfoMessage(
-                `You already got a ✨ perfect grade ✨ in this module, there is no need to retake it 🎉`
+                `You already got a ✨ perfect grade ✨ in this module, there is no need to retake it 🎉`,
               );
             }
           } else {
             showInfoMessage(
-              "You already passed this module, there is no need to retake it 🎉"
+              "You already passed this module, there is no need to retake it 🎉",
             );
           }
         } else if (isPlanned) {
           showInfoMessage("This module is already part of your study plan");
         } else if (pending) {
           showInfoMessage(
-            "You already have an upcoming assessment for this module"
+            "You already have an upcoming assessment for this module",
           );
         }
       }
     } else {
       console.warn(
         "[useDragDropContext.onDragStart] dragged module not found:",
-        e.draggableId
+        e.draggableId,
       );
     }
   };
@@ -124,7 +126,7 @@ export function useDragDropContext() {
             semesterId: sourceSemester,
             categoryId: sourceCategory,
           },
-        ]
+        ],
       );
     } else {
       console.warn("[useDragDropContext.onDragEnd] not executed");
@@ -152,7 +154,7 @@ export function useUpdateStudyPlan() {
       id: string;
       semesterId: string;
       categoryId: SemesterModuleCategory;
-    }[]
+    }[],
   ) {
     if (!studyPlan.isSuccess) return;
 
@@ -176,7 +178,7 @@ export function useUpdateStudyPlan() {
         }
         return acc;
       },
-      {}
+      {},
     );
     await updateSemesterModule.mutateAsync(body);
   }

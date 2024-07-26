@@ -1,11 +1,13 @@
-import { config as codeUniversityConfig } from "code-university";
-import { Inter } from "next/font/google";
-import "./globals.css";
-import { Metadata } from "next";
-import { env } from "@/backend/env";
-import { GoogleOAuthProvider } from "@react-oauth/google";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import { ConfigProvider, ThemeConfig } from "antd";
+import { config as codeUniversityConfig } from "code-university";
+import { Metadata } from "next";
+import { Inter } from "next/font/google";
+
+import { env } from "@/backend/env";
+
+import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 

@@ -4,20 +4,21 @@
  * this is intended to be run when the database is empty to seed it with data.
  * fetches data about study programs, module handbooks and modules from the learning platform and stores it in the database.
  */
-
 import { LearningPlatformClient } from "code-university";
+
+import consumePaginatedQuery from "@/services/learningPlatform/consumePaginatedQuery";
+import { learningPlatformModulesQuery } from "@/services/learningPlatform/hooks/useLearningPlatformModules";
+import { isDefined } from "@/services/learningPlatform/util/isDefined";
+
 import { AppDataSource, connectToDatabase } from "./datasource";
+import { CompulsoryElectivePairing } from "./entities/compulsoryElectivePairing.entity";
+import { Module } from "./entities/module.entity";
+import { ModuleHandbook } from "./entities/moduleHandbook.entity";
 import {
   StudyProgram,
   StudyProgramAbbreviation,
 } from "./entities/studyProgram.entity";
-import { ModuleHandbook } from "./entities/moduleHandbook.entity";
-import { Module } from "./entities/module.entity";
-import { CompulsoryElectivePairing } from "./entities/compulsoryElectivePairing.entity";
 import { env } from "./env";
-import { learningPlatformModulesQuery } from "@/services/learningPlatform/hooks/useLearningPlatformModules";
-import consumePaginatedQuery from "@/services/learningPlatform/consumePaginatedQuery";
-import { isDefined } from "@/services/learningPlatform/util/isDefined";
 
 if (!env.lp.accessToken) {
   throw new Error(

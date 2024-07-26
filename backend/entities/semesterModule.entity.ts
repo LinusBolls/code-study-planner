@@ -1,20 +1,21 @@
 import {
-  Entity,
-  PrimaryGeneratedColumn,
   Column,
-  ManyToOne,
   CreateDateColumn,
-  UpdateDateColumn,
-  type Relation,
+  Entity,
   JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  type Relation,
   Unique,
+  UpdateDateColumn,
 } from "typeorm";
-import { Semester } from "./semester.entity";
+
 import { Module } from "./module.entity";
+import { Semester } from "./semester.entity";
 
 export enum AssessmentType {
   Early = "earlyAssessments",
-  Standard = "standartAssessments",
+  Standard = "standardAssessments",
   Alternative = "alternativeAssessments",
   Reassessment = "reassessments",
 }

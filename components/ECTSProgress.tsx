@@ -1,5 +1,6 @@
 import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
 import { Flex, Tooltip, Typography } from "antd";
+
 import StatusText from "./ECTSPanel/StatusText";
 
 export interface ECTSProgressStep {
@@ -81,7 +82,7 @@ export default function ECTSProgress({
 
 export const getDiagonalHatchDataUrl = (
   color: string,
-  hatchColor?: string
+  hatchColor?: string,
 ): string => {
   const svgContent = `
     <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -97,7 +98,7 @@ export const getDiagonalHatchDataUrl = (
 
 export const hatchedBackground = (
   color: string,
-  hatchColor?: string
+  hatchColor?: string,
 ): string => {
   return `url("${getDiagonalHatchDataUrl(color, hatchColor)}")`;
 };

@@ -1,17 +1,18 @@
-import { AppDataSource, connectToDatabase } from "@/backend/datasource";
-import { User } from "@/backend/entities/user.entity";
 import { LearningPlatformClient } from "code-university";
-import { NextRequest, NextResponse } from "next/server";
-import { Semester } from "@/backend/entities/semester.entity";
-import { isDefined } from "@/services/learningPlatform/util/isDefined";
 import dayjs from "dayjs";
-import { StudyPlan } from "@/backend/entities/studyPlan.entity";
+import { NextRequest, NextResponse } from "next/server";
+
+import { AppDataSource, connectToDatabase } from "@/backend/datasource";
 import { ModuleHandbook } from "@/backend/entities/moduleHandbook.entity";
-import { issueAccessToken } from "@/backend/jwt";
+import { Semester } from "@/backend/entities/semester.entity";
+import { StudyPlan } from "@/backend/entities/studyPlan.entity";
 import {
   CollaboratorRole,
   StudyPlanCollaborator,
 } from "@/backend/entities/studyPlanCollaborator.entity";
+import { User } from "@/backend/entities/user.entity";
+import { issueAccessToken } from "@/backend/jwt";
+import { isDefined } from "@/services/learningPlatform/util/isDefined";
 
 export async function POST(req: NextRequest) {
   await connectToDatabase();

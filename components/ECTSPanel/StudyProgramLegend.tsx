@@ -1,5 +1,6 @@
-import { getDepartment } from "@/data/departments";
 import { Flex, Typography } from "antd";
+
+import { getDepartment } from "@/data/departments";
 
 export default function StudyProgramLegend() {
   return (

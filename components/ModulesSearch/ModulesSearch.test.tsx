@@ -1,9 +1,10 @@
-import React from "react";
-import "@testing-library/jest-dom";
-import { describe, it, expect, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
-import ModulesSearch from ".";
 import { DragDropContext } from "@hello-pangea/dnd";
+import "@testing-library/jest-dom";
+import { render, screen } from "@testing-library/react";
+import React from "react";
+import { describe, expect, it, vi } from "vitest";
+
+import ModulesSearch from ".";
 
 Object.defineProperty(window, "matchMedia", {
   writable: true,
@@ -23,7 +24,7 @@ vi.mock("react-virtualized", () => ({
   List: ({ rowRenderer, rowCount }: any) => (
     <div>
       {[...Array(rowCount).keys()].map((index) =>
-        rowRenderer({ key: index, index, style: {} })
+        rowRenderer({ key: index, index, style: {} }),
       )}
     </div>
   ),
@@ -46,7 +47,7 @@ describe("ModulesSearch", () => {
           onlyEarlyAssessment={false}
           onlyMandatoryOrCompulsoryElective={false}
         />
-      </DragDropContext>
+      </DragDropContext>,
     );
 
     const buttonElement = screen.getByText(/Allows alternative assessment/i);
@@ -55,7 +56,7 @@ describe("ModulesSearch", () => {
     expect(screen.getByText(/My Semester/i)).toBeInTheDocument();
 
     expect(
-      screen.getByText(/Search by name, study program, or professor/i)
+      screen.getByText(/Search by name, study program, or professor/i),
     ).toBeInTheDocument();
 
     expect(screen.getByText(/no modules found/i)).toBeInTheDocument();
@@ -99,7 +100,7 @@ describe("ModulesSearch", () => {
           onlyEarlyAssessment={false}
           onlyMandatoryOrCompulsoryElective={false}
         />
-      </DragDropContext>
+      </DragDropContext>,
     );
 
     const buttonElement = screen.getByText(/Allows alternative assessment/i);
@@ -108,7 +109,7 @@ describe("ModulesSearch", () => {
     expect(screen.getByText(/My Semester/i)).toBeInTheDocument();
 
     expect(
-      screen.getByText(/Search by name, study program, or professor/i)
+      screen.getByText(/Search by name, study program, or professor/i),
     ).toBeInTheDocument();
 
     expect(screen.getByText(/Composition/i)).toBeInTheDocument();

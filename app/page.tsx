@@ -1,6 +1,6 @@
-import { WithProviders } from "@/components/withProviders";
-
 import dynamic from "next/dynamic";
+
+import { WithProviders } from "@/components/withProviders";
 
 const DynamicHomePage = dynamic(() => import("../components/HomePage"), {
   ssr: false,

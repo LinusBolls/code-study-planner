@@ -1,7 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { LP } from "code-university";
-import { useLearningPlatform } from "../useLearningPlatform";
+
 import { readFromCache } from "@/services/caching";
+
+import { useLearningPlatform } from "../useLearningPlatform";
 
 export const useLearningPlatformModulesById = (moduleIds: string[]) => {
   const { learningPlatform, enabled } = useLearningPlatform();

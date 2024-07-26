@@ -1,7 +1,5 @@
 "use client";
 
-import { EXPERIMENTAL_STUDY_PLAN_SHARING } from "@/experimental";
-import { clearCache } from "@/services/caching";
 import {
   AuditOutlined,
   BugOutlined,
@@ -20,6 +18,10 @@ import {
 } from "antd";
 import Link from "antd/es/typography/Link";
 import Image from "next/image";
+
+import { EXPERIMENTAL_STUDY_PLAN_SHARING } from "@/experimental";
+import { clearCache } from "@/services/caching";
+
 import useScreenSize from "../util/useScreenSize";
 import useHeader from "./useHeader";
 

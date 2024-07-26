@@ -1,16 +1,17 @@
 import {
-  Entity,
-  PrimaryGeneratedColumn,
   Column,
-  ManyToOne,
   CreateDateColumn,
-  UpdateDateColumn,
-  type Relation,
+  Entity,
   JoinColumn,
   ManyToMany,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  type Relation,
+  UpdateDateColumn,
 } from "typeorm";
-import { ModuleHandbook } from "./moduleHandbook.entity";
+
 import { Module } from "./module.entity";
+import { ModuleHandbook } from "./moduleHandbook.entity";
 
 @Entity({ name: "compulsory_elective_pairings" })
 export class CompulsoryElectivePairing {
@@ -28,7 +29,7 @@ export class CompulsoryElectivePairing {
 
   @ManyToOne(
     () => ModuleHandbook,
-    (handbook) => handbook.compulsoryElectivePairings
+    (handbook) => handbook.compulsoryElectivePairings,
   )
   @JoinColumn({ name: "moduleHandbookId" })
   moduleHandbook!: Relation<ModuleHandbook>;

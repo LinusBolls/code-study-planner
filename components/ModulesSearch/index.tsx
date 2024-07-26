@@ -1,4 +1,3 @@
-import { AutoSizer, List, ListRowRenderer } from "react-virtualized";
 import { Droppable } from "@hello-pangea/dnd";
 import {
   AutoComplete,
@@ -8,9 +7,12 @@ import {
   Select,
   Typography,
 } from "antd";
-import ModulesListItem from "../ModulesListItem";
-import { Module } from "@/components/util/types";
 import { SegmentedLabeledOption, SegmentedOptions } from "antd/es/segmented";
+import { AutoSizer, List, ListRowRenderer } from "react-virtualized";
+
+import { Module } from "@/components/util/types";
+
+import ModulesListItem from "../ModulesListItem";
 
 const getOptions = (values: string[]) => {
   return values.map((i) => ({
@@ -145,7 +147,7 @@ export default function ModulesSearch({
             checked={onlyMandaryOrCompulsoryElective}
             onChange={() =>
               onOnlyMandaryOrCompulsoryElectiveChange(
-                !onlyMandaryOrCompulsoryElective
+                !onlyMandaryOrCompulsoryElective,
               )
             }
           >
@@ -247,7 +249,7 @@ export default function ModulesSearch({
                   id="flamingo-messenger-chat-list"
                   ref={() => {
                     const listEl = document.querySelector<HTMLDivElement>(
-                      "#flamingo-messenger-chat-list"
+                      "#flamingo-messenger-chat-list",
                     );
                     provided.innerRef(listEl!);
                   }}

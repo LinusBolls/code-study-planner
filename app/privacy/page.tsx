@@ -1,10 +1,11 @@
 "use server";
 
-import { StatefulHeader } from "@/components/Header";
 import { Layout } from "antd";
 import Link from "antd/es/typography/Link";
-import Title from "antd/lib/typography/Title";
 import Paragraph from "antd/lib/typography/Paragraph";
+import Title from "antd/lib/typography/Title";
+
+import { StatefulHeader } from "@/components/Header";
 import { WithProviders } from "@/components/withProviders";
 
 export default async function Page() {

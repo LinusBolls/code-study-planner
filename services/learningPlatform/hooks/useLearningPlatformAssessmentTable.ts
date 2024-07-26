@@ -1,9 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { QueryRes } from "code-university";
 
+import { readFromCache } from "@/services/caching";
+
 import consumePaginatedQuery from "../consumePaginatedQuery";
 import { useLearningPlatform } from "../useLearningPlatform";
-import { readFromCache } from "@/services/caching";
 
 /**
  * used by the `Assessments` tab of the Learning Platform
@@ -20,7 +21,7 @@ export const useLearningPlatformAssessmentTable = () => {
             filter: {},
           }),
         100,
-        20
+        20,
       );
       const myAssessments = results.flatMap((i) => i.myAssessments);
 

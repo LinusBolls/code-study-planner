@@ -1,7 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { QueryRes } from "code-university";
-import { useLearningPlatform } from "../useLearningPlatform";
+
 import { readFromCache } from "@/services/caching";
+
+import { useLearningPlatform } from "../useLearningPlatform";
 
 /**
  * used by the `My Studies` tab on the `Modules` tab of the Learning Platform
@@ -119,13 +121,13 @@ export const useLearningPlatformMySemesterList = (limit = 20, offset = 0) => {
             avatarUrl
             __typename
           }`,
-          { pagination: { limit, offset } }
+          { pagination: { limit, offset } },
         );
         return data;
       },
       queryKey: ["learningPlatform", "mySemesterList"],
       enabled,
       initialData: readFromCache(["learningPlatform", "mySemesterList"]),
-    }
+    },
   );
 };

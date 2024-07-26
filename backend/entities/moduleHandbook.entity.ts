@@ -1,17 +1,18 @@
 import {
-  Entity,
-  PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  UpdateDateColumn,
-  type Relation,
-  OneToMany,
-  ManyToOne,
+  Entity,
   JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  type Relation,
+  UpdateDateColumn,
 } from "typeorm";
+
 import { CompulsoryElectivePairing } from "./compulsoryElectivePairing.entity";
-import { StudyProgram } from "./studyProgram.entity";
 import { StudyPlan } from "./studyPlan.entity";
+import { StudyProgram } from "./studyProgram.entity";
 
 @Entity({ name: "module_handbooks" })
 export class ModuleHandbook {

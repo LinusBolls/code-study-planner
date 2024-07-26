@@ -4,7 +4,7 @@ const dummyModule = (
   data: Omit<Partial<SemesterModule>, "module" | "assessment"> & {
     module?: Partial<Module>;
     assessment?: Partial<Assessment> | null;
-  } = {}
+  } = {},
 ): SemesterModule => {
   const { module = {}, assessment = null, ...rest } = data;
   return {
@@ -88,7 +88,7 @@ export const loginscreenMockSemesters: Semester[] = [
         }),
       ],
       reassessments: [],
-      standartAssessments: [
+      standardAssessments: [
         dummyModule({
           module: {
             title: "Cyber Security",
@@ -176,7 +176,7 @@ export const loginscreenMockSemesters: Semester[] = [
       alternativeAssessments: [],
       earlyAssessments: [],
       reassessments: [],
-      standartAssessments: [
+      standardAssessments: [
         dummyModule({
           type: "planned",
         }),
@@ -217,7 +217,7 @@ export const loginscreenMockSemesters: Semester[] = [
       ],
       earlyAssessments: [],
       reassessments: [],
-      standartAssessments: [
+      standardAssessments: [
         dummyModule({
           type: "planned",
         }),
@@ -251,7 +251,7 @@ export const loginscreenMockSemesters: Semester[] = [
       alternativeAssessments: [],
       earlyAssessments: [],
       reassessments: [],
-      standartAssessments: [],
+      standardAssessments: [],
     },
   },
 ];

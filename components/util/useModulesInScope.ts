@@ -48,7 +48,7 @@ export function useModulesInScope() {
     .filter((i) => modules.find((j) => j.moduleId === i) == null);
 
   const deprecatedPrerequisitesQuery = useLearningPlatformModulesById(
-    deprecatedPrerequisiteIds
+    deprecatedPrerequisiteIds,
   );
   const deprecatedModules = deprecatedPrerequisitesQuery.data?.modules ?? [];
 
