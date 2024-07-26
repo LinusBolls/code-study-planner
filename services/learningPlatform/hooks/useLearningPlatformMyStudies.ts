@@ -1,7 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { QueryRes } from "code-university";
-import { useLearningPlatform } from "../useLearningPlatform";
+
 import { readFromCache } from "@/services/caching";
+
+import { useLearningPlatform } from "../useLearningPlatform";
 
 /**
  * used by the `My Studies` tab on the `Modules` tab of the Learning Platform
@@ -12,7 +14,7 @@ export const useLearningPlatformMyStudies = () => {
   return useQuery<QueryRes<"myStudies">>({
     queryFn: async () => {
       const data = await learningPlatform!.raw.query(
-        useLearningPlatformMyStudiesQuery
+        useLearningPlatformMyStudiesQuery,
       );
       return data;
     },

@@ -1,20 +1,22 @@
 "use client";
 
 import { DragDropContext } from "@hello-pangea/dnd";
+import { Layout } from "antd";
+import { LearningPlatformClient } from "code-university";
 import { PanelGroup, PanelResizeHandle } from "react-resizable-panels";
+
+import { StatefulHeader } from "@/components/Header";
+import LoginModal from "@/components/LoginModal";
+import SemestersList from "@/components/SemestersList";
+import { useSemestersList } from "@/components/SemestersList/useSemestersList";
+import Sidebar from "@/components/Sidebar";
 import {
   fetchProxy,
   useLearningPlatform,
 } from "@/services/learningPlatform/useLearningPlatform";
-import LoginModal from "@/components/LoginModal";
-import Sidebar from "@/components/Sidebar";
-import { Layout } from "antd";
-import SemestersList from "@/components/SemestersList";
-import { useSemestersList } from "@/components/SemestersList/useSemestersList";
-import { StatefulHeader } from "@/components/Header";
-import { useDragDropContext } from "./util/useDragDropContext";
-import { LearningPlatformClient } from "code-university";
+
 import { loginscreenMockSemesters } from "./util/mock";
+import { useDragDropContext } from "./util/useDragDropContext";
 
 export default function HomePage() {
   const { signInWithToken, isAuthenticated, isLoadingSession, isSignedOut } =
@@ -46,7 +48,7 @@ export default function HomePage() {
   async function signInWithGoogleToken(googleToken: string) {
     const client = await LearningPlatformClient.fromGoogleAccessToken(
       googleToken,
-      { fetch: fetchProxy }
+      { fetch: fetchProxy },
     );
     const lpAccessToken = client.accessToken;
 

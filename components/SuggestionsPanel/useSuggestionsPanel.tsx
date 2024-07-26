@@ -1,16 +1,18 @@
 import Link from "antd/es/typography/Link";
+import { LP } from "code-university";
+import React from "react";
+
+import { Module } from "@/components/util/types";
+
 import { useModules } from "../../services/apiClient/hooks/useModules";
 import { useLearningPlatformCurrentUser } from "../../services/learningPlatform/hooks/useLearningPlatformCurrentUser";
-import { LP } from "code-university";
-import { Module } from "@/components/util/types";
-import { useSemestersList } from "../SemestersList/useSemestersList";
 import { getModuleUrl } from "../../services/learningPlatform/mapping";
-import { useModulesInScope } from "../util/useModulesInScope";
-import { useMessages } from "../util/useMessages";
+import { useSemestersList } from "../SemestersList/useSemestersList";
 import { useUpdateStudyPlan } from "../util/useDragDropContext";
-import { getMissingPrerequisites } from "./getMissingPrerequisites";
+import { useMessages } from "../util/useMessages";
+import { useModulesInScope } from "../util/useModulesInScope";
 import { getMissingMandatory } from "./getMissingMandatory";
-import React from "react";
+import { getMissingPrerequisites } from "./getMissingPrerequisites";
 import { Suggestion, SuggestionFix } from "./issues";
 
 const getModuleName = (module?: LP.Module | null | Module) =>
@@ -63,7 +65,7 @@ export function useSuggestions() {
     semesters,
     modules,
     mandatoryModuleIds,
-    compulsoryElectivePairings
+    compulsoryElectivePairings,
   ).concat(getMissingPrerequisites(semesters, modules, deprecatedModules));
 
   const fromId = (moduleId: string) =>
@@ -164,7 +166,7 @@ export function useSuggestions() {
       };
     } else {
       throw new Error(
-        "[useSuggestions] received invalid issue.type " + JSON.stringify(issue)
+        "[useSuggestions] received invalid issue.type " + JSON.stringify(issue),
       );
     }
   });
@@ -185,7 +187,7 @@ export function useSuggestions() {
           <>
             Failed to add <ModuleLink module={fromId(fix.module)} /> to your
             study plan
-          </>
+          </>,
         );
         return;
       }
@@ -195,15 +197,15 @@ export function useSuggestions() {
           {
             id: fix.moduleId,
             semesterId: earliestRegistrableSemester.id,
-            categoryId: "standartAssessments",
+            categoryId: "standardAssessments",
           },
         ],
-        []
+        [],
       );
       showInfoMessage(
         <>
           Added <ModuleLink module={fromId(fix.module)} /> to your study plan
-        </>
+        </>,
       );
       return;
     }

@@ -1,12 +1,13 @@
 import {
-  Entity,
-  PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  UpdateDateColumn,
-  type Relation,
+  Entity,
   OneToMany,
+  PrimaryGeneratedColumn,
+  type Relation,
+  UpdateDateColumn,
 } from "typeorm";
+
 import { ModuleHandbook } from "./moduleHandbook.entity";
 
 export enum StudyProgramAbbreviation {

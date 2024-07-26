@@ -1,4 +1,5 @@
 import { useLearningPlatformCurrentUser } from "@/services/learningPlatform/hooks/useLearningPlatformCurrentUser";
+
 import { HeaderProps } from ".";
 
 export default function useHeader(): HeaderProps {

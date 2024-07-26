@@ -19,7 +19,7 @@ export const env = {
     accessToken: {
       secret: assertString(
         process.env.ACCESS_TOKEN_SECRET,
-        "ACCESS_TOKEN_SECRET"
+        "ACCESS_TOKEN_SECRET",
       ),
     },
   },

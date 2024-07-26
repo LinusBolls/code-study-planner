@@ -1,9 +1,10 @@
+import dayjs from "dayjs";
+import { NextRequest, NextResponse } from "next/server";
+
 import { AppDataSource } from "@/backend/datasource";
 import { Semester } from "@/backend/entities/semester.entity";
 import { SemesterModule } from "@/backend/entities/semesterModule.entity";
 import { getUser } from "@/backend/getUser";
-import dayjs from "dayjs";
-import { NextRequest, NextResponse } from "next/server";
 
 const byIndex = (a: SemesterModule, b: SemesterModule) => a.index - b.index;
 
@@ -41,13 +42,13 @@ export async function GET(req: NextRequest) {
             .filter((module) => module.assessmentType === "earlyAssessments")
             .sort(byIndex)
             .map(toModule),
-          standartAssessments: semester.semesterModules
-            .filter((module) => module.assessmentType === "standartAssessments")
+          standardAssessments: semester.semesterModules
+            .filter((module) => module.assessmentType === "standardAssessments")
             .sort(byIndex)
             .map(toModule),
           alternativeAssessments: semester.semesterModules
             .filter(
-              (module) => module.assessmentType === "alternativeAssessments"
+              (module) => module.assessmentType === "alternativeAssessments",
             )
             .sort(byIndex)
             .map(toModule),

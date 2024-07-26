@@ -1,7 +1,7 @@
 export default async function consumePaginatedQuery<T>(
   func: (pagination: { limit: number; offset: number }) => Promise<T>,
   total: number,
-  amountPerQuery: number
+  amountPerQuery: number,
 ) {
   let results: T[] = [];
 

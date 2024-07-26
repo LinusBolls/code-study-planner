@@ -119,7 +119,7 @@ export const useLearningPlatform = () => {
     } catch (err) {
       console.error(
         "Failed to initialize learning platform session from storage:",
-        err
+        err,
       );
       signOut();
     }

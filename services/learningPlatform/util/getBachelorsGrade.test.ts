@@ -1,4 +1,5 @@
 import { describe, expect, test } from "vitest";
+
 import { getBachelorsGrade } from "./getBachelorsGrade";
 
 describe("getBachelorsGrade", () => {

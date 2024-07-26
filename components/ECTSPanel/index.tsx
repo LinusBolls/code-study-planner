@@ -1,13 +1,15 @@
+import { InfoCircleOutlined } from "@ant-design/icons";
 import { Button, Divider, Flex, Statistic, Switch, Typography } from "antd";
-import ECTSProgress, { ECTSProgressStep } from "../ECTSProgress";
-import { SemesterModule } from "@/components/util/types";
-import { getDepartment } from "@/data/departments";
 import Link from "antd/es/typography/Link";
 import { LP } from "code-university";
+
+import { SemesterModule } from "@/components/util/types";
+import { getDepartment } from "@/data/departments";
+
+import ECTSProgress, { ECTSProgressStep } from "../ECTSProgress";
 import StatusCard from "./StatusCard";
-import StudyProgramLegend from "./StudyProgramLegend";
 import StatusText from "./StatusText";
-import { InfoCircleOutlined } from "@ant-design/icons";
+import StudyProgramLegend from "./StudyProgramLegend";
 
 const isFailed = (module: SemesterModule) => {
   return (
@@ -91,7 +93,7 @@ export default function ECTSPanel({
       !(!previewStudyPlan && module.type === "planned")
         ? acc + module.module.ects
         : acc,
-    0
+    0,
   );
 
   const hasCompletedCore = totalCoreECTS >= totalCoreECTSNeeded;
@@ -164,7 +166,7 @@ export default function ECTSPanel({
                 module.module != null &&
                 !isFailed(module) &&
                 module.module.shortCode.startsWith("OS_") &&
-                !(!previewStudyPlan && module.type === "planned")
+                !(!previewStudyPlan && module.type === "planned"),
             )
             .map(toStep)}
           max={myModuleData?.orientation.totalECTSNeeded ?? 0}
@@ -208,7 +210,7 @@ export default function ECTSPanel({
                 module.module.isMandatory &&
                 !module.module.shortCode.startsWith("OS_") &&
                 module.module.departmentId !== "STS" &&
-                !(!previewStudyPlan && module.type === "planned")
+                !(!previewStudyPlan && module.type === "planned"),
             )
             .map(toStep)}
           max={myModuleData?.mandatory.totalECTSNeeded ?? 0}
@@ -223,7 +225,7 @@ export default function ECTSPanel({
                 module.module != null &&
                 !isFailed(module) &&
                 module.module.isCompulsoryElective &&
-                !(!previewStudyPlan && module.type === "planned")
+                !(!previewStudyPlan && module.type === "planned"),
             )
             .map(toStep)}
           max={myModuleData?.compulsoryElective.totalECTSNeeded ?? 0}
@@ -241,7 +243,7 @@ export default function ECTSPanel({
                   module.module.isMandatory ||
                   module.module.isCompulsoryElective
                 ) &&
-                !(!previewStudyPlan && module.type === "planned")
+                !(!previewStudyPlan && module.type === "planned"),
             )
             .map(toStep)}
           max={myModuleData?.elective.totalECTSNeeded ?? 0}
@@ -258,7 +260,7 @@ export default function ECTSPanel({
                 (module.module.isMandatory ||
                   module.module.isCompulsoryElective) &&
                 module.module.departmentId === "STS" &&
-                !(!previewStudyPlan && module.type === "planned")
+                !(!previewStudyPlan && module.type === "planned"),
             )
             .map(toStep)}
           max={myModuleData?.sts.totalECTSNeeded ?? 0}

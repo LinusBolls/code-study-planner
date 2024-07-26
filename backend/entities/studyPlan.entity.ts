@@ -1,18 +1,19 @@
 import {
-  Entity,
-  PrimaryGeneratedColumn,
-  OneToMany,
-  CreateDateColumn,
-  UpdateDateColumn,
-  type Relation,
-  OneToOne,
-  ManyToOne,
-  JoinColumn,
   Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+  type Relation,
+  UpdateDateColumn,
 } from "typeorm";
-import { User } from "./user.entity";
-import { Semester } from "./semester.entity";
+
 import { ModuleHandbook } from "./moduleHandbook.entity";
+import { Semester } from "./semester.entity";
+import { User } from "./user.entity";
 
 @Entity({ name: "study_plans" })
 export class StudyPlan {

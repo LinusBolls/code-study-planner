@@ -1,3 +1,5 @@
+import { LoadingOutlined } from "@ant-design/icons";
+import { GoogleLogin } from "@react-oauth/google";
 import {
   Button,
   Flex,
@@ -10,9 +12,8 @@ import {
 } from "antd";
 import Link from "next/link";
 import { useState } from "react";
+
 import { useMessages } from "./util/useMessages";
-import { GoogleLogin } from "@react-oauth/google";
-import { LoadingOutlined } from "@ant-design/icons";
 
 const removeAllWhitespace = (str: string) => str.replace(/\s/g, "");
 
@@ -59,7 +60,7 @@ export default function LoginModal({
             await signInWithLpToken(removeAllWhitespace(token));
           } catch (err) {
             showErrorMessage(
-              "Login failed: " + (err as Error).message ?? "Unknown Error"
+              "Login failed: " + (err as Error).message ?? "Unknown Error",
             );
           } finally {
             setIsTokenAuthInProgress(false);
@@ -123,17 +124,17 @@ export default function LoginModal({
                     if (!googleToken) {
                       console.error(
                         "missing credential in credentialResponse:",
-                        credentialResponse
+                        credentialResponse,
                       );
                       throw new Error(
-                        "Missing credential in credentialsResponse"
+                        "Missing credential in credentialsResponse",
                       );
                     }
                     await signInWithGoogleToken(googleToken);
                   } catch (err) {
                     showErrorMessage(
                       "Google login failed: " + (err as Error).message ??
-                        "Unknown Error"
+                        "Unknown Error",
                     );
                   } finally {
                     setIsGoogleAuthInProgress(false);

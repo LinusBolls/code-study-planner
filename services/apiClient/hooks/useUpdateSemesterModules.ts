@@ -1,7 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import useSession from "../useSession";
-import { StudyPlan, StudyPlannerApiClient } from "..";
+
 import { useMessages } from "@/components/util/useMessages";
+
+import { StudyPlan, StudyPlannerApiClient } from "..";
+import useSession from "../useSession";
 
 export const useUpdateSemesterModule = () => {
   const { api } = useSession();

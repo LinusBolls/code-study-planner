@@ -1,6 +1,6 @@
-import React from "react";
 import { Avatar, Button, Table, Typography } from "antd";
 import type { TableProps } from "antd";
+import React from "react";
 
 interface StudyPlanMember {
   key: string;

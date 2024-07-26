@@ -1,10 +1,12 @@
-import { Module, Semester } from "@/components/util/types";
-import { Flex, Row, Typography } from "antd";
-import ModulesListSection from "./ModulesListSection";
-import { memo, useState } from "react";
 import { Droppable } from "@hello-pangea/dnd";
-import { getRelativeSemesterTime } from "@/services/learningPlatform/mapping";
+import { Flex, Row, Typography } from "antd";
 import Link from "antd/es/typography/Link";
+import { memo, useState } from "react";
+
+import { Module, Semester } from "@/components/util/types";
+import { getRelativeSemesterTime } from "@/services/learningPlatform/mapping";
+
+import ModulesListSection from "./ModulesListSection";
 
 // feature flag
 const ADD_ITEM_BUTTON = false;
@@ -51,25 +53,25 @@ function SemesterCard({
 
   const isEarlyDisabled =
     semester.modules.earlyAssessments.some(
-      (i) => i.module?.moduleId === draggedModules[0]?.moduleId
+      (i) => i.module?.moduleId === draggedModules[0]?.moduleId,
     ) ||
     (!semester.canRegisterForEarlyAssessments && !isFutureSemester);
 
-  const isStandartDisabled =
-    semester.modules.standartAssessments.some(
-      (i) => i.module?.moduleId === draggedModules[0]?.moduleId
+  const isstandardDisabled =
+    semester.modules.standardAssessments.some(
+      (i) => i.module?.moduleId === draggedModules[0]?.moduleId,
     ) ||
     (!semester.canRegisterForStandardAssessments && !isFutureSemester);
 
   const isAlternativeDisabled =
     semester.modules.alternativeAssessments.some(
-      (i) => i.module?.moduleId === draggedModules[0]?.moduleId
+      (i) => i.module?.moduleId === draggedModules[0]?.moduleId,
     ) ||
     (!semester.canRegisterForAlternativeAssessments && !isFutureSemester);
 
   const isReassessmentDisabled =
     semester.modules.reassessments.some(
-      (i) => i.module?.moduleId === draggedModules[0]?.moduleId
+      (i) => i.module?.moduleId === draggedModules[0]?.moduleId,
     ) ||
     (!semester.canRegisterForReassessments && !isFutureSemester);
 
@@ -83,8 +85,8 @@ function SemesterCard({
       onMouseLeave={() => setIsHovered(false)}
     >
       <Droppable
-        droppableId={`droppable:semester:${semester.id}:standartAssessments:header`}
-        isDropDisabled={isPastSemester || isStandartDisabled}
+        droppableId={`droppable:semester:${semester.id}:standardAssessments:header`}
+        isDropDisabled={isPastSemester || isstandardDisabled}
       >
         {(provided) => {
           return (
@@ -125,12 +127,12 @@ function SemesterCard({
                     }}
                     onMouseUp={() =>
                       setMouseUpInboxId(
-                        `droppable:semester:${semester.id}:standartAssessments`
+                        `droppable:semester:${semester.id}:standardAssessments`,
                       )
                     }
                     onMouseEnter={() =>
                       setHoveredInboxId(
-                        `droppable:semester:${semester.id}:standartAssessments`
+                        `droppable:semester:${semester.id}:standardAssessments`,
                       )
                     }
                     onMouseLeave={() => setHoveredInboxId(null)}
@@ -164,12 +166,12 @@ function SemesterCard({
         droppableId={`droppable:semester:${semester.id}:earlyAssessments`}
         onMouseUp={() =>
           setMouseUpInboxId(
-            `droppable:semester:${semester.id}:earlyAssessments`
+            `droppable:semester:${semester.id}:earlyAssessments`,
           )
         }
         onMouseEnter={() =>
           setHoveredInboxId(
-            `droppable:semester:${semester.id}:earlyAssessments`
+            `droppable:semester:${semester.id}:earlyAssessments`,
           )
         }
         onMouseLeave={() => setHoveredInboxId(null)}
@@ -181,25 +183,25 @@ function SemesterCard({
         onAddItem={() => {}}
       />
       <ModulesListSection
-        droppableId={`droppable:semester:${semester.id}:standartAssessments`}
+        droppableId={`droppable:semester:${semester.id}:standardAssessments`}
         onMouseUp={() =>
           setMouseUpInboxId(
-            `droppable:semester:${semester.id}:standartAssessments`
+            `droppable:semester:${semester.id}:standardAssessments`,
           )
         }
         onMouseEnter={() =>
           setHoveredInboxId(
-            `droppable:semester:${semester.id}:standartAssessments`
+            `droppable:semester:${semester.id}:standardAssessments`,
           )
         }
         onMouseLeave={() => setHoveredInboxId(null)}
-        isHovered={hoveredSection === "standartAssessments"}
+        isHovered={hoveredSection === "standardAssessments"}
         isDragInProgress={isDraggingChats}
         title="Standard Assessments"
-        modules={semester.modules.standartAssessments}
-        showAddItemButton={showActions && !isStandartDisabled}
+        modules={semester.modules.standardAssessments}
+        showAddItemButton={showActions && !isstandardDisabled}
         onAddItem={() => {}}
-        disabled={isPastSemester || isStandartDisabled}
+        disabled={isPastSemester || isstandardDisabled}
       />
       <ModulesListSection
         disabled={
@@ -211,12 +213,12 @@ function SemesterCard({
         droppableId={`droppable:semester:${semester.id}:alternativeAssessments`}
         onMouseUp={() =>
           setMouseUpInboxId(
-            `droppable:semester:${semester.id}:alternativeAssessments`
+            `droppable:semester:${semester.id}:alternativeAssessments`,
           )
         }
         onMouseEnter={() =>
           setHoveredInboxId(
-            `droppable:semester:${semester.id}:alternativeAssessments`
+            `droppable:semester:${semester.id}:alternativeAssessments`,
           )
         }
         onMouseLeave={() => setHoveredInboxId(null)}
@@ -246,8 +248,8 @@ function SemesterCard({
       />
 
       <Droppable
-        droppableId={`droppable:semester:${semester.id}:standartAssessments:footer`}
-        isDropDisabled={isPastSemester || isStandartDisabled}
+        droppableId={`droppable:semester:${semester.id}:standardAssessments:footer`}
+        isDropDisabled={isPastSemester || isstandardDisabled}
       >
         {(provided) => {
           return (
@@ -259,12 +261,12 @@ function SemesterCard({
                 style={{ height: "100%" }}
                 onMouseUp={() =>
                   setMouseUpInboxId(
-                    `droppable:semester:${semester.id}:standartAssessments`
+                    `droppable:semester:${semester.id}:standardAssessments`,
                   )
                 }
                 onMouseEnter={() =>
                   setHoveredInboxId(
-                    `droppable:semester:${semester.id}:standartAssessments`
+                    `droppable:semester:${semester.id}:standardAssessments`,
                   )
                 }
                 onMouseLeave={() => setHoveredInboxId(null)}

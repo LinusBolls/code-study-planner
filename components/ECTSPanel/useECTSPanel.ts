@@ -1,12 +1,14 @@
+import dayjs from "dayjs";
+import { useState } from "react";
+
 import { useLearningPlatformAssessmentTable } from "@/services/learningPlatform/hooks/useLearningPlatformAssessmentTable";
+import { useLearningPlatformMyModuleData } from "@/services/learningPlatform/hooks/useLearningPlatformMyModuleData";
+import { getBachelorsGrade } from "@/services/learningPlatform/util/getBachelorsGrade";
+import { getGradeInfo } from "@/services/learningPlatform/util/getGradeInfo";
+
 import { ECTSPanelProps } from "../ECTSPanel";
 import { useSemestersList } from "../SemestersList/useSemestersList";
-import { getGradeInfo } from "@/services/learningPlatform/util/getGradeInfo";
-import { getBachelorsGrade } from "@/services/learningPlatform/util/getBachelorsGrade";
 import { useModulesInScope } from "../util/useModulesInScope";
-import dayjs from "dayjs";
-import { useLearningPlatformMyModuleData } from "@/services/learningPlatform/hooks/useLearningPlatformMyModuleData";
-import { useState } from "react";
 
 export function useECTSPanel(): ECTSPanelProps {
   const semestersListQuery = useSemestersList();
@@ -16,7 +18,7 @@ export function useECTSPanel(): ECTSPanelProps {
     .toSorted(
       (a, b) =>
         (dayjs(a.assessment?.proposedDate).unix() || 0) -
-        (dayjs(b.assessment?.proposedDate).unix() || 0)
+        (dayjs(b.assessment?.proposedDate).unix() || 0),
     );
 
   const modulesInScopeQuery = useModulesInScope();
@@ -33,14 +35,14 @@ export function useECTSPanel(): ECTSPanelProps {
     const existing = acc[i.semesterModule!.moduleIdentifier!];
 
     const assessedModule = modulesInScopeQuery.modules.find(
-      (j) => j.id === i.semesterModule!.id
+      (j) => j.id === i.semesterModule!.id,
     );
 
     if (!assessedModule) {
       console.warn(
         "[useECTSPanel] failed to find module for assessment:",
         i.semesterModule!.id,
-        i.semesterModule!.moduleIdentifier
+        i.semesterModule!.moduleIdentifier,
       );
       return acc;
     }

@@ -1,3 +1,6 @@
+import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
+
 import { AppDataSource, connectToDatabase } from "@/backend/datasource";
 import { Module } from "@/backend/entities/module.entity";
 import { Semester } from "@/backend/entities/semester.entity";
@@ -6,8 +9,6 @@ import {
   SemesterModule,
 } from "@/backend/entities/semesterModule.entity";
 import { getUser } from "@/backend/getUser";
-import { NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
 
 /**
  * note: both `semesterId` and `moduleId` are learning platform ids, not the ids in our database
@@ -25,7 +26,7 @@ export async function PUT(req: NextRequest) {
 
   const semesterSchema = z.record(
     z.enum(Object.values(AssessmentType) as [string, ...string[]]),
-    z.array(moduleSchema)
+    z.array(moduleSchema),
   );
   const bodySchema = z.record(semesterSchema);
 
@@ -48,7 +49,7 @@ export async function PUT(req: NextRequest) {
         {
           semesterIds,
           studyPlanId: user.studyPlanId,
-        }
+        },
       )
       .getCount();
 
@@ -57,7 +58,7 @@ export async function PUT(req: NextRequest) {
         {
           message: "one or more semesters do not exist",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -72,7 +73,7 @@ export async function PUT(req: NextRequest) {
           {
             studyPlanId: user.studyPlanId,
             semesterIds,
-          }
+          },
         )
         .getMany();
 
@@ -87,8 +88,8 @@ export async function PUT(req: NextRequest) {
 
       const moduleIds = Object.values(body).flatMap((semester) =>
         Object.values(semester).flatMap((modules) =>
-          modules.map((i) => i.moduleId)
-        )
+          modules.map((i) => i.moduleId),
+        ),
       );
 
       if (moduleIds.length) {
@@ -102,7 +103,8 @@ export async function PUT(req: NextRequest) {
           .getMany();
 
         const unknownModules = moduleIds.filter(
-          (moduleId) => !knownModules.some((module) => module.lpId === moduleId)
+          (moduleId) =>
+            !knownModules.some((module) => module.lpId === moduleId),
         );
 
         for (const unknownModuleId of unknownModules) {
@@ -129,7 +131,7 @@ export async function PUT(req: NextRequest) {
               const newModule = new SemesterModule();
 
               newModule.module = knownModules2.find(
-                (i) => i.lpId === semesterModule.moduleId
+                (i) => i.lpId === semesterModule.moduleId,
               )!;
               newModule.semesterId = semesterId;
               newModule.assessmentType = categoryId as AssessmentType;
@@ -154,7 +156,7 @@ export async function PUT(req: NextRequest) {
         {
           message: "insert failed due to constraint violation",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 

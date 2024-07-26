@@ -1,6 +1,6 @@
+import "reflect-metadata";
 import { DataSource } from "typeorm";
 
-import "reflect-metadata";
 import dataSourceOptions from "@/ormconfig";
 
 export const AppDataSource = new DataSource(dataSourceOptions);
