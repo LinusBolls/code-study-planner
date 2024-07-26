@@ -7,11 +7,11 @@ import { Semester, SemesterModule } from "@/components/util/types";
 import dayjs from "dayjs";
 import { getGradeInfo } from "@/services/learningPlatform/util/getGradeInfo";
 import { useStudyPlan } from "@/services/apiClient/hooks/useStudyPlan";
-import { ApiSemesterModule } from "@/services/apiClient";
 import { useLearningPlatformAssessmentTable } from "@/services/learningPlatform/hooks/useLearningPlatformAssessmentTable";
 import { useModulesInScope } from "../util/useModulesInScope";
 import { useLearningPlatformSemesters } from "@/services/learningPlatform/hooks/useLearningPlatformSemesters";
 import { useQuery } from "@tanstack/react-query";
+import { SemesterModuleDTO } from "@/backend/dtos/semester-module.dto";
 
 /**
  * aggregates the data for the kanban view of the study plan from both learning platform data and our own backend
@@ -29,7 +29,7 @@ export function useSemestersList(): SemestersListProps {
 
   const assessmentTableQuery = useLearningPlatformAssessmentTable();
 
-  const toPlannedModule = (i: ApiSemesterModule): SemesterModule => ({
+  const toPlannedModule = (i: SemesterModuleDTO): SemesterModule => ({
     type: "planned",
     id: i.moduleId,
 
@@ -40,7 +40,7 @@ export function useSemestersList(): SemestersListProps {
   const semesters =
     studyPlan.data?.semesters?.map<Semester>((semester) => {
       const matching = semestersQuery.data?.semesters.find(
-        (i) => i.id === semester.lpId
+        (i) => i.id === semester.lpId,
       );
 
       const canRegisterForEarlyAssessments =
@@ -49,22 +49,22 @@ export function useSemestersList(): SemestersListProps {
 
       const canRegisterForStandardAssessments =
         dayjs(matching?.moduleStandardRegistrationStartDate).isBefore(
-          dayjs()
+          dayjs(),
         ) &&
         dayjs(matching?.moduleStandardRegistrationEndDate).isAfter(dayjs());
 
       const canRegisterForAlternativeAssessments =
         dayjs(matching?.moduleAlternativeRegistrationStartDate).isBefore(
-          dayjs()
+          dayjs(),
         ) &&
         dayjs(matching?.moduleAlternativeRegistrationEndDate).isAfter(dayjs());
 
       const canRegisterForReassessments =
         dayjs(matching?.moduleReassessmentRegistrationPhaseStartDate).isBefore(
-          dayjs()
+          dayjs(),
         ) &&
         dayjs(matching?.moduleReassessmentRegistrationPhaseEndDate).isAfter(
-          dayjs()
+          dayjs(),
         );
 
       return {
@@ -81,8 +81,8 @@ export function useSemestersList(): SemestersListProps {
         modules: {
           earlyAssessments:
             semester.modules.earlyAssessments.map(toPlannedModule),
-          standartAssessments:
-            semester.modules.standartAssessments.map(toPlannedModule),
+          standardAssessments:
+            semester.modules.standardAssessments.map(toPlannedModule),
           alternativeAssessments:
             semester.modules.alternativeAssessments.map(toPlannedModule),
           reassessments: semester.modules.reassessments.map(toPlannedModule),
@@ -98,7 +98,7 @@ export function useSemestersList(): SemestersListProps {
     if (!semester) {
       console.warn(
         "[useSemestersList] failed to find semester:",
-        i.semester!.id
+        i.semester!.id,
       );
       continue;
     }
@@ -113,7 +113,7 @@ export function useSemestersList(): SemestersListProps {
       if (i.assessmentType === "EARLY") {
         return semester.modules.earlyAssessments;
       }
-      return semester.modules.standartAssessments;
+      return semester.modules.standardAssessments;
     })();
 
     const highestGrade = i.grade ?? null;
@@ -124,7 +124,7 @@ export function useSemestersList(): SemestersListProps {
       console.warn(
         "[useSemestersList] failed to find module for assessment:",
         i.semesterModule!.id,
-        i.semesterModule!.moduleIdentifier
+        i.semesterModule!.moduleIdentifier,
       );
       continue;
     }

@@ -1,37 +1,19 @@
-import { CompulsoryElectivePairing } from "@/backend/entities/compulsoryElectivePairing.entity";
+import { CompulsoryElectivePairingDTO } from "@/backend/dtos/compulsory-elective-pairing.dto";
+import { ModulesRecordDTO } from "@/backend/dtos/semester.dto";
+import { StudyPlanDTO } from "@/backend/dtos/study-plan.dto";
 import { Module } from "@/backend/entities/module.entity";
-
-export interface ApiSemesterModule {
-  moduleId: string;
-}
-
-interface ModulesRecord {
-  earlyAssessments: ApiSemesterModule[];
-  standartAssessments: ApiSemesterModule[];
-  alternativeAssessments: ApiSemesterModule[];
-  reassessments: ApiSemesterModule[];
-}
-
-export interface StudyPlan {
-  semesters: {
-    id: string;
-    lpId: string | null;
-    startDate: string;
-    modules: ModulesRecord;
-  }[];
-}
 
 export class StudyPlannerApiClient {
   constructor(
     private readonly accessToken: string,
-    private readonly url = "/api"
+    private readonly url = "/api",
   ) {
     this.url = "/api";
   }
 
   public async getModules(): Promise<{
     modules: Module[];
-    compulsoryElective: CompulsoryElectivePairing[];
+    compulsoryElective: CompulsoryElectivePairingDTO[];
   }> {
     const res = await fetch(this.url + "/modules", {
       headers: {
@@ -44,20 +26,20 @@ export class StudyPlannerApiClient {
     return data;
   }
 
-  public async getStudyPlan(): Promise<StudyPlan> {
+  public async getStudyPlan(): Promise<StudyPlanDTO> {
     const res = await fetch(this.url + "/study-plan", {
       headers: {
         "Content-Type": "application/json",
         Authorization: this.accessToken,
       },
     });
-    const data: StudyPlan = await res.json();
+    const data: StudyPlanDTO = await res.json();
 
     return data;
   }
 
   public async updateSemesterModules(
-    body: UpdateSemesterModuleInput
+    body: UpdateSemesterModuleInput,
   ): Promise<{}> {
     const res = await fetch(
       this.url + "/study-plan/semester-modules/batch-update",
@@ -68,7 +50,7 @@ export class StudyPlannerApiClient {
         },
         method: "PUT",
         body: JSON.stringify(body),
-      }
+      },
     );
     const data: {} = await res.json();
 
@@ -76,10 +58,10 @@ export class StudyPlannerApiClient {
   }
 }
 
-export type UpdateSemesterModuleInput = Record<string, ModulesRecord>;
+export type UpdateSemesterModuleInput = Record<string, ModulesRecordDTO>;
 
 export type SemesterModuleCategory =
   | "earlyAssessments"
-  | "standartAssessments"
+  | "standardAssessments"
   | "alternativeAssessments"
   | "reassessments";

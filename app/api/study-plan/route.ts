@@ -1,6 +1,12 @@
 import { AppDataSource } from "@/backend/datasource";
+import { StudyPlanDTO } from "@/backend/dtos/study-plan.dto";
 import { Semester } from "@/backend/entities/semester.entity";
 import { SemesterModule } from "@/backend/entities/semesterModule.entity";
+import { StudyPlan, StudyPlanScope } from "@/backend/entities/studyPlan.entity";
+import {
+  CollaboratorRole,
+  StudyPlanCollaborator,
+} from "@/backend/entities/studyPlanCollaborator.entity";
 import { getUser } from "@/backend/getUser";
 import dayjs from "dayjs";
 import { NextRequest, NextResponse } from "next/server";
@@ -15,14 +21,31 @@ export async function GET(req: NextRequest) {
   if (!user) {
     return NextResponse.json({}, { status: 401 });
   }
+  const collaboratorRepository = AppDataSource.getRepository(
+    StudyPlanCollaborator,
+  );
+
+  const studyPlanCollaborator = await collaboratorRepository.findOne({
+    where: {
+      user: {
+        id: user.id,
+      },
+    },
+  });
+
+  if (!studyPlanCollaborator) {
+    return NextResponse.json({}, { status: 401 });
+  }
 
   const semesterRepository = AppDataSource.getRepository(Semester);
 
   const semesters = await semesterRepository.find({
     where: {
       studyPlan: {
-        user: {
-          id: user.id,
+        studyPlanCollaborator: {
+          hasAccepted: true,
+          role: CollaboratorRole.Owner,
+          id: studyPlanCollaborator.id,
         },
       },
     },
@@ -41,13 +64,13 @@ export async function GET(req: NextRequest) {
             .filter((module) => module.assessmentType === "earlyAssessments")
             .sort(byIndex)
             .map(toModule),
-          standartAssessments: semester.semesterModules
-            .filter((module) => module.assessmentType === "standartAssessments")
+          standardAssessments: semester.semesterModules
+            .filter((module) => module.assessmentType === "standardAssessments")
             .sort(byIndex)
             .map(toModule),
           alternativeAssessments: semester.semesterModules
             .filter(
-              (module) => module.assessmentType === "alternativeAssessments"
+              (module) => module.assessmentType === "alternativeAssessments",
             )
             .sort(byIndex)
             .map(toModule),
@@ -59,8 +82,12 @@ export async function GET(req: NextRequest) {
       };
     });
 
-  const res = NextResponse.json({
+  const studyPlan: StudyPlanDTO = {
+    scope: StudyPlanScope.Private,
+    studyPlanCollaborator: [],
     semesters: mappedSemesters,
-  });
+  };
+
+  const res = NextResponse.json(studyPlan);
   return res;
 }

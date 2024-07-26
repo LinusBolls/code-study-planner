@@ -21,7 +21,7 @@ import { isDefined } from "@/services/learningPlatform/util/isDefined";
 
 if (!env.lp.accessToken) {
   throw new Error(
-    "FATAL the 'LP_ACCESS_TOKEN' environment variable is required to run the seeding script"
+    "FATAL the 'LP_ACCESS_TOKEN' environment variable is required to run the seeding script",
   );
 }
 
@@ -147,7 +147,7 @@ const getAbbreviation = (name: string) => {
   if (name === "BA PM") return StudyProgramAbbreviation.PM;
 
   throw new Error(
-    "[getAbbreviation] failed to resolve study program abbreviation: " + name
+    "[getAbbreviation] failed to resolve study program abbreviation: " + name,
   );
 };
 
@@ -188,11 +188,11 @@ async function main() {
   const moduleHandbookRepository = AppDataSource.getRepository(ModuleHandbook);
   const moduleRepository = AppDataSource.getRepository(Module);
   const compulsoryElectivePairingRepository = AppDataSource.getRepository(
-    CompulsoryElectivePairing
+    CompulsoryElectivePairing,
   );
 
   const learningPlatform = await LearningPlatformClient.fromRefreshToken(
-    env.lp.accessToken!
+    env.lp.accessToken!,
   );
 
   const studyPrograms = await learningPlatform.raw
@@ -225,10 +225,10 @@ query {
         {
           pagination,
           filter: {},
-        }
+        },
       ),
     currentSemesterModulesCount,
-    modulesPerQuery
+    modulesPerQuery,
   );
 
   const currentSemesterModules = results
@@ -249,7 +249,7 @@ query {
       studyProgramRepository.create({
         lpId: studyProgram.id,
         abbreviation,
-      })
+      }),
     );
     savedStudyPrograms.push(studyProgramEntity);
 
@@ -260,8 +260,8 @@ query {
             lpId: handbook.id,
             studyProgramId: studyProgramEntity.id,
             name: handbook.name,
-          })
-        )
+          }),
+        ),
       );
     }
   }
@@ -278,8 +278,8 @@ query {
             proficiency: meta.proficiency,
             possiblyOutdated: false,
             moduleIdentifier: currentModule.moduleIdentifier!,
-          })
-        )
+          }),
+        ),
       );
     }
   }
@@ -297,7 +297,7 @@ query {
       });
 
       const modules = savedModules.filter((i) =>
-        pairing.modules.includes(i.moduleIdentifier)
+        pairing.modules.includes(i.moduleIdentifier),
       );
 
       if (!handbook) {
@@ -305,7 +305,7 @@ query {
           "failed to find handbook for compulsory elective pairing: " +
             pairing.department +
             " v" +
-            handbookVersion
+            handbookVersion,
         );
       }
       savedCompulsoryElectivePairings.push(
@@ -313,8 +313,8 @@ query {
           compulsoryElectivePairingRepository.create({
             moduleHandbookId: handbook.id,
             modules,
-          })
-        )
+          }),
+        ),
       );
     }
   }
@@ -325,7 +325,7 @@ query {
   console.info(savedModules.length, "modules");
   console.info(
     savedCompulsoryElectivePairings.length,
-    "compulsory elective pairings"
+    "compulsory elective pairings",
   );
 
   AppDataSource.destroy();

@@ -8,6 +8,10 @@ import dayjs from "dayjs";
 import { StudyPlan } from "@/backend/entities/studyPlan.entity";
 import { ModuleHandbook } from "@/backend/entities/moduleHandbook.entity";
 import { issueAccessToken } from "@/backend/jwt";
+import {
+  CollaboratorRole,
+  StudyPlanCollaborator,
+} from "@/backend/entities/studyPlanCollaborator.entity";
 
 export async function POST(req: NextRequest) {
   await connectToDatabase();
@@ -15,7 +19,7 @@ export async function POST(req: NextRequest) {
   const body: { learningPlatformToken: string } = await req.json();
 
   const learningPlatform = await LearningPlatformClient.fromAnyToken(
-    body.learningPlatformToken
+    body.learningPlatformToken,
   );
   const learningPlatformUser = await learningPlatform!.raw
     .query<"me">(`query currentUser {
@@ -59,7 +63,7 @@ export async function POST(req: NextRequest) {
       {
         message: `module handbook with learningplatform id '${moduleHandbookLpId}' not found in database`,
       },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -85,7 +89,17 @@ export async function POST(req: NextRequest) {
         .getRepository(StudyPlan)
         .save(studyPlan);
 
-      newUser.studyPlanId = newStudyPlan.id;
+      const studyPlanCollaborator = new StudyPlanCollaborator();
+      studyPlanCollaborator.hasAccepted = true;
+      studyPlanCollaborator.role = CollaboratorRole.Owner;
+
+      studyPlanCollaborator.studyPlanId = newStudyPlan.id;
+
+      await transaction
+        .getRepository(StudyPlanCollaborator)
+        .save(studyPlanCollaborator);
+
+      newUser.studyPlanCollaboratorId = studyPlanCollaborator.id;
 
       await transaction.getRepository(User).save(newUser);
 
@@ -180,7 +194,7 @@ export async function POST(req: NextRequest) {
         }
         avatarUrl
         __typename
-      }`
+      }`,
       );
 
       const myPastAssessments = myStudiesData
@@ -194,7 +208,7 @@ export async function POST(req: NextRequest) {
             name
             startDate
         }
-      }`
+      }`,
       );
 
       const allSemesters = (semestersData.semesters ?? []).toReversed();
@@ -205,7 +219,7 @@ export async function POST(req: NextRequest) {
           .toSorted((a, b) => a - b)[0] ?? 0;
 
       const semestersInScope = allSemesters.slice(
-        indexOfFirstSemesterWithAssessments
+        indexOfFirstSemesterWithAssessments,
       );
 
       const semesterRepository = transaction.getRepository(Semester);
@@ -213,7 +227,7 @@ export async function POST(req: NextRequest) {
       const numVirtualSemesters = Math.max(0, 10 - semestersInScope.length);
 
       const lastExistingSemesterDate = dayjs(
-        semestersInScope[semestersInScope.length - 1]?.startDate ?? new Date()
+        semestersInScope[semestersInScope.length - 1]?.startDate ?? new Date(),
       );
 
       for (const semester of semestersInScope) {
@@ -248,7 +262,7 @@ export async function POST(req: NextRequest) {
       learningPlatformUser,
       accessToken,
     },
-    { status: isSignup ? 201 : 200 }
+    { status: isSignup ? 201 : 200 },
   );
   res.headers.set("set-cookie", accessToken);
 

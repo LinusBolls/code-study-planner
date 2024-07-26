@@ -1,24 +1,13 @@
 import { getGradeInfo } from "@/services/learningPlatform/util/getGradeInfo";
 import { Module, Semester } from "../util/types";
 import { Issue } from "./issues";
-
-export interface CompulsoryElectivePairing {
-  id: string;
-  moduleHandbookId: string;
-  modules: {
-    id: string;
-    lpId: string;
-    proficiency: number;
-    possiblyOutdated: boolean;
-    moduleIdentifier: string;
-  }[];
-}
+import { CompulsoryElectivePairingDTO } from "@/backend/dtos/compulsory-elective-pairing.dto";
 
 export function getMissingMandatory(
   semesters: Semester[],
   modules: Module[],
   mandatoryModuleIds: string[],
-  compulsoryElectivePairings: CompulsoryElectivePairing[]
+  compulsoryElectivePairings: CompulsoryElectivePairingDTO[],
 ) {
   let issues: Issue[] = [];
 
@@ -42,16 +31,16 @@ export function getMissingMandatory(
     const isCompulsoryElective = type === "COMPULSORY_ELECTIVE";
 
     const partnerModuleIdentifiers = isCompulsoryElective
-      ? compulsoryElectivePairings
+      ? (compulsoryElectivePairings
           .find((i) => i.modules[0]?.moduleIdentifier === moduleIdentifier)
           ?.modules.slice(1)
-          .map((i) => i.moduleIdentifier) ?? []
+          .map((i) => i.moduleIdentifier) ?? [])
       : [];
 
     const partnerModules = modules.filter(
       (i) =>
         partnerModuleIdentifiers.includes(i.moduleIdentifier) &&
-        i.isCompulsoryElective
+        i.isCompulsoryElective,
     );
 
     if (
@@ -62,7 +51,7 @@ export function getMissingMandatory(
       console.warn(
         "[useSuggestions] failed to find partner modules for compulsory elective module",
         moduleId,
-        thisModule.moduleIdentifier
+        thisModule.moduleIdentifier,
       );
     }
 
@@ -73,7 +62,7 @@ export function getMissingMandatory(
           i.assessment?.published &&
           getGradeInfo(i.assessment?.grade).valid &&
           !getGradeInfo(i.assessment?.grade).passed
-        )
+        ),
     );
 
     const isAnyPartnerModuleTaken = partnerModules.some((i) =>
@@ -82,8 +71,8 @@ export function getMissingMandatory(
           j.module.moduleIdentifier === i.moduleIdentifier &&
           !(
             j.assessment?.published && !getGradeInfo(j.assessment?.grade).passed
-          )
-      )
+          ),
+      ),
     );
 
     if (!isTaken && isMandatory) {
