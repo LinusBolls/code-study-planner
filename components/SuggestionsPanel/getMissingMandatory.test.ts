@@ -1,4 +1,5 @@
 import { describe, expect, test } from "vitest";
+
 import { getMissingMandatory } from "./getMissingMandatory";
 
 describe("getMissingMandatory", () => {
@@ -17,7 +18,7 @@ describe("getMissingMandatory", () => {
             title: "Fall 2021",
             modules: {
               earlyAssessments: [],
-              standartAssessments: [
+              standardAssessments: [
                 {
                   type: "past",
                   id: "ckvmhbfra148510wjsptcpflfk",
@@ -824,7 +825,7 @@ describe("getMissingMandatory", () => {
             title: "Spring 2022",
             modules: {
               earlyAssessments: [],
-              standartAssessments: [],
+              standardAssessments: [],
               alternativeAssessments: [],
               reassessments: [],
             },
@@ -840,7 +841,7 @@ describe("getMissingMandatory", () => {
             title: "Fall 2022",
             modules: {
               earlyAssessments: [],
-              standartAssessments: [
+              standardAssessments: [
                 {
                   type: "past",
                   id: "cla2l96gp367190vmecw134tb3",
@@ -1015,7 +1016,7 @@ describe("getMissingMandatory", () => {
             title: "Spring 2023",
             modules: {
               earlyAssessments: [],
-              standartAssessments: [
+              standardAssessments: [
                 {
                   type: "past",
                   id: "clggkz7u47537213l62h1indqh",
@@ -1416,7 +1417,7 @@ describe("getMissingMandatory", () => {
             title: "Fall 2023",
             modules: {
               earlyAssessments: [],
-              standartAssessments: [
+              standardAssessments: [
                 {
                   type: "past",
                   id: "cloisftp50008l30ifwa2vo4x",
@@ -1913,7 +1914,7 @@ describe("getMissingMandatory", () => {
             title: "Spring 2024",
             modules: {
               earlyAssessments: [],
-              standartAssessments: [
+              standardAssessments: [
                 {
                   type: "past",
                   id: "cluwnne6q000nl60h69yh699w",
@@ -2266,7 +2267,7 @@ describe("getMissingMandatory", () => {
             title: "Fall 2024",
             modules: {
               earlyAssessments: [],
-              standartAssessments: [
+              standardAssessments: [
                 {
                   type: "planned",
                   id: "clpqtn2k9005ct8peam28retk",
@@ -2493,7 +2494,7 @@ describe("getMissingMandatory", () => {
             title: "Spring 2025",
             modules: {
               earlyAssessments: [],
-              standartAssessments: [
+              standardAssessments: [
                 {
                   type: "planned",
                   id: "clrdhdwgs0000js0h9vbtfo89",
@@ -2690,7 +2691,7 @@ describe("getMissingMandatory", () => {
             title: "Fall 2025",
             modules: {
               earlyAssessments: [],
-              standartAssessments: [
+              standardAssessments: [
                 {
                   type: "planned",
                   id: "clqz878y80000l80hxcf031lb",
@@ -2743,7 +2744,7 @@ describe("getMissingMandatory", () => {
             title: "Spring 2026",
             modules: {
               earlyAssessments: [],
-              standartAssessments: [
+              standardAssessments: [
                 {
                   type: "planned",
                   id: "clrcbcghn0000jp0hcnod0xv2",
@@ -8074,8 +8075,8 @@ describe("getMissingMandatory", () => {
               },
             ],
           },
-        ]
-      )
+        ],
+      ),
     ).toEqual([
       {
         type: "missing_mandatory",

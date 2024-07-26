@@ -1,6 +1,7 @@
 import { create } from "zustand";
-import { Module } from "./types";
+
 import { SemesterModuleCategory } from "../../services/apiClient";
+import { Module } from "./types";
 
 const DROP_TARGET_GRACE_PERIOD_MS = 500;
 
@@ -13,7 +14,7 @@ interface ChatSelectionStore {
   actions: {
     startDraggingChats: (
       draggedModules: Module[],
-      sourceInboxId?: string | null | undefined
+      sourceInboxId?: string | null | undefined,
     ) => void;
     stopDraggingChats: () => void;
     setMouseUpInboxId: (inboxId: string | null) => void;

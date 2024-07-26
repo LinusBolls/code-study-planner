@@ -1,6 +1,7 @@
-import { Module } from "@/components/util/types";
 import { LP } from "code-university";
 import dayjs from "dayjs";
+
+import { Module } from "@/components/util/types";
 
 export const toModule =
   (mandatoryModuleIds: string[]) =>
@@ -9,7 +10,7 @@ export const toModule =
 
     const isMandatory = mandatoryModuleIds.includes(moduleId + "|MANDATORY");
     const isCompulsoryElective = mandatoryModuleIds.includes(
-      moduleId + "|COMPULSORY_ELECTIVE"
+      moduleId + "|COMPULSORY_ELECTIVE",
     );
 
     return {

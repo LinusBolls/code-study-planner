@@ -1,6 +1,3 @@
-import { Assessment, Module } from "@/components/util/types";
-import { getDepartment } from "@/data/departments";
-import { useIsDraggingChats } from "@/components/util/useChatSelection";
 import { HolderOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import { Draggable, DraggableProvided } from "@hello-pangea/dnd";
 import {
@@ -17,6 +14,10 @@ import {
 } from "antd";
 import Link from "next/link";
 import { memo, useState } from "react";
+
+import { Assessment, Module } from "@/components/util/types";
+import { useIsDraggingChats } from "@/components/util/useChatSelection";
+import { getDepartment } from "@/data/departments";
 
 export interface ModulesListItemProps extends CardProps {
   module?: Module | null;
@@ -415,11 +416,11 @@ function InnerModulesListItem({
                       ? assessment.passed
                         ? `Level ${assessment.level}, Grade ${assessment.grade}`
                         : assessment.grade == null
-                        ? "Failed"
-                        : `Failed, Grade ${assessment.grade}`
+                          ? "Failed"
+                          : `Failed, Grade ${assessment.grade}`
                       : assessment.passed
-                      ? "Passed"
-                      : "Failed"}
+                        ? "Passed"
+                        : "Failed"}
                   </Tag>
                 ) : (
                   <Tag

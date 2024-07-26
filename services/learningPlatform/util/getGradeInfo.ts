@@ -39,6 +39,6 @@ export const getGradeInfo = (grade?: number | null): GradeInfo => {
   if (grade === 5) return { valid: true, passed: false, level: null };
 
   throw new Error(
-    "[getGradeInfo] reached an impossible state for grade " + grade
+    "[getGradeInfo] reached an impossible state for grade " + grade,
   );
 };

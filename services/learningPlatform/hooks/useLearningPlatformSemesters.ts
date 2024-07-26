@@ -1,7 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { QueryRes } from "code-university";
-import { useLearningPlatform } from "../useLearningPlatform";
+
 import { readFromCache } from "@/services/caching";
+
+import { useLearningPlatform } from "../useLearningPlatform";
 
 export const useLearningPlatformSemesters = (limit = 20, offset = 0) => {
   const { learningPlatform, enabled } = useLearningPlatform();
@@ -15,7 +17,7 @@ export const useLearningPlatformSemesters = (limit = 20, offset = 0) => {
             limit,
             offset,
           },
-        }
+        },
       );
       return data;
     },

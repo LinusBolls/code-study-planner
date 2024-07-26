@@ -1,14 +1,16 @@
-import { ModulesSearchProps } from ".";
-import { useLearningPlatformModules } from "@/services/learningPlatform/hooks/useLearningPlatformModules";
-import { useLearningPlatformCurrentUser } from "@/services/learningPlatform/hooks/useLearningPlatformCurrentUser";
-import { isDefined } from "@/services/learningPlatform/util/isDefined";
 import FuzzySearch from "fuzzy-search";
+
+import { useLearningPlatformCurrentUser } from "@/services/learningPlatform/hooks/useLearningPlatformCurrentUser";
+import { useLearningPlatformModules } from "@/services/learningPlatform/hooks/useLearningPlatformModules";
 import { useLearningPlatformMySemesterList } from "@/services/learningPlatform/hooks/useLearningPlatformMySemesterList";
 import { useLearningPlatformMyStudies } from "@/services/learningPlatform/hooks/useLearningPlatformMyStudies";
 import { toModule } from "@/services/learningPlatform/mapping";
 import { getGradeInfo } from "@/services/learningPlatform/util/getGradeInfo";
-import { useModulesSearchStore } from "./modulesSearchStore";
+import { isDefined } from "@/services/learningPlatform/util/isDefined";
+
+import { ModulesSearchProps } from ".";
 import { useSemestersList } from "../SemestersList/useSemestersList";
+import { useModulesSearchStore } from "./modulesSearchStore";
 
 export const useModulesSearch = (): ModulesSearchProps => {
   const store = useModulesSearchStore();
@@ -41,21 +43,23 @@ export const useModulesSearch = (): ModulesSearchProps => {
   const modulesTabContents = currentSemesterModules.filter((i) => {
     const attemptedModule = myPastModules.find(
       (j) =>
-        j?.moduleIdentifier === i.moduleIdentifier && i.moduleIdentifier != null
+        j?.moduleIdentifier === i.moduleIdentifier &&
+        i.moduleIdentifier != null,
     );
 
     const currentModule = myCurrentModules.find(
       (j) =>
-        j?.moduleIdentifier === i.moduleIdentifier && i.moduleIdentifier != null
+        j?.moduleIdentifier === i.moduleIdentifier &&
+        i.moduleIdentifier != null,
     );
 
     const allFailed = attemptedModule?.assessments?.every(
-      (i) => getGradeInfo(i.grade).valid && !getGradeInfo(i.grade).passed
+      (i) => getGradeInfo(i.grade).valid && !getGradeInfo(i.grade).passed,
     );
     const hasAssessments = (attemptedModule?.assessments?.length ?? 0) > 0;
 
     const isPlanned = flattenedModules.some(
-      (j) => j.type === "planned" && j.module?.moduleId === i.module?.id
+      (j) => j.type === "planned" && j.module?.moduleId === i.module?.id,
     );
     const isPartOfStudyPlan =
       (hasAssessments && !allFailed) || currentModule != null || isPlanned;
@@ -81,7 +85,7 @@ export const useModulesSearch = (): ModulesSearchProps => {
     ],
     {
       sort: true,
-    }
+    },
   );
 
   // matches e.g. "ects:5" or "10 ects"
@@ -92,11 +96,11 @@ export const useModulesSearch = (): ModulesSearchProps => {
 
   // matches e.g. "se" or "pm" or "id"
   const queryDepartmentFilter = store.searchQuery.match(
-    /(?:^|\s+)(se|pm|id)(?:$|\s+)/i
+    /(?:^|\s+)(se|pm|id)(?:$|\s+)/i,
   );
 
   const passedFailedAttemptedFilter = store.searchQuery.match(
-    /(?:^|\s+)(se|pm|id)(?:$|\s+)/i
+    /(?:^|\s+)(se|pm|id)(?:$|\s+)/i,
   );
 
   const modules =
@@ -105,7 +109,7 @@ export const useModulesSearch = (): ModulesSearchProps => {
         store.searchQuery
           .trim()
           .replace(/ects:\s*(\d+)|(\d+)\s*ect(?:s)?/i, "")
-          .replace(/(?:^|\s+)(se|pm|id)(?:$|\s+)/i, "")
+          .replace(/(?:^|\s+)(se|pm|id)(?:$|\s+)/i, ""),
       )
       ?.filter((i) => {
         if (
@@ -145,7 +149,7 @@ export const useModulesSearch = (): ModulesSearchProps => {
         const attemptedModule = myPastModules.find(
           (j) =>
             j?.moduleIdentifier === i.moduleIdentifier &&
-            i.moduleIdentifier != null
+            i.moduleIdentifier != null,
         );
 
         if (store.filters.onlyPassed && attemptedModule?.status !== "ATTEMPTED")

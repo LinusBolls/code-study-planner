@@ -1,5 +1,6 @@
-import { connectToDatabase } from "@/backend/datasource";
 import { NextRequest, NextResponse } from "next/server";
+
+import { connectToDatabase } from "@/backend/datasource";
 
 export async function POST(req: NextRequest) {
   await connectToDatabase();
@@ -13,7 +14,7 @@ export async function POST(req: NextRequest) {
   if (url.protocol !== "https:" || url.hostname !== "api.app.code.berlin") {
     return NextResponse.json(
       { message: "invalid url: must start with 'https://api.app.code.berlin'" },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -53,12 +54,12 @@ export async function POST(req: NextRequest) {
         `[learning-platform-proxy] failed to fetch learning platform:`,
         // @ts-ignore
         JSON.parse(init.body),
-        init.headers
+        init.headers,
       );
     } catch (err) {
       console.error(
         `[learning-platform-proxy] failed to fetch learning platform:`,
-        init
+        init,
       );
     }
     throw new Error("Failed to fetch learning platform");

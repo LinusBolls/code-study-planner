@@ -1,10 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { LP } from "code-university";
-import { useLearningPlatform } from "../useLearningPlatform";
+
 import { readFromCache } from "@/services/caching";
 
+import { useLearningPlatform } from "../useLearningPlatform";
+
 export const useLearningPlatformSemesterModules = (
-  semesterModuleIds: string[]
+  semesterModuleIds: string[],
 ) => {
   const { learningPlatform, enabled } = useLearningPlatform();
 
@@ -15,7 +17,7 @@ export const useLearningPlatformSemesterModules = (
       for (const semesterModuleId of semesterModuleIds) {
         const result = await learningPlatform!.raw.query<"semesterModule">(
           query,
-          { semesterModuleId }
+          { semesterModuleId },
         );
         if (result.semesterModule) semesterModules.push(result.semesterModule);
       }

@@ -1,10 +1,12 @@
 import { Button, Flex, Typography } from "antd";
-import { Panel } from "react-resizable-panels";
-import SemestersListSkeletonLoader from "./SemestersListSkeletonLoader";
-import { Semester } from "@/components/util/types";
-import SemesterCard from "../Semester";
 import { useEffect, useRef } from "react";
+import { Panel } from "react-resizable-panels";
+
+import { Semester } from "@/components/util/types";
 import { useChatSelection } from "@/components/util/useChatSelection";
+
+import SemesterCard from "../Semester";
+import SemestersListSkeletonLoader from "./SemestersListSkeletonLoader";
 
 export interface SemestersListProps {
   isLoading?: boolean;

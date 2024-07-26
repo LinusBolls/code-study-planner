@@ -1,6 +1,7 @@
-import { urlParams } from "@/services/learningPlatform/util/urlParams";
 import { useEffect } from "react";
 import { create } from "zustand";
+
+import { urlParams } from "@/services/learningPlatform/util/urlParams";
 
 export interface ModulesSearchStore {
   searchQuery: string;
@@ -169,7 +170,7 @@ export function useModulesSearchStore() {
     }
     throw new Error(
       "invalid modules tab (must be one of 'all', 'my-studies', 'my-semester'): " +
-        value
+        value,
     );
   }
   const modulesTab = (() => {

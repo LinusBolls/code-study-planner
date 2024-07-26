@@ -7,7 +7,7 @@ export interface ApiSemesterModule {
 
 interface ModulesRecord {
   earlyAssessments: ApiSemesterModule[];
-  standartAssessments: ApiSemesterModule[];
+  standardAssessments: ApiSemesterModule[];
   alternativeAssessments: ApiSemesterModule[];
   reassessments: ApiSemesterModule[];
 }
@@ -24,7 +24,7 @@ export interface StudyPlan {
 export class StudyPlannerApiClient {
   constructor(
     private readonly accessToken: string,
-    private readonly url = "/api"
+    private readonly url = "/api",
   ) {
     this.url = "/api";
   }
@@ -57,7 +57,7 @@ export class StudyPlannerApiClient {
   }
 
   public async updateSemesterModules(
-    body: UpdateSemesterModuleInput
+    body: UpdateSemesterModuleInput,
   ): Promise<{}> {
     const res = await fetch(
       this.url + "/study-plan/semester-modules/batch-update",
@@ -68,7 +68,7 @@ export class StudyPlannerApiClient {
         },
         method: "PUT",
         body: JSON.stringify(body),
-      }
+      },
     );
     const data: {} = await res.json();
 
@@ -80,6 +80,6 @@ export type UpdateSemesterModuleInput = Record<string, ModulesRecord>;
 
 export type SemesterModuleCategory =
   | "earlyAssessments"
-  | "standartAssessments"
+  | "standardAssessments"
   | "alternativeAssessments"
   | "reassessments";

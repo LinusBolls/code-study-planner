@@ -1,13 +1,14 @@
 import {
-  Entity,
-  PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  UpdateDateColumn,
-  ManyToMany,
-  type Relation,
+  Entity,
   JoinTable,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+  type Relation,
+  UpdateDateColumn,
 } from "typeorm";
+
 import { CompulsoryElectivePairing } from "./compulsoryElectivePairing.entity";
 
 @Entity({ name: "modules" })

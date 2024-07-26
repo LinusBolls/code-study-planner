@@ -1,7 +1,9 @@
 import { describe, expect, test } from "vitest";
-import { getMissingPrerequisites } from "./getMissingPrerequisites";
+
 import { highfiveSeHandbookV2Modules } from "@/testUtils/data/modules";
+
 import { Semester } from "../util/types";
+import { getMissingPrerequisites } from "./getMissingPrerequisites";
 
 describe("getMissingPrerequisites", () => {
   test("parses a missing prerequisite", () => {
@@ -18,7 +20,7 @@ describe("getMissingPrerequisites", () => {
         title: "Fall 2021",
         modules: {
           earlyAssessments: [],
-          standartAssessments: [
+          standardAssessments: [
             {
               type: "past",
               id: "ckvmhbfra148510wjsptcpflfk",
@@ -826,7 +828,7 @@ describe("getMissingPrerequisites", () => {
         title: "Spring 2022",
         modules: {
           earlyAssessments: [],
-          standartAssessments: [],
+          standardAssessments: [],
           alternativeAssessments: [],
           reassessments: [],
         },
@@ -843,7 +845,7 @@ describe("getMissingPrerequisites", () => {
         title: "Fall 2022",
         modules: {
           earlyAssessments: [],
-          standartAssessments: [
+          standardAssessments: [
             {
               type: "past",
               id: "cla2l96gp367190vmecw134tb3",
@@ -1019,7 +1021,7 @@ describe("getMissingPrerequisites", () => {
         title: "Spring 2023",
         modules: {
           earlyAssessments: [],
-          standartAssessments: [
+          standardAssessments: [
             {
               type: "past",
               id: "clggkz7u47537213l62h1indqh",
@@ -1421,7 +1423,7 @@ describe("getMissingPrerequisites", () => {
         title: "Fall 2023",
         modules: {
           earlyAssessments: [],
-          standartAssessments: [
+          standardAssessments: [
             {
               type: "past",
               id: "cloisftp50008l30ifwa2vo4x",
@@ -1919,7 +1921,7 @@ describe("getMissingPrerequisites", () => {
         title: "Spring 2024",
         modules: {
           earlyAssessments: [],
-          standartAssessments: [
+          standardAssessments: [
             {
               type: "past",
               id: "cluwnne6q000nl60h69yh699w",
@@ -2273,7 +2275,7 @@ describe("getMissingPrerequisites", () => {
         title: "Fall 2024",
         modules: {
           earlyAssessments: [],
-          standartAssessments: [],
+          standardAssessments: [],
           alternativeAssessments: [],
           reassessments: [],
         },
@@ -2290,7 +2292,7 @@ describe("getMissingPrerequisites", () => {
         title: "Spring 2025",
         modules: {
           earlyAssessments: [],
-          standartAssessments: [],
+          standardAssessments: [],
           alternativeAssessments: [],
           reassessments: [],
         },
@@ -2307,7 +2309,7 @@ describe("getMissingPrerequisites", () => {
         title: "Fall 2025",
         modules: {
           earlyAssessments: [],
-          standartAssessments: [
+          standardAssessments: [
             {
               type: "planned",
               id: "clrclpmfz0002jt0h7iwo9ob3",
@@ -2435,7 +2437,7 @@ describe("getMissingPrerequisites", () => {
         title: "Spring 2026",
         modules: {
           earlyAssessments: [],
-          standartAssessments: [
+          standardAssessments: [
             {
               type: "planned",
               id: "clqdsm69a0000jp0h9hp4m2gt",
@@ -2480,7 +2482,7 @@ describe("getMissingPrerequisites", () => {
     ];
 
     expect(
-      getMissingPrerequisites(semesters, highfiveSeHandbookV2Modules, [])
+      getMissingPrerequisites(semesters, highfiveSeHandbookV2Modules, []),
     ).toEqual([
       {
         type: "missing_prerequisite",

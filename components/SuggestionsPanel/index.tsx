@@ -1,5 +1,6 @@
-import { Button, Flex, List, Typography } from "antd";
 import { ExclamationCircleOutlined, WarningOutlined } from "@ant-design/icons";
+import { Button, Flex, List, Typography } from "antd";
+
 import { Suggestion, SuggestionFix } from "./issues";
 
 export interface SuggestionsPanelProps {

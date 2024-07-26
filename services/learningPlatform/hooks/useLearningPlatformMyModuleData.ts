@@ -1,7 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { QueryRes } from "code-university";
-import { useLearningPlatform } from "../useLearningPlatform";
+
 import { readFromCache } from "@/services/caching";
+
+import { useLearningPlatform } from "../useLearningPlatform";
 
 /**
  * used by the `My ECTS by Module Type` section on the `Dashboard` tab of the Learning Platform

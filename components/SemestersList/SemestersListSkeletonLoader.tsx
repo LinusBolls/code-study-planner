@@ -1,4 +1,5 @@
 import { Flex, Skeleton } from "antd";
+
 import ModulesListSection from "../ModulesListSection";
 
 export default function SemestersListSkeletonLoader() {

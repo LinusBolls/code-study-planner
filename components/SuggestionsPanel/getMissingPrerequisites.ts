@@ -1,4 +1,5 @@
 import { getGradeInfo } from "@/services/learningPlatform/util/getGradeInfo";
+
 import { Module, Semester, SemesterModule } from "../util/types";
 import { Issue } from "./issues";
 
@@ -11,7 +12,7 @@ export const getMissingPrerequisites = (
   deprecatedModules: {
     id: string;
     moduleIdentifier?: string | null;
-  }[]
+  }[],
 ) => {
   let coords: {
     module: SemesterModule;
@@ -83,7 +84,7 @@ export const getMissingPrerequisites = (
         const prerequisites = coords.filter(
           (j) =>
             // we can't directly compare module ids here, otherwise os_05 and os_05_v2 would not be considered equivalent
-            j.module.module?.moduleIdentifier === moduleIdentifier
+            j.module.module?.moduleIdentifier === moduleIdentifier,
         );
         const sache =
           prerequisites.length < 1 ||
@@ -104,7 +105,7 @@ export const getMissingPrerequisites = (
         type: "missing_prerequisite",
         prerequisite: id,
         prerequisiteFor: coord.module.module?.moduleId,
-      }))
+      })),
     );
   }
   return issues;

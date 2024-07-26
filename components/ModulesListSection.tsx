@@ -1,10 +1,12 @@
+import { PlusOutlined } from "@ant-design/icons";
 import { Droppable } from "@hello-pangea/dnd";
 import { Button, Flex, FlexProps, Typography } from "antd";
-import ModulesListItem from "./ModulesListItem";
-import { PlusOutlined } from "@ant-design/icons";
-import { theme } from "@/data/theme";
-import { SemesterModule } from "@/components/util/types";
 import { memo } from "react";
+
+import { SemesterModule } from "@/components/util/types";
+import { theme } from "@/data/theme";
+
+import ModulesListItem from "./ModulesListItem";
 
 export interface ModulesListSectionProps extends Omit<FlexProps, "children"> {
   modules: SemesterModule[];
@@ -104,8 +106,8 @@ function ModulesListSection({
                 !isDragTarget && !modules.length
                   ? "0 0.5rem"
                   : isDragTarget
-                  ? "0.5rem 0.5rem 5rem 0.5rem"
-                  : "0",
+                    ? "0.5rem 0.5rem 5rem 0.5rem"
+                    : "0",
               ...(isDragTarget
                 ? {
                     border: `1px dashed ${theme.palette.dndHighlight}`,

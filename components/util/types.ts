@@ -77,7 +77,7 @@ export interface Semester {
 
   modules: {
     earlyAssessments: SemesterModule[];
-    standartAssessments: SemesterModule[];
+    standardAssessments: SemesterModule[];
     alternativeAssessments: SemesterModule[];
     reassessments: SemesterModule[];
   };

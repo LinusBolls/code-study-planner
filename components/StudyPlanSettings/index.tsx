@@ -1,5 +1,5 @@
-import { Segmented, Typography } from "antd";
 import { GlobalOutlined, LockOutlined } from "@ant-design/icons";
+import { Segmented, Typography } from "antd";
 
 import AccessManagementTable from "./AccessManagementTable";
 

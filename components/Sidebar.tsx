@@ -1,22 +1,24 @@
-import { Badge, Button, Flex, Modal, Tabs, TabsProps } from "antd";
-import { useRef, useState } from "react";
-import { ImperativePanelHandle, Panel } from "react-resizable-panels";
-import ECTSPanel from "./ECTSPanel";
-import SuggestionsPanel from "./SuggestionsPanel";
-import ModulesSearch from "./ModulesSearch";
-import { useModulesSearch } from "./ModulesSearch/useModulesSearch";
 import {
   DoubleLeftOutlined,
   DoubleRightOutlined,
   LoadingOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
-import { urlParams } from "@/services/learningPlatform/util/urlParams";
+import { Badge, Button, Flex, Modal, Tabs, TabsProps } from "antd";
+import { useRef, useState } from "react";
+import { ImperativePanelHandle, Panel } from "react-resizable-panels";
 import { create } from "zustand";
-import { useECTSPanel } from "./ECTSPanel/useECTSPanel";
+
 import { useSuggestions } from "@/components/SuggestionsPanel/useSuggestionsPanel";
 import { EXPERIMENTAL_STUDY_PLAN_SHARING } from "@/experimental";
+import { urlParams } from "@/services/learningPlatform/util/urlParams";
+
+import ECTSPanel from "./ECTSPanel";
+import { useECTSPanel } from "./ECTSPanel/useECTSPanel";
+import ModulesSearch from "./ModulesSearch";
+import { useModulesSearch } from "./ModulesSearch/useModulesSearch";
 import StudyPlanSettings from "./StudyPlanSettings";
+import SuggestionsPanel from "./SuggestionsPanel";
 import useScreenSize from "./util/useScreenSize";
 
 const isBrowser = typeof window !== "undefined";
@@ -34,7 +36,7 @@ export const useLayoutStore = create<LayoutStore>((set) => ({
       set((state) =>
         state.isSidebarCollapsed === isSidebarCollapsed
           ? state
-          : { isSidebarCollapsed }
+          : { isSidebarCollapsed },
       ),
   },
 }));
@@ -92,7 +94,7 @@ export default function Sidebar({}: SidebarProps) {
     <Panel
       onResize={(size) => {
         setIsSidebarCollapsed(
-          Math.round(size) === Math.round(sidebarCollapsedWidth)
+          Math.round(size) === Math.round(sidebarCollapsedWidth),
         );
       }}
       ref={sidebarRef}

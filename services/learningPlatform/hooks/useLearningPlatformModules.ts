@@ -1,10 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import { QueryRes } from "code-university";
 
-import { isDefined } from "../util/isDefined";
+import { readFromCache } from "@/services/caching";
+
 import consumePaginatedQuery from "../consumePaginatedQuery";
 import { useLearningPlatform } from "../useLearningPlatform";
-import { readFromCache } from "@/services/caching";
+import { isDefined } from "../util/isDefined";
 
 /**
  * used by the `Modules` tab of the Learning Platform
@@ -30,14 +31,14 @@ export const useLearningPlatformModules = () => {
             {
               pagination,
               filter: {},
-            }
+            },
           ),
         currentSemesterModulesCount,
-        modulesPerQuery
+        modulesPerQuery,
       );
 
       const currentSemesterModules = results.flatMap(
-        (i) => i.currentSemesterModules
+        (i) => i.currentSemesterModules,
       );
 
       return {

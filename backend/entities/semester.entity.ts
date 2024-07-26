@@ -1,15 +1,16 @@
 import {
-  Entity,
-  PrimaryGeneratedColumn,
   Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
-  CreateDateColumn,
-  UpdateDateColumn,
+  PrimaryGeneratedColumn,
   type Relation,
-  JoinColumn,
   Unique,
+  UpdateDateColumn,
 } from "typeorm";
+
 import { SemesterModule } from "./semesterModule.entity";
 import { StudyPlan } from "./studyPlan.entity";
 
@@ -38,7 +39,7 @@ export class Semester {
     (semesterModule) => semesterModule.semester,
     {
       cascade: ["remove"],
-    }
+    },
   )
   semesterModules!: Relation<SemesterModule>[];
 

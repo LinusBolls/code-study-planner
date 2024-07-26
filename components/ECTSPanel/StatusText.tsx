@@ -22,10 +22,10 @@ export default function StatusText({
         disabled
           ? undefined
           : isSuccess
-          ? "success"
-          : isError
-          ? "warning"
-          : "secondary"
+            ? "success"
+            : isError
+              ? "warning"
+              : "secondary"
       }
       style={{
         fontSize: "0.75rem",
