@@ -6,18 +6,19 @@ import {
   Column,
   OneToOne,
   type Relation,
-  OneToMany,
+  ManyToOne,
+  JoinColumn,
 } from "typeorm";
 import { User } from "./user.entity";
-import { Semester } from "./semester.entity";
+import { StudyPlan } from "./studyPlan.entity";
 
 export enum CollaboratorRole {
   Viewer = "viewer",
   Editor = "editor",
-  Owner = "owner"
+  Owner = "owner",
 }
 
-@Entity({ name: "study_plan_collaborator" })
+@Entity({ name: "study_plan_collaborators" })
 export class StudyPlanCollaborator {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
@@ -28,13 +29,8 @@ export class StudyPlanCollaborator {
   @UpdateDateColumn({ select: false })
   updatedAt!: Date;
 
-  @OneToOne(() => User, (user) => user.studyPlan)
+  @OneToOne(() => User, (user) => user.studyPlanCollaborator)
   user!: Relation<User>;
-
-  @OneToMany(() => Semester, (semester) => semester.studyPlan, {
-    cascade: ["remove"],
-  })
-  semesters!: Relation<Semester>[];
 
   @Column()
   hasAccepted!: boolean;
@@ -44,4 +40,11 @@ export class StudyPlanCollaborator {
     enum: CollaboratorRole,
   })
   role!: CollaboratorRole;
+
+  @Column()
+  studyPlanId!: string;
+
+  @ManyToOne(() => StudyPlan, (studyPlan) => studyPlan.studyPlanCollaborator)
+  @JoinColumn({ name: "studyPlanId" })
+  studyPlan!: Relation<StudyPlan>;
 }

@@ -9,11 +9,14 @@ import {
   PrimaryGeneratedColumn,
   type Relation,
   UpdateDateColumn,
+  type Relation,
+  ManyToOne,
+  JoinColumn,
+  Column,
 } from "typeorm";
-
-import { ModuleHandbook } from "./moduleHandbook.entity";
 import { Semester } from "./semester.entity";
-import { User } from "./user.entity";
+import { ModuleHandbook } from "./moduleHandbook.entity";
+import { StudyPlanCollaborator } from "./studyPlanCollaborator.entity";
 
 export enum StudyPlanScope {
   Public = "public",
@@ -32,23 +35,29 @@ export class StudyPlan {
   @UpdateDateColumn({ select: false })
   updatedAt!: Date;
 
-  @OneToOne(() => User, (user) => user.studyPlan)
-  user!: Relation<User>;
-
   @OneToMany(() => Semester, (semester) => semester.studyPlan, {
     cascade: ["remove"],
   })
   semesters!: Relation<Semester>[];
 
-  @Column()
-  moduleHandbookId!: string;
+  @OneToMany(
+    () => StudyPlanCollaborator,
+    (studyPlanCollaborator) => studyPlanCollaborator.studyPlan,
+    {
+      cascade: ["remove"],
+    },
+  )
+  studyPlanCollaborator!: Relation<StudyPlanCollaborator>[];
 
   @Column({
     type: "enum",
     enum: StudyPlanScope,
-    default: StudyPlanScope.Private
+    default: StudyPlanScope.Private,
   })
   scope!: StudyPlanScope;
+
+  @Column()
+  moduleHandbookId!: string;
 
   @ManyToOne(() => ModuleHandbook, (handbook) => handbook.studyPlans)
   @JoinColumn({ name: "moduleHandbookId" })

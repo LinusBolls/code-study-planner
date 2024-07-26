@@ -10,6 +10,7 @@ import {
 } from "typeorm";
 
 import { StudyPlan } from "./studyPlan.entity";
+import { StudyPlanCollaborator } from "./studyPlanCollaborator.entity";
 
 @Entity({ name: "users" })
 export class User {
@@ -31,11 +32,15 @@ export class User {
   lpId!: string;
 
   @Column()
-  studyPlanId!: string;
+  studyPlanCollaboratorId!: string;
 
-  @OneToOne(() => StudyPlan, (studyPlan) => studyPlan.user, {
-    cascade: ["remove"],
-  })
-  @JoinColumn({ name: "studyPlanId" })
-  studyPlan!: Relation<StudyPlan>;
+  @OneToOne(
+    () => StudyPlanCollaborator,
+    (studyPlanCollaborator) => studyPlanCollaborator.user,
+    {
+      cascade: ["remove"],
+    },
+  )
+  @JoinColumn({ name: "studyPlanCollaboratorId" })
+  studyPlanCollaborator!: Relation<StudyPlanCollaborator>;
 }

@@ -1,19 +1,18 @@
-import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 
 import { Semester, SemesterModule } from "@/components/util/types";
 import { ApiSemesterModule } from "@/services/apiClient";
-import { useStudyPlan } from "@/services/apiClient/hooks/useStudyPlan";
-import { useLearningPlatformAssessmentTable } from "@/services/learningPlatform/hooks/useLearningPlatformAssessmentTable";
-import { useLearningPlatformSemesters } from "@/services/learningPlatform/hooks/useLearningPlatformSemesters";
 import {
   getSemesterName,
   getUserUrl,
 } from "@/services/learningPlatform/mapping";
 import { getGradeInfo } from "@/services/learningPlatform/util/getGradeInfo";
-
-import { SemestersListProps } from ".";
+import { useStudyPlan } from "@/services/apiClient/hooks/useStudyPlan";
+import { useLearningPlatformAssessmentTable } from "@/services/learningPlatform/hooks/useLearningPlatformAssessmentTable";
 import { useModulesInScope } from "../util/useModulesInScope";
+import { useLearningPlatformSemesters } from "@/services/learningPlatform/hooks/useLearningPlatformSemesters";
+import { useQuery } from "@tanstack/react-query";
+import { SemesterModuleDTO } from "@/backend/dtos/semester-module.dto";
 
 /**
  * aggregates the data for the kanban view of the study plan from both learning platform data and our own backend
@@ -31,7 +30,7 @@ export function useSemestersList(): SemestersListProps {
 
   const assessmentTableQuery = useLearningPlatformAssessmentTable();
 
-  const toPlannedModule = (i: ApiSemesterModule): SemesterModule => ({
+  const toPlannedModule = (i: SemesterModuleDTO): SemesterModule => ({
     type: "planned",
     id: i.moduleId,
 

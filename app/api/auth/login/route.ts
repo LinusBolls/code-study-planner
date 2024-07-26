@@ -8,6 +8,10 @@ import { Semester } from "@/backend/entities/semester.entity";
 import { StudyPlan } from "@/backend/entities/studyPlan.entity";
 import { User } from "@/backend/entities/user.entity";
 import { issueAccessToken } from "@/backend/jwt";
+import {
+  CollaboratorRole,
+  StudyPlanCollaborator,
+} from "@/backend/entities/studyPlanCollaborator.entity";
 import { isDefined } from "@/services/learningPlatform/util/isDefined";
 
 export async function POST(req: NextRequest) {
@@ -86,7 +90,17 @@ export async function POST(req: NextRequest) {
         .getRepository(StudyPlan)
         .save(studyPlan);
 
-      newUser.studyPlanId = newStudyPlan.id;
+      const studyPlanCollaborator = new StudyPlanCollaborator();
+      studyPlanCollaborator.hasAccepted = true;
+      studyPlanCollaborator.role = CollaboratorRole.Owner;
+
+      studyPlanCollaborator.studyPlanId = newStudyPlan.id;
+
+      await transaction
+        .getRepository(StudyPlanCollaborator)
+        .save(studyPlanCollaborator);
+
+      newUser.studyPlanCollaboratorId = studyPlanCollaborator.id;
 
       await transaction.getRepository(User).save(newUser);
 

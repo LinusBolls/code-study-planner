@@ -2,8 +2,14 @@ import dayjs from "dayjs";
 import { NextRequest, NextResponse } from "next/server";
 
 import { AppDataSource } from "@/backend/datasource";
+import { StudyPlanDTO } from "@/backend/dtos/study-plan.dto";
 import { Semester } from "@/backend/entities/semester.entity";
 import { SemesterModule } from "@/backend/entities/semesterModule.entity";
+import { StudyPlan, StudyPlanScope } from "@/backend/entities/studyPlan.entity";
+import {
+  CollaboratorRole,
+  StudyPlanCollaborator,
+} from "@/backend/entities/studyPlanCollaborator.entity";
 import { getUser } from "@/backend/getUser";
 
 const byIndex = (a: SemesterModule, b: SemesterModule) => a.index - b.index;
@@ -16,14 +22,31 @@ export async function GET(req: NextRequest) {
   if (!user) {
     return NextResponse.json({}, { status: 401 });
   }
+  const collaboratorRepository = AppDataSource.getRepository(
+    StudyPlanCollaborator,
+  );
+
+  const studyPlanCollaborator = await collaboratorRepository.findOne({
+    where: {
+      user: {
+        id: user.id,
+      },
+    },
+  });
+
+  if (!studyPlanCollaborator) {
+    return NextResponse.json({}, { status: 401 });
+  }
 
   const semesterRepository = AppDataSource.getRepository(Semester);
 
   const semesters = await semesterRepository.find({
     where: {
       studyPlan: {
-        user: {
-          id: user.id,
+        studyPlanCollaborator: {
+          hasAccepted: true,
+          role: CollaboratorRole.Owner,
+          id: studyPlanCollaborator.id,
         },
       },
     },
@@ -60,8 +83,12 @@ export async function GET(req: NextRequest) {
       };
     });
 
-  const res = NextResponse.json({
+  const studyPlan: StudyPlanDTO = {
+    scope: StudyPlanScope.Private,
+    studyPlanCollaborator: [],
     semesters: mappedSemesters,
-  });
+  };
+
+  const res = NextResponse.json(studyPlan);
   return res;
 }
