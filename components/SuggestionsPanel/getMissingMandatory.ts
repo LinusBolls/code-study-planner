@@ -1,8 +1,8 @@
+import { CompulsoryElectivePairingDTO } from "@/backend/dtos/compulsory-elective-pairing.dto";
 import { getGradeInfo } from "@/services/learningPlatform/util/getGradeInfo";
 
 import { Module, Semester } from "../util/types";
 import { Issue } from "./issues";
-import { CompulsoryElectivePairingDTO } from "@/backend/dtos/compulsory-elective-pairing.dto";
 
 export function getMissingMandatory(
   semesters: Semester[],
@@ -33,9 +33,9 @@ export function getMissingMandatory(
 
     const partnerModuleIdentifiers = isCompulsoryElective
       ? (compulsoryElectivePairings
-        .find((i) => i.modules[0]?.moduleIdentifier === moduleIdentifier)
-        ?.modules.slice(1)
-        .map((i) => i.moduleIdentifier) ?? [])
+          .find((i) => i.modules[0]?.moduleIdentifier === moduleIdentifier)
+          ?.modules.slice(1)
+          .map((i) => i.moduleIdentifier) ?? [])
       : [];
 
     const partnerModules = modules.filter(

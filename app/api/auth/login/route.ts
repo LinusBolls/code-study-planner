@@ -6,12 +6,12 @@ import { AppDataSource, connectToDatabase } from "@/backend/datasource";
 import { ModuleHandbook } from "@/backend/entities/moduleHandbook.entity";
 import { Semester } from "@/backend/entities/semester.entity";
 import { StudyPlan } from "@/backend/entities/studyPlan.entity";
-import { User } from "@/backend/entities/user.entity";
-import { issueAccessToken } from "@/backend/jwt";
 import {
   CollaboratorRole,
   StudyPlanCollaborator,
 } from "@/backend/entities/studyPlanCollaborator.entity";
+import { User } from "@/backend/entities/user.entity";
+import { issueAccessToken } from "@/backend/jwt";
 import { isDefined } from "@/services/learningPlatform/util/isDefined";
 
 export async function POST(req: NextRequest) {
@@ -82,6 +82,8 @@ export async function POST(req: NextRequest) {
 
       newUser.lpId = learningPlatformUser.me.id;
 
+      await transaction.getRepository(User).save(newUser);
+
       const studyPlan = new StudyPlan();
 
       studyPlan.moduleHandbookId = moduleHandbook.id;
@@ -96,13 +98,11 @@ export async function POST(req: NextRequest) {
 
       studyPlanCollaborator.studyPlanId = newStudyPlan.id;
 
+      studyPlanCollaborator.userId = newUser.id;
+
       await transaction
         .getRepository(StudyPlanCollaborator)
         .save(studyPlanCollaborator);
-
-      newUser.studyPlanCollaboratorId = studyPlanCollaborator.id;
-
-      await transaction.getRepository(User).save(newUser);
 
       const myStudiesData = await learningPlatform.raw.query(
         `query myStudies($filter: ModuleFilter) {

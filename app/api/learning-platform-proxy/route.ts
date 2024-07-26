@@ -34,9 +34,9 @@ export async function POST(req: NextRequest) {
 
     if (init?.body) {
       // @ts-ignore
-      console.log("fetched learning platform:", JSON.parse(init.body), data);
+      //console.log("fetched learning platform:", JSON.parse(init.body), data);
     } else {
-      console.log("fetched learning platform:", data);
+      //console.log("fetched learning platform:", data);
     }
 
     const res = NextResponse.json(data, {

@@ -5,6 +5,4 @@ export interface StudyPlanCollaboratorDTO
   extends Omit<
     StudyPlanCollaborator,
     "createdAt" | "updatedAt" | "studyPlan" | "user"
-  > {
-  user: UserDTO;
-}
+  > {}

@@ -5,17 +5,13 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
   type Relation,
   UpdateDateColumn,
-  type Relation,
-  ManyToOne,
-  JoinColumn,
-  Column,
 } from "typeorm";
-import { Semester } from "./semester.entity";
+
 import { ModuleHandbook } from "./moduleHandbook.entity";
+import { Semester } from "./semester.entity";
 import { StudyPlanCollaborator } from "./studyPlanCollaborator.entity";
 
 export enum StudyPlanScope {

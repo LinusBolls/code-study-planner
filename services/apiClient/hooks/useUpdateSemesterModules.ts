@@ -1,8 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
+import { StudyPlanDTO } from "@/backend/dtos/study-plan.dto";
 import { useMessages } from "@/components/util/useMessages";
 
-import { StudyPlan, StudyPlannerApiClient } from "..";
+import { StudyPlannerApiClient } from "..";
 import useSession from "../useSession";
 
 export const useUpdateSemesterModule = () => {
@@ -19,7 +20,7 @@ export const useUpdateSemesterModule = () => {
       >(api),
     mutationKey: ["studyPlanner", "studyPlan"],
     onMutate(variables) {
-      const prev = queryClient.getQueryData<StudyPlan>([
+      const prev = queryClient.getQueryData<StudyPlanDTO>([
         "studyPlanner",
         "studyPlan",
       ]);

@@ -2,6 +2,9 @@ import { CompulsoryElectivePairing } from "../entities/compulsoryElectivePairing
 import { ModuleDTO } from "./module.dto";
 
 export interface CompulsoryElectivePairingDTO
-  extends Omit<CompulsoryElectivePairing, "createdAt" | "updatedAt" | "moduleHandbook"> {
-    Modules: ModuleDTO[]
-  }
+  extends Omit<
+    CompulsoryElectivePairing,
+    "createdAt" | "updatedAt" | "moduleHandbook"
+  > {
+  Modules: ModuleDTO[];
+}

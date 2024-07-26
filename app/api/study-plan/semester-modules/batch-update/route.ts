@@ -8,17 +8,20 @@ import {
   AssessmentType,
   SemesterModule,
 } from "@/backend/entities/semesterModule.entity";
-import { getUser } from "@/backend/getUser";
+import { getCollaborator } from "@/backend/queries/study-plan-collaborator.query";
 
 /**
  * note: both `semesterId` and `moduleId` are learning platform ids, not the ids in our database
  */
 export async function PUT(req: NextRequest) {
-  const user = await getUser(req);
+  const studyPlanCollaborator = await getCollaborator(req);
 
-  if (!user) {
+  if (!studyPlanCollaborator || studyPlanCollaborator.length === 0) {
     return NextResponse.json({}, { status: 401 });
   }
+
+  // TODO: Another todo, we are always taking the studyplanner with index 0, possibly needs be some kind of use preference or last viewed or something
+  const currentCollab = studyPlanCollaborator[0];
 
   const moduleSchema = z.object({
     moduleId: z.string(),
@@ -48,7 +51,7 @@ export async function PUT(req: NextRequest) {
         "semester.id IN (:...semesterIds) and semester.studyPlanId = :studyPlanId",
         {
           semesterIds,
-          studyPlanId: user.studyPlanId,
+          studyPlanId: currentCollab.studyPlanId,
         },
       )
       .getCount();
@@ -71,7 +74,7 @@ export async function PUT(req: NextRequest) {
         .where(
           "semester.studyPlanId = :studyPlanId AND semesterModule.semesterId IN (:...semesterIds)",
           {
-            studyPlanId: user.studyPlanId,
+            studyPlanId: currentCollab.studyPlanId,
             semesterIds,
           },
         )

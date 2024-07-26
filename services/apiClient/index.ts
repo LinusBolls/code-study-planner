@@ -38,6 +38,20 @@ export class StudyPlannerApiClient {
     return data;
   }
 
+  public async putStudyPlanScope(): Promise<boolean> {
+    const res = await fetch(this.url + "/study-plan", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: this.accessToken,
+      },
+    });
+
+    const data: boolean = await res.json();
+
+    return data;
+  }
+
   public async updateSemesterModules(
     body: UpdateSemesterModuleInput,
   ): Promise<{}> {

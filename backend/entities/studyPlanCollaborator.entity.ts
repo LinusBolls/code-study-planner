@@ -1,16 +1,17 @@
 import {
-  Entity,
-  PrimaryGeneratedColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
   Column,
-  OneToOne,
-  type Relation,
-  ManyToOne,
+  CreateDateColumn,
+  Entity,
   JoinColumn,
+  ManyToOne,
+  OneToOne,
+  PrimaryGeneratedColumn,
+  type Relation,
+  UpdateDateColumn,
 } from "typeorm";
-import { User } from "./user.entity";
+
 import { StudyPlan } from "./studyPlan.entity";
+import { User } from "./user.entity";
 
 export enum CollaboratorRole {
   Viewer = "viewer",
@@ -29,9 +30,6 @@ export class StudyPlanCollaborator {
   @UpdateDateColumn({ select: false })
   updatedAt!: Date;
 
-  @OneToOne(() => User, (user) => user.studyPlanCollaborator)
-  user!: Relation<User>;
-
   @Column()
   hasAccepted!: boolean;
 
@@ -47,4 +45,11 @@ export class StudyPlanCollaborator {
   @ManyToOne(() => StudyPlan, (studyPlan) => studyPlan.studyPlanCollaborator)
   @JoinColumn({ name: "studyPlanId" })
   studyPlan!: Relation<StudyPlan>;
+
+  @Column()
+  userId!: string;
+
+  @ManyToOne(() => User, (user) => user.studyPlanCollaborator)
+  @JoinColumn({ name: "userId" })
+  user!: Relation<User>;
 }
