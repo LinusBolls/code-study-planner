@@ -14,14 +14,13 @@ import { getCollaborator } from "@/backend/queries/study-plan-collaborator.query
  * note: both `semesterId` and `moduleId` are learning platform ids, not the ids in our database
  */
 export async function PUT(req: NextRequest) {
-  const studyPlanCollaborator = await getCollaborator(req);
+  // TODO: Temp until studyPlanId gets used
+  const tempStudyPlanId = "foo";
+  const studyPlanCollaborator = await getCollaborator(req, tempStudyPlanId);
 
-  if (!studyPlanCollaborator || studyPlanCollaborator.length === 0) {
+  if (!studyPlanCollaborator) {
     return NextResponse.json({}, { status: 401 });
   }
-
-  // TODO: Another todo, we are always taking the studyplanner with index 0, possibly needs be some kind of use preference or last viewed or something
-  const currentCollab = studyPlanCollaborator[0];
 
   const moduleSchema = z.object({
     moduleId: z.string(),
@@ -51,7 +50,7 @@ export async function PUT(req: NextRequest) {
         "semester.id IN (:...semesterIds) and semester.studyPlanId = :studyPlanId",
         {
           semesterIds,
-          studyPlanId: currentCollab.studyPlanId,
+          studyPlanId: studyPlanCollaborator.studyPlanId,
         },
       )
       .getCount();
@@ -74,7 +73,7 @@ export async function PUT(req: NextRequest) {
         .where(
           "semester.studyPlanId = :studyPlanId AND semesterModule.semesterId IN (:...semesterIds)",
           {
-            studyPlanId: currentCollab.studyPlanId,
+            studyPlanId: studyPlanCollaborator.studyPlanId,
             semesterIds,
           },
         )

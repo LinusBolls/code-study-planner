@@ -15,7 +15,12 @@ import {
   getStudyPlanByCollaboratorId,
   updateStudyPlanScopeByCollabId,
 } from "@/backend/queries/study-plan.query";
-import { internalServerErrorResponse, successResponse, unauthorizedResponse } from "../../utils";
+
+import {
+  internalServerErrorResponse,
+  successResponse,
+  unauthorizedResponse,
+} from "../../utils";
 
 const byIndex = (a: SemesterModule, b: SemesterModule) => a.index - b.index;
 
@@ -55,9 +60,9 @@ const mapSemster = (semesters: Semester[]): SemesterDTO[] => {
 
 type StudyPlanParams = {
   params: {
-    id: string
-  }
-}
+    id: string;
+  };
+};
 
 export async function GET(req: NextRequest, { params }: StudyPlanParams) {
   const studyPlanCollaborator = await getCollaborator(req, params.id);
@@ -66,7 +71,9 @@ export async function GET(req: NextRequest, { params }: StudyPlanParams) {
     return unauthorizedResponse();
   }
 
-  const currentStudyPlan = await getStudyPlanByCollaboratorId(studyPlanCollaborator.id);
+  const currentStudyPlan = await getStudyPlanByCollaboratorId(
+    studyPlanCollaborator.id,
+  );
 
   if (!currentStudyPlan) {
     return unauthorizedResponse();
@@ -90,8 +97,8 @@ export async function GET(req: NextRequest, { params }: StudyPlanParams) {
 }
 
 /**
-  * Sucessfull response for PUT/POST/DELETE is {ok: true}
-  */
+ * Sucessfull response for PUT/POST/DELETE is {ok: true}
+ */
 export async function PUT(req: NextRequest, { params }: StudyPlanParams) {
   const studyPlanCollaborator = await getCollaborator(req, params.id);
 

@@ -29,16 +29,19 @@ export async function getAllCollaboratorOwnerByUserId(
   }
 }
 
-export const getCollaborator = async (req: NextRequest, studyPlanId: string): Promise<StudyPlanCollaborator | null> => {
+export const getCollaborator = async (
+  req: NextRequest,
+  studyPlanId: string,
+): Promise<StudyPlanCollaborator | null> => {
   const user = await getUser(req);
 
   if (!user) return null;
 
   const collaborators = await getAllCollaboratorOwnerByUserId(user.id);
 
-  const collaborator = collaborators.length === 0 ? collaborators[0] : null
+  const collaborator = collaborators.length === 0 ? collaborators[0] : null;
 
-  return collaborator
+  return collaborator;
 
   // TODO: currently not using studyPlanId, waiting for frontend Integration
   //  const collaborator = collaborators.filter(i => i.studyPlanId === studyPlanId);

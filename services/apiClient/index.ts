@@ -28,7 +28,7 @@ export class StudyPlannerApiClient {
 
   public async getStudyPlan(): Promise<StudyPlanDTO> {
     //TODO: need to be added as a parameter, currently not used in backend either
-    const studyPlanId = "foo"
+    const studyPlanId = "foo";
     const res = await fetch(this.url + "/study-plan/" + studyPlanId, {
       headers: {
         "Content-Type": "application/json",
