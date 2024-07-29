@@ -15,6 +15,7 @@ import {
   getStudyPlanByCollaboratorId,
   updateStudyPlanScopeByCollabId,
 } from "@/backend/queries/study-plan.query";
+import { internalServerErrorResponse, successResponse, unauthorizedResponse } from "../../utils";
 
 const byIndex = (a: SemesterModule, b: SemesterModule) => a.index - b.index;
 
@@ -52,20 +53,23 @@ const mapSemster = (semesters: Semester[]): SemesterDTO[] => {
     });
 };
 
-export async function GET(req: NextRequest) {
-  const studyPlanCollaborator = await getCollaborator(req);
+type StudyPlanParams = {
+  params: {
+    id: string
+  }
+}
 
-  if (!studyPlanCollaborator || studyPlanCollaborator.length === 0) {
-    return NextResponse.json({}, { status: 401 });
+export async function GET(req: NextRequest, { params }: StudyPlanParams) {
+  const studyPlanCollaborator = await getCollaborator(req, params.id);
+
+  if (!studyPlanCollaborator) {
+    return unauthorizedResponse();
   }
 
-  // TODO: Another todo, we are always taking the studyplanner with index 0, possibly needs be some kind of use preference or last viewed or something
-  const currentCollab = studyPlanCollaborator[0];
-
-  const currentStudyPlan = await getStudyPlanByCollaboratorId(currentCollab.id);
+  const currentStudyPlan = await getStudyPlanByCollaboratorId(studyPlanCollaborator.id);
 
   if (!currentStudyPlan) {
-    return NextResponse.json({}, { status: 401 });
+    return unauthorizedResponse();
   }
 
   /*
@@ -85,37 +89,27 @@ export async function GET(req: NextRequest) {
   return NextResponse.json(studyPlan);
 }
 
-export async function PUT(req: NextRequest) {
-  const studyPlanCollaborator = await getCollaborator(req);
+/**
+  * Sucessfull response for PUT/POST/DELETE is {ok: true}
+  */
+export async function PUT(req: NextRequest, { params }: StudyPlanParams) {
+  const studyPlanCollaborator = await getCollaborator(req, params.id);
 
   if (
     !studyPlanCollaborator ||
-    studyPlanCollaborator.length === 0 ||
-    studyPlanCollaborator[0].role != CollaboratorRole.Owner
+    studyPlanCollaborator.role != CollaboratorRole.Owner
   )
-    return NextResponse.json({}, { status: 401 });
-
-  // TODO: Another todo, we are always taking the studyplanner with index 0, possibly needs be some kind of use preference or last viewed or something
-  const currentCollab = studyPlanCollaborator[0];
-  if (currentCollab.role != CollaboratorRole.Owner)
-    return NextResponse.json({}, { status: 401 });
+    return unauthorizedResponse();
 
   const body: StudyPlanUpdateScopeDTO = await req.json();
 
   const updatePlan = await updateStudyPlanScopeByCollabId(
-    currentCollab.id,
+    studyPlanCollaborator.id,
     body,
   );
 
   // TODO: Think about better error handling lol
-  if (!updatePlan) return NextResponse.json({}, { status: 500 });
+  if (!updatePlan) return internalServerErrorResponse();
 
-  //TODO: What should the Respone be? return StudyPlan? means the semester needs to be remapped, and if react query, refetches GET /api/study-plan that redundant <- really doesn't make sense to return the studyPlan here I think
-  //  const studyPlan: StudyPlanDTO = {
-  //    scope: updatePlan.scope,
-  //    studyPlanCollaborator: updatePlan.studyPlanCollaborator,
-  //    semesters: mappedSemesters,
-  //  };
-
-  return NextResponse.json(true);
+  return successResponse();
 }

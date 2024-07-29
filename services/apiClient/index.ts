@@ -27,7 +27,9 @@ export class StudyPlannerApiClient {
   }
 
   public async getStudyPlan(): Promise<StudyPlanDTO> {
-    const res = await fetch(this.url + "/study-plan", {
+    //TODO: need to be added as a parameter, currently not used in backend either
+    const studyPlanId = "foo"
+    const res = await fetch(this.url + "/study-plan/" + studyPlanId, {
       headers: {
         "Content-Type": "application/json",
         Authorization: this.accessToken,
@@ -38,8 +40,8 @@ export class StudyPlannerApiClient {
     return data;
   }
 
-  public async putStudyPlanScope(): Promise<boolean> {
-    const res = await fetch(this.url + "/study-plan", {
+  public async putStudyPlanScope(studyPlanId = "foo"): Promise<boolean> {
+    const res = await fetch(this.url + "/study-plan/" + studyPlanId, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

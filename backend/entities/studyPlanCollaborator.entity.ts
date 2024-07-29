@@ -4,8 +4,8 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
-  OneToOne,
   PrimaryGeneratedColumn,
+  Unique,
   type Relation,
   UpdateDateColumn,
 } from "typeorm";
@@ -20,6 +20,7 @@ export enum CollaboratorRole {
 }
 
 @Entity({ name: "study_plan_collaborators" })
+@Unique(["studyPlanId", "userId"])
 export class StudyPlanCollaborator {
   @PrimaryGeneratedColumn("uuid")
   id!: string;

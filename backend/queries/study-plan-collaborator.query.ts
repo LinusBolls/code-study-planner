@@ -29,10 +29,22 @@ export async function getAllCollaboratorOwnerByUserId(
   }
 }
 
-export const getCollaborator = async (req: NextRequest) => {
+export const getCollaborator = async (req: NextRequest, studyPlanId: string): Promise<StudyPlanCollaborator | null> => {
   const user = await getUser(req);
 
   if (!user) return null;
 
-  return await getAllCollaboratorOwnerByUserId(user.id);
+  const collaborators = await getAllCollaboratorOwnerByUserId(user.id);
+
+  const collaborator = collaborators.length === 0 ? collaborators[0] : null
+
+  return collaborator
+
+  // TODO: currently not using studyPlanId, waiting for frontend Integration
+  //  const collaborator = collaborators.filter(i => i.studyPlanId === studyPlanId);
+  //
+  //  if (collaborator.length !== 1)
+  //    return null
+  //
+  //  return collaborator[0];
 };
