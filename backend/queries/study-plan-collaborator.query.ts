@@ -26,6 +26,24 @@ export async function getAllCollaboratorOwnerByUserId(
   }
 }
 
+export async function getAllCollaboratorsByStudyPlanId(
+  studyPlanId: string,
+): Promise<StudyPlanCollaborator[] | []> {
+  try {
+    const collaboratorRepository = AppDataSource.getRepository(
+      StudyPlanCollaborator,
+    );
+
+    return await collaboratorRepository.find({
+      where: {
+        studyPlanId,
+      },
+    });
+  } catch (error) {
+    return [];
+  }
+}
+
 export const createStudyPlanCollaborator = (
   userId: string,
   studyPlanId: string,

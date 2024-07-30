@@ -1,6 +1,7 @@
 import { CompulsoryElectivePairingDTO } from "@/backend/dtos/compulsory-elective-pairing.dto";
 import { InvitePostDTO } from "@/backend/dtos/invite.dto";
 import { SemesterModulePutDTO } from "@/backend/dtos/semester-module.dto";
+import { StudyPlanCollaboratorDTO } from "@/backend/dtos/study-plan-collaborator.dto";
 import { StudyPlanDTO, StudyPlanPutDTO } from "@/backend/dtos/study-plan.dto";
 import { Module } from "@/backend/entities/module.entity";
 
@@ -36,6 +37,22 @@ export class StudyPlannerApiClient {
     const studyPlanId = "foo";
     const res = await this.fetchStudyPlan(studyPlanId, "", "GET", {});
     const data: StudyPlanDTO = await res.json();
+
+    return data;
+  }
+
+  public async getStudyPlanCollaborators(): Promise<
+    StudyPlanCollaboratorDTO[]
+  > {
+    //TODO: need to be added as a parameter (currently issue with the hooks), currently not used in backend either
+    const studyPlanId = "foo";
+    const res = await this.fetchStudyPlan(
+      studyPlanId,
+      "/collaborators",
+      "GET",
+      {},
+    );
+    const data: StudyPlanCollaboratorDTO[] = await res.json();
 
     return data;
   }
