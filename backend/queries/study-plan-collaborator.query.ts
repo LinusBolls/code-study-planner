@@ -112,7 +112,7 @@ export const getCollaborator = async (
 
   const collaborators = await getAllCollaboratorOwnerByUserId(user.id);
 
-  const collaborator = collaborators.length === 0 ? collaborators[0] : null;
+  const collaborator = collaborators.length !== 0 ? collaborators[0] : null;
 
   return collaborator;
 

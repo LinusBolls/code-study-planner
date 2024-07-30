@@ -183,6 +183,14 @@ export class StudyPlannerApiClient {
           Authorization: this.accessToken,
         },
       });
+    if (method === "DELETE")
+      return await fetch(this.url + "/study-plan/" + studyPlanId + url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: this.accessToken,
+        },
+        method: "DELETE",
+      });
     return await fetch(this.url + "/study-plan/" + studyPlanId + url, {
       headers: {
         "Content-Type": "application/json",
