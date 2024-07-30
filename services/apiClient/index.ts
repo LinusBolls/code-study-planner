@@ -1,4 +1,5 @@
 import { CompulsoryElectivePairingDTO } from "@/backend/dtos/compulsory-elective-pairing.dto";
+import { InvitePostDTO } from "@/backend/dtos/invite.dto";
 import { SemesterModulePutDTO } from "@/backend/dtos/semester-module.dto";
 import { StudyPlanDTO, StudyPlanPutDTO } from "@/backend/dtos/study-plan.dto";
 import { Module } from "@/backend/entities/module.entity";
@@ -33,12 +34,7 @@ export class StudyPlannerApiClient {
   public async getStudyPlan(): Promise<StudyPlanDTO> {
     //TODO: need to be added as a parameter (currently issue with the hooks), currently not used in backend either
     const studyPlanId = "foo";
-    const res = await fetch(this.url + "/study-plan/" + studyPlanId, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: this.accessToken,
-      },
-    });
+    const res = await this.fetchStudyPlan(studyPlanId, "", "GET", {});
     const data: StudyPlanDTO = await res.json();
 
     return data;
@@ -48,13 +44,7 @@ export class StudyPlannerApiClient {
     body: StudyPlanPutDTO,
     studyPlanId = "foo",
   ): Promise<SuccessResponse> {
-    const res = await fetch(this.url + "/study-plan/" + studyPlanId, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: this.accessToken,
-      },
-    });
+    const res = await this.fetchStudyPlan(studyPlanId, "", "PUT", body);
 
     const data: SuccessResponse = await res.json();
 
@@ -67,23 +57,53 @@ export class StudyPlannerApiClient {
   ): Promise<SuccessResponse> {
     //TODO: need to be added as a parameter (currently issue with the hooks), currently not used in backend either
     const studyPlanId = "foo";
-    const res = await fetch(
-      this.url +
-        "/study-plan/" +
-        studyPlanId +
-        "/semester-modules/batch-update",
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: this.accessToken,
-        },
-        method: "PUT",
-        body: JSON.stringify(body),
-      },
+    const res = await this.fetchStudyPlan(
+      studyPlanId,
+      "/semester-modules/batch-update",
+      "PUT",
+      body,
     );
     const data: SuccessResponse = await res.json();
 
     return data;
+  }
+  public async postInviteCollaborator(
+    body: InvitePostDTO,
+    //studyPlanId: string
+  ): Promise<SuccessResponse> {
+    //TODO: need to be added as a parameter (currently issue with the hooks), currently not used in backend either
+    const studyPlanId = "foo";
+    const res = await this.fetchStudyPlan(
+      studyPlanId,
+      "/collaborators/invites",
+      "POST",
+      body,
+    );
+    const data: SuccessResponse = await res.json();
+
+    return data;
+  }
+  private async fetchStudyPlan(
+    studyPlanId: string,
+    url: string,
+    method: "PUT" | "GET" | "POST" | "DELETE",
+    body: any,
+  ) {
+    if (method === "GET")
+      return await fetch(this.url + "/study-plan/" + studyPlanId + url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: this.accessToken,
+        },
+      });
+    return await fetch(this.url + "/study-plan/" + studyPlanId + url, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: this.accessToken,
+      },
+      method,
+      body: JSON.stringify(body),
+    });
   }
 }
 

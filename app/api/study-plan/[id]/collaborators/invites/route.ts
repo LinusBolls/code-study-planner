@@ -6,14 +6,10 @@ import {
   successResponse,
   unauthorizedResponse,
 } from "@/app/api/utils";
+import { InvitePostDTO } from "@/backend/dtos/invite.dto";
 import { CollaboratorRole } from "@/backend/entities/enums";
 import { createInvite } from "@/backend/queries/invite.query";
 import { getCollaborator } from "@/backend/queries/study-plan-collaborator.query";
-
-export type CollaboratorInvitePostDTO = {
-  inviteeLpId: string;
-  role: CollaboratorRole;
-};
 
 export async function POST(req: NextRequest, { params }: StudyPlanParams) {
   const studyPlanCollaborator = await getCollaborator(req, params.id);
@@ -24,7 +20,7 @@ export async function POST(req: NextRequest, { params }: StudyPlanParams) {
   )
     return unauthorizedResponse();
 
-  const { inviteeLpId, role }: CollaboratorInvitePostDTO = await req.json();
+  const { inviteeLpId, role }: InvitePostDTO = await req.json();
 
   const invite = createInvite({
     invitedById: studyPlanCollaborator.id,
