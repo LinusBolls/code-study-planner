@@ -1,6 +1,6 @@
 import { AppDataSource } from "../datasource";
 import { CollaboratorRole } from "../entities/enums";
-import { Invite } from "../entities/invite.entity";
+import { Invite, InviteStatus } from "../entities/invite.entity";
 
 export type CreateInvite = {
   invitedById: string;
@@ -14,6 +14,51 @@ export const createInvite = (createInviteBody: CreateInvite): Invite | null => {
     const inviteRepository = AppDataSource.getRepository(Invite);
 
     return inviteRepository.create(createInviteBody);
+  } catch (error) {
+    console.error("createInvite: ", error);
+
+    return null;
+  }
+};
+
+export const getInviteById = async (
+  inviteId: string,
+): Promise<Invite | null> => {
+  try {
+    const inviteRepository = AppDataSource.getRepository(Invite);
+
+    return await inviteRepository.findOne({
+      where: {
+        id: inviteId,
+      },
+    });
+  } catch (error) {
+    console.error("createInvite: ", error);
+
+    return null;
+  }
+};
+
+export const updateInviteStatus = async (
+  inviteId: string,
+  status: InviteStatus,
+): Promise<Invite | null> => {
+  try {
+    const inviteRepository = AppDataSource.getRepository(Invite);
+
+    const invite = await inviteRepository.findOne({
+      where: {
+        id: inviteId,
+      },
+    });
+
+    if (!invite) return null;
+
+    invite.status = status;
+
+    await inviteRepository.save(invite);
+
+    return invite;
   } catch (error) {
     console.error("createInvite: ", error);
 

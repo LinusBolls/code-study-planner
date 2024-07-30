@@ -26,25 +26,26 @@ export async function getAllCollaboratorOwnerByUserId(
   }
 }
 
-export const inviteStudyPlanCollaborator = (
+export const createStudyPlanCollaborator = (
   userId: string,
   studyPlanId: string,
   role: CollaboratorRole,
 ): StudyPlanCollaborator | null => {
+  // returns null because it is not allowed to set a new owner
+  if (role === CollaboratorRole.Owner) return null;
+
   try {
     const collaboratorRepository = AppDataSource.getRepository(
       StudyPlanCollaborator,
     );
 
-    const studyPlanCollaborator = collaboratorRepository.create({
+    return collaboratorRepository.create({
       role,
       userId,
       studyPlanId,
     });
-
-    return studyPlanCollaborator;
   } catch (error) {
-    console.error("inviteStudyPlanCollab error: ", error);
+    console.error("createStudyPlanCollaborator error: ", error);
     return null;
   }
 };
