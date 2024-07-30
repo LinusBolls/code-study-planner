@@ -83,6 +83,41 @@ export class StudyPlannerApiClient {
 
     return data;
   }
+
+  public async putInviteAccept() //studyPlanId: string
+  //inviteId: string
+  : Promise<SuccessResponse> {
+    //TODO: need to be added as a parameter (currently issue with the hooks), currently not used in backend either
+    const studyPlanId = "foo";
+    const inviteId = "foo";
+    const res = await this.fetchStudyPlan(
+      studyPlanId,
+      "/collaborators/invites/" + inviteId + "/accept",
+      "PUT",
+      {},
+    );
+    const data: SuccessResponse = await res.json();
+
+    return data;
+  }
+
+  public async putInviteDecline() //studyPlanId: string
+  //inviteId: string
+  : Promise<SuccessResponse> {
+    //TODO: need to be added as a parameter (currently issue with the hooks), currently not used in backend either
+    const studyPlanId = "foo";
+    const inviteId = "foo";
+    const res = await this.fetchStudyPlan(
+      studyPlanId,
+      "/collaborators/invites/" + inviteId + "/decline",
+      "PUT",
+      {},
+    );
+    const data: SuccessResponse = await res.json();
+
+    return data;
+  }
+
   private async fetchStudyPlan(
     studyPlanId: string,
     url: string,
