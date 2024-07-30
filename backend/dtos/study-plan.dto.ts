@@ -12,6 +12,8 @@ export interface StudyPlanDTO
     | "moduleHandbookId"
     | "semesters"
     | "studyPlanCollaborators"
+    | "subject"
+    | "subjectId"
   > {
   semesters: SemesterDTO[];
   studyPlanCollaborators: StudyPlanCollaboratorDTO[];

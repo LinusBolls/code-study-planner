@@ -1,7 +1,7 @@
 import { AppDataSource } from "../datasource";
 import { StudyPlanPutDTO } from "../dtos/study-plan.dto";
+import { CollaboratorRole } from "../entities/enums";
 import { StudyPlan } from "../entities/studyPlan.entity";
-import { CollaboratorRole } from "../entities/studyPlanCollaborator.entity";
 
 export async function updateStudyPlanScopeByCollabId(
   collabId: string,
@@ -33,7 +33,6 @@ export async function getStudyPlanByCollaboratorId(collabId: string) {
     return await studyPlanRepository.findOne({
       where: {
         studyPlanCollaborators: {
-          hasAccepted: true,
           role: CollaboratorRole.Owner,
           id: collabId,
         },

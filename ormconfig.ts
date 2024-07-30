@@ -9,6 +9,7 @@ import { StudyProgram } from "./backend/entities/studyProgram.entity";
 import { ModuleHandbook } from "./backend/entities/moduleHandbook.entity";
 import { CompulsoryElectivePairing } from "./backend/entities/compulsoryElectivePairing.entity";
 import { StudyPlanCollaborator } from "./backend/entities/studyPlanCollaborator.entity";
+import { Invite } from "./backend/entities/invite.entity";
 
 const dataSourceOptions: DataSourceOptions = {
   type: "postgres",
@@ -29,6 +30,7 @@ const dataSourceOptions: DataSourceOptions = {
     StudyPlanCollaborator,
     ModuleHandbook,
     CompulsoryElectivePairing,
+    Invite
   ],
   subscribers: [],
   migrations: [],

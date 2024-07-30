@@ -3,9 +3,9 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { SemesterDTO } from "@/backend/dtos/semester.dto";
 import { StudyPlanDTO, StudyPlanPutDTO } from "@/backend/dtos/study-plan.dto";
+import { CollaboratorRole } from "@/backend/entities/enums";
 import { Semester } from "@/backend/entities/semester.entity";
 import { SemesterModule } from "@/backend/entities/semesterModule.entity";
-import { CollaboratorRole } from "@/backend/entities/studyPlanCollaborator.entity";
 import { getSemesterByStudyPlanId } from "@/backend/queries/semester.query";
 import { getCollaborator } from "@/backend/queries/study-plan-collaborator.query";
 import {

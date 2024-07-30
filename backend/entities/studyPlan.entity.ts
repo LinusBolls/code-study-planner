@@ -13,6 +13,7 @@ import {
 import { ModuleHandbook } from "./moduleHandbook.entity";
 import { Semester } from "./semester.entity";
 import { StudyPlanCollaborator } from "./studyPlanCollaborator.entity";
+import { User } from "./user.entity";
 
 export enum StudyPlanScope {
   Public = "public",
@@ -20,6 +21,9 @@ export enum StudyPlanScope {
   Private = "private",
 }
 
+/**
+ * @param subjectId refers to the user which the study plan is about
+ */
 @Entity({ name: "study_plans" })
 export class StudyPlan {
   @PrimaryGeneratedColumn("uuid")
@@ -30,6 +34,13 @@ export class StudyPlan {
 
   @UpdateDateColumn({ select: false })
   updatedAt!: Date;
+
+  @Column({
+    type: "enum",
+    enum: StudyPlanScope,
+    default: StudyPlanScope.Private,
+  })
+  scope!: StudyPlanScope;
 
   @OneToMany(() => Semester, (semester) => semester.studyPlan, {
     cascade: ["remove"],
@@ -45,17 +56,17 @@ export class StudyPlan {
   )
   studyPlanCollaborators!: Relation<StudyPlanCollaborator>[];
 
-  @Column({
-    type: "enum",
-    enum: StudyPlanScope,
-    default: StudyPlanScope.Private,
-  })
-  scope!: StudyPlanScope;
-
   @Column()
   moduleHandbookId!: string;
 
   @ManyToOne(() => ModuleHandbook, (handbook) => handbook.studyPlans)
   @JoinColumn({ name: "moduleHandbookId" })
   moduleHandbook!: Relation<ModuleHandbook>;
+
+  @Column()
+  subjectId!: string;
+
+  @ManyToOne(() => User, (user) => user.studyPlans)
+  @JoinColumn({ name: "subjectId" })
+  subject!: Relation<User>;
 }

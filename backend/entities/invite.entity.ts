@@ -6,17 +6,22 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
   type Relation,
-  Unique,
   UpdateDateColumn,
 } from "typeorm";
 
 import { CollaboratorRole } from "./enums";
 import { StudyPlan } from "./studyPlan.entity";
+import "./studyPlanCollaborator.entity";
 import { User } from "./user.entity";
 
-@Entity({ name: "study_plan_collaborators" })
-@Unique(["studyPlanId", "userId"])
-export class StudyPlanCollaborator {
+export enum InviteStatus {
+  Pending = "pending",
+  Declined = "declined",
+  Accepted = "accepted",
+}
+
+@Entity({ name: "invites" })
+export class Invite {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 
@@ -27,10 +32,19 @@ export class StudyPlanCollaborator {
   updatedAt!: Date;
 
   @Column({
+    comment:
+      "the id of the corresponding resource of the CODE learning platform.",
+  })
+  inviteeLpId!: string;
+
+  @Column({
     type: "enum",
     enum: CollaboratorRole,
   })
   role!: CollaboratorRole;
+
+  @Column({ type: "enum", enum: InviteStatus })
+  status!: InviteStatus;
 
   @Column()
   studyPlanId!: string;
@@ -40,9 +54,9 @@ export class StudyPlanCollaborator {
   studyPlan!: Relation<StudyPlan>;
 
   @Column()
-  userId!: string;
+  invitedById!: string;
 
   @ManyToOne(() => User, (user) => user.studyPlanCollaborators)
   @JoinColumn({ name: "userId" })
-  user!: Relation<User>;
+  invitedBy!: Relation<User>;
 }

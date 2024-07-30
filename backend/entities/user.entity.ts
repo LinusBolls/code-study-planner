@@ -5,12 +5,16 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
   type Relation,
+  Unique,
   UpdateDateColumn,
 } from "typeorm";
 
+import { Invite } from "./invite.entity";
+import { StudyPlan } from "./studyPlan.entity";
 import { StudyPlanCollaborator } from "./studyPlanCollaborator.entity";
 
 @Entity({ name: "users" })
+@Unique(["lpId"])
 export class User {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
@@ -36,5 +40,20 @@ export class User {
       cascade: ["remove"],
     },
   )
-  studyPlanCollaborator!: Relation<StudyPlanCollaborator>[];
+  studyPlanCollaborators!: Relation<StudyPlanCollaborator>[];
+
+  @OneToMany(
+    () => StudyPlan,
+    (studyPlan) => studyPlan.subject,
+
+    {
+      cascade: ["remove"],
+    },
+  )
+  studyPlans!: Relation<StudyPlan>[];
+
+  @OneToMany(() => Invite, (invite) => invite.invitedBy, {
+    cascade: ["remove"],
+  })
+  invites!: Relation<Invite>[];
 }

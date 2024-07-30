@@ -1,10 +1,8 @@
 import { NextRequest } from "next/server";
 
 import { AppDataSource } from "../datasource";
-import {
-  CollaboratorRole,
-  StudyPlanCollaborator,
-} from "../entities/studyPlanCollaborator.entity";
+import { CollaboratorRole } from "../entities/enums";
+import { StudyPlanCollaborator } from "../entities/studyPlanCollaborator.entity";
 import { getUser } from "../getUser";
 
 export async function getAllCollaboratorOwnerByUserId(
@@ -17,7 +15,6 @@ export async function getAllCollaboratorOwnerByUserId(
 
     return await collaboratorRepository.find({
       where: {
-        hasAccepted: true,
         role: CollaboratorRole.Owner,
         user: {
           id: userId,
@@ -28,6 +25,29 @@ export async function getAllCollaboratorOwnerByUserId(
     return [];
   }
 }
+
+export const inviteStudyPlanCollaborator = (
+  userId: string,
+  studyPlanId: string,
+  role: CollaboratorRole,
+): StudyPlanCollaborator | null => {
+  try {
+    const collaboratorRepository = AppDataSource.getRepository(
+      StudyPlanCollaborator,
+    );
+
+    const studyPlanCollaborator = collaboratorRepository.create({
+      role,
+      userId,
+      studyPlanId,
+    });
+
+    return studyPlanCollaborator;
+  } catch (error) {
+    console.error("inviteStudyPlanCollab error: ", error);
+    return null;
+  }
+};
 
 export const getCollaborator = async (
   req: NextRequest,

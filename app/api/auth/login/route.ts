@@ -3,13 +3,11 @@ import dayjs from "dayjs";
 import { NextRequest, NextResponse } from "next/server";
 
 import { AppDataSource, connectToDatabase } from "@/backend/datasource";
+import { CollaboratorRole } from "@/backend/entities/enums";
 import { ModuleHandbook } from "@/backend/entities/moduleHandbook.entity";
 import { Semester } from "@/backend/entities/semester.entity";
-import { StudyPlan } from "@/backend/entities/studyPlan.entity";
-import {
-  CollaboratorRole,
-  StudyPlanCollaborator,
-} from "@/backend/entities/studyPlanCollaborator.entity";
+import { StudyPlan, StudyPlanScope } from "@/backend/entities/studyPlan.entity";
+import { StudyPlanCollaborator } from "@/backend/entities/studyPlanCollaborator.entity";
 import { User } from "@/backend/entities/user.entity";
 import { issueAccessToken } from "@/backend/jwt";
 import { isDefined } from "@/services/learningPlatform/util/isDefined";
@@ -79,25 +77,22 @@ export async function POST(req: NextRequest) {
   if (isSignup) {
     await AppDataSource.transaction(async (transaction) => {
       newUser = new User();
-
       newUser.lpId = learningPlatformUser.me.id;
 
       await transaction.getRepository(User).save(newUser);
 
       const studyPlan = new StudyPlan();
-
       studyPlan.moduleHandbookId = moduleHandbook.id;
+      studyPlan.subjectId = newUser.id;
+      studyPlan.scope = StudyPlanScope.Private;
 
       const newStudyPlan = await transaction
         .getRepository(StudyPlan)
         .save(studyPlan);
 
       const studyPlanCollaborator = new StudyPlanCollaborator();
-      studyPlanCollaborator.hasAccepted = true;
       studyPlanCollaborator.role = CollaboratorRole.Owner;
-
       studyPlanCollaborator.studyPlanId = newStudyPlan.id;
-
       studyPlanCollaborator.userId = newUser.id;
 
       await transaction
