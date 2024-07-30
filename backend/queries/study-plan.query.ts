@@ -1,11 +1,11 @@
 import { AppDataSource } from "../datasource";
-import { StudyPlanUpdateScopeDTO } from "../dtos/study-plan.dto";
+import { StudyPlanPutDTO } from "../dtos/study-plan.dto";
 import { StudyPlan } from "../entities/studyPlan.entity";
 import { CollaboratorRole } from "../entities/studyPlanCollaborator.entity";
 
 export async function updateStudyPlanScopeByCollabId(
   collabId: string,
-  body: StudyPlanUpdateScopeDTO,
+  body: StudyPlanPutDTO,
 ): Promise<StudyPlan | null> {
   try {
     const studyPlanRepository = AppDataSource.getRepository(StudyPlan);

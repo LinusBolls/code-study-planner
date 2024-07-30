@@ -1,6 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
+import {
+  badRequestResponse,
+  internalServerErrorResponse,
+  StudyPlanParams,
+  successResponse,
+  unauthorizedResponse,
+} from "@/app/api/utils";
 import { AppDataSource, connectToDatabase } from "@/backend/datasource";
 import { Module } from "@/backend/entities/module.entity";
 import { Semester } from "@/backend/entities/semester.entity";
@@ -13,13 +20,13 @@ import { getCollaborator } from "@/backend/queries/study-plan-collaborator.query
 /**
  * note: both `semesterId` and `moduleId` are learning platform ids, not the ids in our database
  */
-export async function PUT(req: NextRequest) {
-  // TODO: Temp until studyPlanId gets used
-  const tempStudyPlanId = "foo";
-  const studyPlanCollaborator = await getCollaborator(req, tempStudyPlanId);
+export async function PUT(req: NextRequest, { params }: StudyPlanParams) {
+  console.log("params", params);
+
+  const studyPlanCollaborator = await getCollaborator(req, params.id);
 
   if (!studyPlanCollaborator) {
-    return NextResponse.json({}, { status: 401 });
+    return unauthorizedResponse();
   }
 
   const moduleSchema = z.object({
@@ -37,7 +44,7 @@ export async function PUT(req: NextRequest) {
   try {
     body = bodySchema.parse(await req.json());
   } catch (err) {
-    return NextResponse.json({}, { status: 400 });
+    return badRequestResponse();
   }
   try {
     await connectToDatabase();
@@ -146,9 +153,7 @@ export async function PUT(req: NextRequest) {
       }
     });
 
-    const res = NextResponse.json({});
-
-    return res;
+    return successResponse();
   } catch (err) {
     const isTypeormConstraintViolation =
       (err as Record<string, string>).code === "23505";
@@ -164,6 +169,6 @@ export async function PUT(req: NextRequest) {
 
     console.error(err);
 
-    return NextResponse.json({}, { status: 500 });
+    return internalServerErrorResponse();
   }
 }

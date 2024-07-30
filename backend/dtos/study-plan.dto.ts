@@ -17,6 +17,6 @@ export interface StudyPlanDTO
   studyPlanCollaborator: StudyPlanCollaboratorDTO[];
 }
 
-export type StudyPlanUpdateScopeDTO = {
+export type StudyPlanPutDTO = {
   scope: StudyPlanScope;
 };

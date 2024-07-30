@@ -2,10 +2,7 @@ import dayjs from "dayjs";
 import { NextRequest, NextResponse } from "next/server";
 
 import { SemesterDTO } from "@/backend/dtos/semester.dto";
-import {
-  StudyPlanDTO,
-  StudyPlanUpdateScopeDTO,
-} from "@/backend/dtos/study-plan.dto";
+import { StudyPlanDTO, StudyPlanPutDTO } from "@/backend/dtos/study-plan.dto";
 import { Semester } from "@/backend/entities/semester.entity";
 import { SemesterModule } from "@/backend/entities/semesterModule.entity";
 import { CollaboratorRole } from "@/backend/entities/studyPlanCollaborator.entity";
@@ -18,6 +15,7 @@ import {
 
 import {
   internalServerErrorResponse,
+  StudyPlanParams,
   successResponse,
   unauthorizedResponse,
 } from "../../utils";
@@ -56,12 +54,6 @@ const mapSemster = (semesters: Semester[]): SemesterDTO[] => {
         },
       };
     });
-};
-
-type StudyPlanParams = {
-  params: {
-    id: string;
-  };
 };
 
 export async function GET(req: NextRequest, { params }: StudyPlanParams) {
@@ -108,7 +100,7 @@ export async function PUT(req: NextRequest, { params }: StudyPlanParams) {
   )
     return unauthorizedResponse();
 
-  const body: StudyPlanUpdateScopeDTO = await req.json();
+  const body: StudyPlanPutDTO = await req.json();
 
   const updatePlan = await updateStudyPlanScopeByCollabId(
     studyPlanCollaborator.id,

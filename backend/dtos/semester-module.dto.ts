@@ -1,4 +1,5 @@
 import { SemesterModule } from "../entities/semesterModule.entity";
+import { ModulesRecordDTO } from "./semester.dto";
 
 export interface SemesterModuleDTO
   extends Omit<
@@ -12,3 +13,5 @@ export interface SemesterModuleDTO
     | "assessmentType"
     | "index"
   > {}
+
+export type SemesterModulePutDTO = Record<string, ModulesRecordDTO>;
