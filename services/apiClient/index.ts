@@ -1,7 +1,10 @@
 import { CompulsoryElectivePairingDTO } from "@/backend/dtos/compulsory-elective-pairing.dto";
 import { InvitePostDTO } from "@/backend/dtos/invite.dto";
 import { SemesterModulePutDTO } from "@/backend/dtos/semester-module.dto";
-import { StudyPlanCollaboratorDTO } from "@/backend/dtos/study-plan-collaborator.dto";
+import {
+  StudyPlanCollaboratorDTO,
+  StudyPlanCollaboratorPutDTO,
+} from "@/backend/dtos/study-plan-collaborator.dto";
 import { StudyPlanDTO, StudyPlanPutDTO } from "@/backend/dtos/study-plan.dto";
 import { Module } from "@/backend/entities/module.entity";
 
@@ -53,6 +56,38 @@ export class StudyPlannerApiClient {
       {},
     );
     const data: StudyPlanCollaboratorDTO[] = await res.json();
+
+    return data;
+  }
+
+  public async deleteStudyPlanCollaborator(): Promise<SuccessResponse> {
+    //TODO: need to be added as a parameter (currently issue with the hooks), currently not used in backend either
+    const studyPlanId = "foo";
+    const collabId = "foo";
+    const res = await this.fetchStudyPlan(
+      studyPlanId,
+      "/collaborators/" + collabId,
+      "DELETE",
+      {},
+    );
+    const data: SuccessResponse = await res.json();
+
+    return data;
+  }
+
+  public async putStudyPlanCollaboratorRole(
+    body: StudyPlanCollaboratorPutDTO,
+  ): Promise<SuccessResponse> {
+    //TODO: need to be added as a parameter (currently issue with the hooks), currently not used in backend either
+    const studyPlanId = "foo";
+    const collabId = "foo";
+    const res = await this.fetchStudyPlan(
+      studyPlanId,
+      "/collaborators/" + collabId,
+      "PUT",
+      body,
+    );
+    const data: SuccessResponse = await res.json();
 
     return data;
   }

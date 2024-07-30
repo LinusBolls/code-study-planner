@@ -1,6 +1,7 @@
 import { NextRequest } from "next/server";
 
 import { AppDataSource } from "../datasource";
+import { StudyPlanCollaboratorPutDTO } from "../dtos/study-plan-collaborator.dto";
 import { CollaboratorRole } from "../entities/enums";
 import { StudyPlanCollaborator } from "../entities/studyPlanCollaborator.entity";
 import { getUser } from "../getUser";
@@ -62,6 +63,39 @@ export const createStudyPlanCollaborator = (
       userId,
       studyPlanId,
     });
+  } catch (error) {
+    console.error("createStudyPlanCollaborator error: ", error);
+    return null;
+  }
+};
+
+export const deleteCollaboratorById = async (collabId: string) => {
+  try {
+    const collaboratorRepository = AppDataSource.getRepository(
+      StudyPlanCollaborator,
+    );
+
+    return await collaboratorRepository.delete({
+      id: collabId,
+    });
+  } catch (error) {
+    console.error("createStudyPlanCollaborator error: ", error);
+    return null;
+  }
+};
+
+export const updateCollaboratorById = async (
+  collabId: string,
+  body: StudyPlanCollaboratorPutDTO,
+) => {
+  try {
+    const collaboratorRepository = AppDataSource.getRepository(
+      StudyPlanCollaborator,
+    );
+
+    await collaboratorRepository.update({ id: collabId }, body);
+
+    return await collaboratorRepository.findOne({ where: { id: collabId } });
   } catch (error) {
     console.error("createStudyPlanCollaborator error: ", error);
     return null;
