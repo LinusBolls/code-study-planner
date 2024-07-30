@@ -1,11 +1,9 @@
 import { OnDragEndResponder, OnDragStartResponder } from "@hello-pangea/dnd";
 
+import { SemesterModulePutDTO } from "@/backend/dtos/semester-module.dto";
 import { getChatSelectionState } from "@/components/util/useChatSelection";
 import { useModulesInScope } from "@/components/util/useModulesInScope";
-import {
-  SemesterModuleCategory,
-  UpdateSemesterModuleInput,
-} from "@/services/apiClient";
+import { SemesterModuleCategory } from "@/services/apiClient";
 import { useStudyPlan } from "@/services/apiClient/hooks/useStudyPlan";
 import { useUpdateSemesterModule } from "@/services/apiClient/hooks/useUpdateSemesterModules";
 
@@ -158,7 +156,7 @@ export function useUpdateStudyPlan() {
   ) {
     if (!studyPlan.isSuccess) return;
 
-    const body = studyPlan.data.semesters.reduce<UpdateSemesterModuleInput>(
+    const body = studyPlan.data.semesters.reduce<SemesterModulePutDTO>(
       (acc, semester) => {
         acc[semester.id] = semester.modules;
 

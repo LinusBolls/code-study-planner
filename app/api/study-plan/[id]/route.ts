@@ -81,7 +81,7 @@ export async function GET(req: NextRequest, { params }: StudyPlanParams) {
 
   const studyPlan: StudyPlanDTO = {
     scope: currentStudyPlan.scope,
-    studyPlanCollaborator: currentStudyPlan.studyPlanCollaborator,
+    studyPlanCollaborators: currentStudyPlan.studyPlanCollaborators,
     semesters: mappedSemesters,
   };
 

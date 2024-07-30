@@ -32,7 +32,7 @@ export async function getStudyPlanByCollaboratorId(collabId: string) {
 
     return await studyPlanRepository.findOne({
       where: {
-        studyPlanCollaborator: {
+        studyPlanCollaborators: {
           hasAccepted: true,
           role: CollaboratorRole.Owner,
           id: collabId,

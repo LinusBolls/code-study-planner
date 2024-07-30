@@ -11,10 +11,10 @@ export interface StudyPlanDTO
     | "moduleHandbook"
     | "moduleHandbookId"
     | "semesters"
-    | "studyPlanCollaborator"
+    | "studyPlanCollaborators"
   > {
   semesters: SemesterDTO[];
-  studyPlanCollaborator: StudyPlanCollaboratorDTO[];
+  studyPlanCollaborators: StudyPlanCollaboratorDTO[];
 }
 
 export type StudyPlanPutDTO = {

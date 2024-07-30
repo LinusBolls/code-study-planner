@@ -43,7 +43,7 @@ export class StudyPlan {
       cascade: ["remove"],
     },
   )
-  studyPlanCollaborator!: Relation<StudyPlanCollaborator>[];
+  studyPlanCollaborators!: Relation<StudyPlanCollaborator>[];
 
   @Column({
     type: "enum",

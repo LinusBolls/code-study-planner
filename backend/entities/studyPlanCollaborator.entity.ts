@@ -43,7 +43,7 @@ export class StudyPlanCollaborator {
   @Column()
   studyPlanId!: string;
 
-  @ManyToOne(() => StudyPlan, (studyPlan) => studyPlan.studyPlanCollaborator)
+  @ManyToOne(() => StudyPlan, (studyPlan) => studyPlan.studyPlanCollaborators)
   @JoinColumn({ name: "studyPlanId" })
   studyPlan!: Relation<StudyPlan>;
 
