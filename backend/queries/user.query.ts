@@ -16,19 +16,3 @@ export async function getUserByLpId(lpId: string) {
     return null;
   }
 }
-
-export async function createUser(lpId: string) {
-  try {
-    const userRepository = AppDataSource.getRepository(User);
-
-    return await userRepository.findOne({
-      where: {
-        lpId,
-      },
-    });
-  } catch (error) {
-    console.error("getUserByLpId: ", error);
-
-    return null;
-  }
-}

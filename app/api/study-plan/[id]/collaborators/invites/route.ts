@@ -1,11 +1,17 @@
 import { NextRequest } from "next/server";
 
-import { StudyPlanParams, unauthorizedResponse } from "@/app/api/utils";
+import {
+  badRequestResponse,
+  StudyPlanParams,
+  successResponse,
+  unauthorizedResponse,
+} from "@/app/api/utils";
 import { CollaboratorRole } from "@/backend/entities/enums";
+import { createInvite } from "@/backend/queries/invite.query";
 import { getCollaborator } from "@/backend/queries/study-plan-collaborator.query";
 
 export type CollaboratorInvitePostDTO = {
-  lpId: string;
+  inviteeLpId: string;
   role: CollaboratorRole;
 };
 
@@ -18,9 +24,16 @@ export async function POST(req: NextRequest, { params }: StudyPlanParams) {
   )
     return unauthorizedResponse();
 
-  const body: CollaboratorInvitePostDTO = await req.json();
+  const { inviteeLpId, role }: CollaboratorInvitePostDTO = await req.json();
+
+  const invite = createInvite({
+    invitedById: studyPlanCollaborator.id,
+    studyPlanId: params.id,
+    inviteeLpId,
+    role,
+  });
+
+  if (!invite) return badRequestResponse();
+
+  return successResponse();
 }
-
-const findUserByEmail = (email: string) => {};
-
-const createStudyPlanCollaborator = (userId: string, studyPlanId: string) => {};

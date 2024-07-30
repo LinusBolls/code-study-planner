@@ -43,7 +43,7 @@ export class Invite {
   })
   role!: CollaboratorRole;
 
-  @Column({ type: "enum", enum: InviteStatus })
+  @Column({ type: "enum", enum: InviteStatus, default: InviteStatus.Pending })
   status!: InviteStatus;
 
   @Column()
