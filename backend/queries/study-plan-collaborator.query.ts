@@ -63,7 +63,7 @@ export const createStudyPlanCollaborator = async (
       userId,
       studyPlanId,
     });
-    return await collaboratorRepository.save(collaborator)
+    return await collaboratorRepository.save(collaborator);
   } catch (error) {
     console.error("createStudyPlanCollaborator error: ", error);
     return null;
