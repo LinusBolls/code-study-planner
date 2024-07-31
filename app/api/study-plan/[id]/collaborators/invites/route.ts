@@ -22,7 +22,7 @@ export async function POST(req: NextRequest, { params }: StudyPlanParams) {
 
   const { inviteeLpId, role }: InvitePostDTO = await req.json();
 
-  const invite = createInvite({
+  const invite = await createInvite({
     invitedById: studyPlanCollaborator.id,
     studyPlanId: params.id,
     inviteeLpId,

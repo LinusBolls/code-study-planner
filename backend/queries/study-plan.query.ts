@@ -16,9 +16,7 @@ export async function updateStudyPlanScopeByCollabId(
 
     studyPlan.scope = body.scope;
 
-    await studyPlanRepository.save(studyPlan);
-
-    return studyPlan;
+    return await studyPlanRepository.save(studyPlan);
   } catch (error) {
     console.error("UpdateStudyPlanScope: ", error);
 

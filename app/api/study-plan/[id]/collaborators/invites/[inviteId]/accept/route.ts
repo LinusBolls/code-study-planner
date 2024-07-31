@@ -33,7 +33,7 @@ export async function PUT(
   );
   if (!updatedInvite) return badRequestResponse();
 
-  const studyPlanCollaborator = createStudyPlanCollaborator(
+  const studyPlanCollaborator = await createStudyPlanCollaborator(
     user.id,
     id,
     updatedInvite.role,

@@ -45,11 +45,11 @@ export async function getAllCollaboratorsByStudyPlanId(
   }
 }
 
-export const createStudyPlanCollaborator = (
+export const createStudyPlanCollaborator = async (
   userId: string,
   studyPlanId: string,
   role: CollaboratorRole,
-): StudyPlanCollaborator | null => {
+): Promise<StudyPlanCollaborator | null> => {
   // returns null because it is not allowed to set a new owner
   if (role === CollaboratorRole.Owner) return null;
 
@@ -58,11 +58,12 @@ export const createStudyPlanCollaborator = (
       StudyPlanCollaborator,
     );
 
-    return collaboratorRepository.create({
+    const collaborator = collaboratorRepository.create({
       role,
       userId,
       studyPlanId,
     });
+    return await collaboratorRepository.save(collaborator)
   } catch (error) {
     console.error("createStudyPlanCollaborator error: ", error);
     return null;

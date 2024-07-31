@@ -9,11 +9,12 @@ export type CreateInvite = {
   role: CollaboratorRole;
 };
 
-export const createInvite = (createInviteBody: CreateInvite): Invite | null => {
+export const createInvite = async (createInviteBody: CreateInvite): Promise<Invite | null> => {
   try {
     const inviteRepository = AppDataSource.getRepository(Invite);
 
-    return inviteRepository.create(createInviteBody);
+    const invite = inviteRepository.create(createInviteBody)
+    return await inviteRepository.save(invite);
   } catch (error) {
     console.error("createInvite: ", error);
 
