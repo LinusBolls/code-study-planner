@@ -45,4 +45,35 @@ export class StudyPlanCollaborator {
   @ManyToOne(() => User, (user) => user.studyPlanCollaborators)
   @JoinColumn({ name: "userId" })
   user!: Relation<User>;
+
+  private get isViewer() {
+    return this.role === CollaboratorRole.Viewer;
+  }
+  private get isEditor() {
+    return this.role === CollaboratorRole.Editor;
+  }
+  private get isAdmin() {
+    return this.role === CollaboratorRole.Admin;
+  }
+  private get isOwner() {
+    return this.role === CollaboratorRole.Owner;
+  }
+
+  public get canViewStudyPlan() {
+    return true;
+  }
+  public get canModifyStudyPlan() {
+    return this.isEditor || this.isAdmin || this.isOwner;
+  }
+
+  public get canViewCollaborators() {
+    return true;
+  }
+  public get canManageCollaborators() {
+    return this.isAdmin || this.isOwner;
+  }
+
+  public get canChangeStudyPlanScope() {
+    return this.isOwner;
+  }
 }

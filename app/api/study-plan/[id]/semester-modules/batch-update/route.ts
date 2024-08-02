@@ -23,9 +23,9 @@ import { getCollaborator } from "@/backend/queries/study-plan-collaborator.query
 export async function PUT(req: NextRequest, { params }: StudyPlanParams) {
   console.log("params", params);
 
-  const studyPlanCollaborator = await getCollaborator(req, params.id);
+  const collaborator = await getCollaborator(req, params.id);
 
-  if (!studyPlanCollaborator) {
+  if (!collaborator?.canModifyStudyPlan) {
     return unauthorizedResponse();
   }
 
@@ -57,7 +57,7 @@ export async function PUT(req: NextRequest, { params }: StudyPlanParams) {
         "semester.id IN (:...semesterIds) and semester.studyPlanId = :studyPlanId",
         {
           semesterIds,
-          studyPlanId: studyPlanCollaborator.studyPlanId,
+          studyPlanId: collaborator.studyPlanId,
         },
       )
       .getCount();
@@ -80,7 +80,7 @@ export async function PUT(req: NextRequest, { params }: StudyPlanParams) {
         .where(
           "semester.studyPlanId = :studyPlanId AND semesterModule.semesterId IN (:...semesterIds)",
           {
-            studyPlanId: studyPlanCollaborator.studyPlanId,
+            studyPlanId: collaborator.studyPlanId,
             semesterIds,
           },
         )

@@ -6,6 +6,8 @@ import { CollaboratorRole } from "../entities/enums";
 import { StudyPlanCollaborator } from "../entities/studyPlanCollaborator.entity";
 import { getUser } from "../getUser";
 
+const WIP_EXPERIMENTAL_STUDY_PLAN_ID_ENFORCEMENT = false;
+
 export async function getAllCollaboratorOwnerByUserId(
   userId: string,
 ): Promise<StudyPlanCollaborator[] | []> {
@@ -63,7 +65,7 @@ export const createStudyPlanCollaborator = async (
       userId,
       studyPlanId,
     });
-    return await collaboratorRepository.save(collaborator)
+    return await collaboratorRepository.save(collaborator);
   } catch (error) {
     console.error("createStudyPlanCollaborator error: ", error);
     return null;
@@ -111,17 +113,16 @@ export const getCollaborator = async (
 
   if (!user) return null;
 
-  const collaborators = await getAllCollaboratorOwnerByUserId(user.id);
+  const studyPlanCollaborators = WIP_EXPERIMENTAL_STUDY_PLAN_ID_ENFORCEMENT
+    ? await getAllCollaboratorsByStudyPlanId(studyPlanId)
+    : await getAllCollaboratorOwnerByUserId(user.id);
 
-  const collaborator = collaborators.length !== 0 ? collaborators[0] : null;
+  const userCollaborator =
+    studyPlanCollaborators.find(
+      (collaborator) => collaborator.userId === user.id,
+    ) ?? null;
 
-  return collaborator;
+  if (!userCollaborator) return null;
 
-  // TODO: currently not using studyPlanId, waiting for frontend Integration
-  //  const collaborator = collaborators.filter(i => i.studyPlanId === studyPlanId);
-  //
-  //  if (collaborator.length !== 1)
-  //    return null
-  //
-  //  return collaborator[0];
+  return userCollaborator;
 };

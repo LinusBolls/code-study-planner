@@ -3,7 +3,6 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { SemesterDTO } from "@/backend/dtos/semester.dto";
 import { StudyPlanDTO, StudyPlanPutDTO } from "@/backend/dtos/study-plan.dto";
-import { CollaboratorRole } from "@/backend/entities/enums";
 import { Semester } from "@/backend/entities/semester.entity";
 import { SemesterModule } from "@/backend/entities/semesterModule.entity";
 import { getSemesterByStudyPlanId } from "@/backend/queries/semester.query";
@@ -57,15 +56,13 @@ const mapSemster = (semesters: Semester[]): SemesterDTO[] => {
 };
 
 export async function GET(req: NextRequest, { params }: StudyPlanParams) {
-  const studyPlanCollaborator = await getCollaborator(req, params.id);
+  const collaborator = await getCollaborator(req, params.id);
 
-  if (!studyPlanCollaborator) {
+  if (!collaborator?.canViewStudyPlan) {
     return unauthorizedResponse();
   }
 
-  const currentStudyPlan = await getStudyPlanByCollaboratorId(
-    studyPlanCollaborator.id,
-  );
+  const currentStudyPlan = await getStudyPlanByCollaboratorId(collaborator.id);
 
   if (!currentStudyPlan) {
     return unauthorizedResponse();
@@ -92,18 +89,14 @@ export async function GET(req: NextRequest, { params }: StudyPlanParams) {
  * Sucessfull response for PUT/POST/DELETE is {ok: true}
  */
 export async function PUT(req: NextRequest, { params }: StudyPlanParams) {
-  const studyPlanCollaborator = await getCollaborator(req, params.id);
+  const collaborator = await getCollaborator(req, params.id);
 
-  if (
-    !studyPlanCollaborator ||
-    studyPlanCollaborator.role != CollaboratorRole.Owner
-  )
-    return unauthorizedResponse();
+  if (!collaborator?.canChangeStudyPlanScope) return unauthorizedResponse();
 
   const body: StudyPlanPutDTO = await req.json();
 
   const updatePlan = await updateStudyPlanScopeByCollabId(
-    studyPlanCollaborator.id,
+    collaborator.id,
     body,
   );
 
