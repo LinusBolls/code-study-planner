@@ -2,16 +2,19 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinColumn,
-  OneToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   type Relation,
+  Unique,
   UpdateDateColumn,
 } from "typeorm";
 
+import { Invite } from "./invite.entity";
 import { StudyPlan } from "./studyPlan.entity";
+import { StudyPlanCollaborator } from "./studyPlanCollaborator.entity";
 
 @Entity({ name: "users" })
+@Unique(["lpId"])
 export class User {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
@@ -30,12 +33,27 @@ export class User {
   })
   lpId!: string;
 
-  @Column()
-  studyPlanId!: string;
+  @OneToMany(
+    () => StudyPlanCollaborator,
+    (studyPlanCollaborator) => studyPlanCollaborator.user,
+    {
+      cascade: ["remove"],
+    },
+  )
+  studyPlanCollaborators!: Relation<StudyPlanCollaborator>[];
 
-  @OneToOne(() => StudyPlan, (studyPlan) => studyPlan.user, {
+  @OneToMany(
+    () => StudyPlan,
+    (studyPlan) => studyPlan.subject,
+
+    {
+      cascade: ["remove"],
+    },
+  )
+  studyPlans!: Relation<StudyPlan>[];
+
+  @OneToMany(() => Invite, (invite) => invite.invitedBy, {
     cascade: ["remove"],
   })
-  @JoinColumn({ name: "studyPlanId" })
-  studyPlan!: Relation<StudyPlan>;
+  invites!: Relation<Invite>[];
 }

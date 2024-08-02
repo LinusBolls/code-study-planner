@@ -1,25 +1,16 @@
-import { CompulsoryElectivePairing } from "@/backend/entities/compulsoryElectivePairing.entity";
+import { CompulsoryElectivePairingDTO } from "@/backend/dtos/compulsory-elective-pairing.dto";
+import { InvitePostDTO } from "@/backend/dtos/invite.dto";
+import { SemesterModulePutDTO } from "@/backend/dtos/semester-module.dto";
+import {
+  StudyPlanCollaboratorDTO,
+  StudyPlanCollaboratorPutDTO,
+} from "@/backend/dtos/study-plan-collaborator.dto";
+import { StudyPlanDTO, StudyPlanPutDTO } from "@/backend/dtos/study-plan.dto";
 import { Module } from "@/backend/entities/module.entity";
 
-export interface ApiSemesterModule {
-  moduleId: string;
-}
-
-interface ModulesRecord {
-  earlyAssessments: ApiSemesterModule[];
-  standardAssessments: ApiSemesterModule[];
-  alternativeAssessments: ApiSemesterModule[];
-  reassessments: ApiSemesterModule[];
-}
-
-export interface StudyPlan {
-  semesters: {
-    id: string;
-    lpId: string | null;
-    startDate: string;
-    modules: ModulesRecord;
-  }[];
-}
+type SuccessResponse = {
+  ok: boolean;
+};
 
 export class StudyPlannerApiClient {
   constructor(
@@ -31,7 +22,7 @@ export class StudyPlannerApiClient {
 
   public async getModules(): Promise<{
     modules: Module[];
-    compulsoryElective: CompulsoryElectivePairing[];
+    compulsoryElective: CompulsoryElectivePairingDTO[];
   }> {
     const res = await fetch(this.url + "/modules", {
       headers: {
@@ -44,39 +35,172 @@ export class StudyPlannerApiClient {
     return data;
   }
 
-  public async getStudyPlan(): Promise<StudyPlan> {
-    const res = await fetch(this.url + "/study-plan", {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: this.accessToken,
-      },
-    });
-    const data: StudyPlan = await res.json();
+  public async getStudyPlan(): Promise<StudyPlanDTO> {
+    //TODO: need to be added as a parameter (currently issue with the hooks), currently not used in backend either
+    const studyPlanId = "foo";
+    const res = await this.fetchStudyPlan(studyPlanId, "", "GET", {});
+    const data: StudyPlanDTO = await res.json();
+
+    return data;
+  }
+
+  public async getStudyPlanCollaborators(): Promise<
+    StudyPlanCollaboratorDTO[]
+  > {
+    //TODO: need to be added as a parameter (currently issue with the hooks), currently not used in backend either
+    const studyPlanId = "foo";
+    const res = await this.fetchStudyPlan(
+      studyPlanId,
+      "/collaborators",
+      "GET",
+      {},
+    );
+    const data: StudyPlanCollaboratorDTO[] = await res.json();
+
+    return data;
+  }
+
+  public async deleteStudyPlanCollaborator(): Promise<SuccessResponse> {
+    //TODO: need to be added as a parameter (currently issue with the hooks), currently not used in backend either
+    const studyPlanId = "foo";
+    const collabId = "foo";
+    const res = await this.fetchStudyPlan(
+      studyPlanId,
+      "/collaborators/" + collabId,
+      "DELETE",
+      {},
+    );
+    const data: SuccessResponse = await res.json();
+
+    return data;
+  }
+
+  public async putStudyPlanCollaboratorRole(
+    body: StudyPlanCollaboratorPutDTO,
+  ): Promise<SuccessResponse> {
+    //TODO: need to be added as a parameter (currently issue with the hooks), currently not used in backend either
+    const studyPlanId = "foo";
+    const collabId = "foo";
+    const res = await this.fetchStudyPlan(
+      studyPlanId,
+      "/collaborators/" + collabId,
+      "PUT",
+      body,
+    );
+    const data: SuccessResponse = await res.json();
+
+    return data;
+  }
+
+  public async putStudyPlanScope(
+    body: StudyPlanPutDTO,
+    studyPlanId = "foo",
+  ): Promise<SuccessResponse> {
+    const res = await this.fetchStudyPlan(studyPlanId, "", "PUT", body);
+
+    const data: SuccessResponse = await res.json();
 
     return data;
   }
 
   public async updateSemesterModules(
-    body: UpdateSemesterModuleInput,
-  ): Promise<{}> {
-    const res = await fetch(
-      this.url + "/study-plan/semester-modules/batch-update",
-      {
+    body: SemesterModulePutDTO,
+    //studyPlanId: string
+  ): Promise<SuccessResponse> {
+    //TODO: need to be added as a parameter (currently issue with the hooks), currently not used in backend either
+    const studyPlanId = "foo";
+    const res = await this.fetchStudyPlan(
+      studyPlanId,
+      "/semester-modules/batch-update",
+      "PUT",
+      body,
+    );
+    const data: SuccessResponse = await res.json();
+
+    return data;
+  }
+  public async postInviteCollaborator(
+    body: InvitePostDTO,
+    //studyPlanId: string
+  ): Promise<SuccessResponse> {
+    //TODO: need to be added as a parameter (currently issue with the hooks), currently not used in backend either
+    const studyPlanId = "foo";
+    const res = await this.fetchStudyPlan(
+      studyPlanId,
+      "/collaborators/invites",
+      "POST",
+      body,
+    );
+    const data: SuccessResponse = await res.json();
+
+    return data;
+  }
+
+  public async putInviteAccept() //studyPlanId: string
+  //inviteId: string
+  : Promise<SuccessResponse> {
+    //TODO: need to be added as a parameter (currently issue with the hooks), currently not used in backend either
+    const studyPlanId = "foo";
+    const inviteId = "foo";
+    const res = await this.fetchStudyPlan(
+      studyPlanId,
+      "/collaborators/invites/" + inviteId + "/accept",
+      "PUT",
+      {},
+    );
+    const data: SuccessResponse = await res.json();
+
+    return data;
+  }
+
+  public async putInviteDecline() //studyPlanId: string
+  //inviteId: string
+  : Promise<SuccessResponse> {
+    //TODO: need to be added as a parameter (currently issue with the hooks), currently not used in backend either
+    const studyPlanId = "foo";
+    const inviteId = "foo";
+    const res = await this.fetchStudyPlan(
+      studyPlanId,
+      "/collaborators/invites/" + inviteId + "/decline",
+      "PUT",
+      {},
+    );
+    const data: SuccessResponse = await res.json();
+
+    return data;
+  }
+
+  private async fetchStudyPlan(
+    studyPlanId: string,
+    url: string,
+    method: "PUT" | "GET" | "POST" | "DELETE",
+    body: any,
+  ) {
+    if (method === "GET")
+      return await fetch(this.url + "/study-plan/" + studyPlanId + url, {
         headers: {
           "Content-Type": "application/json",
           Authorization: this.accessToken,
         },
-        method: "PUT",
-        body: JSON.stringify(body),
+      });
+    if (method === "DELETE")
+      return await fetch(this.url + "/study-plan/" + studyPlanId + url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: this.accessToken,
+        },
+        method: "DELETE",
+      });
+    return await fetch(this.url + "/study-plan/" + studyPlanId + url, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: this.accessToken,
       },
-    );
-    const data: {} = await res.json();
-
-    return data;
+      method,
+      body: JSON.stringify(body),
+    });
   }
 }
-
-export type UpdateSemesterModuleInput = Record<string, ModulesRecord>;
 
 export type SemesterModuleCategory =
   | "earlyAssessments"

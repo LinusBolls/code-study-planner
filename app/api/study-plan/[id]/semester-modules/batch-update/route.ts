@@ -1,6 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
+import {
+  badRequestResponse,
+  internalServerErrorResponse,
+  StudyPlanParams,
+  successResponse,
+  unauthorizedResponse,
+} from "@/app/api/utils";
 import { AppDataSource, connectToDatabase } from "@/backend/datasource";
 import { Module } from "@/backend/entities/module.entity";
 import { Semester } from "@/backend/entities/semester.entity";
@@ -8,16 +15,18 @@ import {
   AssessmentType,
   SemesterModule,
 } from "@/backend/entities/semesterModule.entity";
-import { getUser } from "@/backend/getUser";
+import { getCollaborator } from "@/backend/queries/study-plan-collaborator.query";
 
 /**
  * note: both `semesterId` and `moduleId` are learning platform ids, not the ids in our database
  */
-export async function PUT(req: NextRequest) {
-  const user = await getUser(req);
+export async function PUT(req: NextRequest, { params }: StudyPlanParams) {
+  console.log("params", params);
 
-  if (!user) {
-    return NextResponse.json({}, { status: 401 });
+  const collaborator = await getCollaborator(req, params.id);
+
+  if (!collaborator?.canModifyStudyPlan) {
+    return unauthorizedResponse();
   }
 
   const moduleSchema = z.object({
@@ -35,7 +44,7 @@ export async function PUT(req: NextRequest) {
   try {
     body = bodySchema.parse(await req.json());
   } catch (err) {
-    return NextResponse.json({}, { status: 400 });
+    return badRequestResponse();
   }
   try {
     await connectToDatabase();
@@ -48,7 +57,7 @@ export async function PUT(req: NextRequest) {
         "semester.id IN (:...semesterIds) and semester.studyPlanId = :studyPlanId",
         {
           semesterIds,
-          studyPlanId: user.studyPlanId,
+          studyPlanId: collaborator.studyPlanId,
         },
       )
       .getCount();
@@ -71,7 +80,7 @@ export async function PUT(req: NextRequest) {
         .where(
           "semester.studyPlanId = :studyPlanId AND semesterModule.semesterId IN (:...semesterIds)",
           {
-            studyPlanId: user.studyPlanId,
+            studyPlanId: collaborator.studyPlanId,
             semesterIds,
           },
         )
@@ -144,9 +153,7 @@ export async function PUT(req: NextRequest) {
       }
     });
 
-    const res = NextResponse.json({});
-
-    return res;
+    return successResponse();
   } catch (err) {
     const isTypeormConstraintViolation =
       (err as Record<string, string>).code === "23505";
@@ -162,6 +169,6 @@ export async function PUT(req: NextRequest) {
 
     console.error(err);
 
-    return NextResponse.json({}, { status: 500 });
+    return internalServerErrorResponse();
   }
 }

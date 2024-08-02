@@ -1,25 +1,14 @@
+import { CompulsoryElectivePairingDTO } from "@/backend/dtos/compulsory-elective-pairing.dto";
 import { getGradeInfo } from "@/services/learningPlatform/util/getGradeInfo";
 
 import { Module, Semester } from "../util/types";
 import { Issue } from "./issues";
 
-export interface CompulsoryElectivePairing {
-  id: string;
-  moduleHandbookId: string;
-  modules: {
-    id: string;
-    lpId: string;
-    proficiency: number;
-    possiblyOutdated: boolean;
-    moduleIdentifier: string;
-  }[];
-}
-
 export function getMissingMandatory(
   semesters: Semester[],
   modules: Module[],
   mandatoryModuleIds: string[],
-  compulsoryElectivePairings: CompulsoryElectivePairing[],
+  compulsoryElectivePairings: CompulsoryElectivePairingDTO[],
 ) {
   let issues: Issue[] = [];
 
