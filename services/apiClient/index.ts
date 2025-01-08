@@ -74,6 +74,22 @@ export class StudyPlannerApiClient {
 
     return data;
   }
+
+  public async resetStudyPlan(): Promise<{}> {
+    const res = await fetch(this.url + "/study-plan", {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: this.accessToken,
+      },
+      method: "DELETE",
+    });
+    if (!res.ok) {
+      throw new Error(`Failed to reset study plan (code ${res.status})`);
+    }
+    const data: {} = await res.json();
+
+    return data;
+  }
 }
 
 export type UpdateSemesterModuleInput = Record<string, ModulesRecord>;

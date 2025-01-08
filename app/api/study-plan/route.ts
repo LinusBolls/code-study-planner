@@ -65,3 +65,25 @@ export async function GET(req: NextRequest) {
   });
   return res;
 }
+
+export async function DELETE(req: NextRequest) {
+  const user = await getUser(req);
+
+  if (!user) {
+    return NextResponse.json({}, { status: 401 });
+  }
+
+  const semesterRepository = AppDataSource.getRepository(Semester);
+
+  const deleteRes = await semesterRepository.delete({
+    studyPlan: {
+      user: {
+        id: user.id,
+      },
+    },
+  });
+  if (deleteRes.affected === 0) {
+    return NextResponse.json({}, { status: 404 });
+  }
+  return NextResponse.json({}, { status: 200 });
+}

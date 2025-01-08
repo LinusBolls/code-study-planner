@@ -3,6 +3,7 @@
 import {
   AuditOutlined,
   BugOutlined,
+  DeleteOutlined,
   ExperimentOutlined,
   InfoCircleOutlined,
   PoweroffOutlined,
@@ -32,11 +33,13 @@ export interface HeaderProps {
     avatarUrl: string;
   } | null;
   isMobile?: boolean;
+  onResetStudyPlan?: () => void;
 }
 export default function Header({
   isLoading = false,
   user,
   isMobile = false,
+  onResetStudyPlan,
 }: HeaderProps) {
   return (
     <Layout.Header
@@ -251,6 +254,15 @@ export default function Header({
                   </Button>
                 ),
                 icon: <PoweroffOutlined />,
+              },
+              {
+                key: "4",
+                label: (
+                  <Button type="link" onClick={onResetStudyPlan}>
+                    Reset Study Plan
+                  </Button>
+                ),
+                icon: <DeleteOutlined />,
               },
             ],
           }}
