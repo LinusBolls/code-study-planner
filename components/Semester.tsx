@@ -20,6 +20,8 @@ export interface SemesterProps {
 
   setMouseUpInboxId: (inboxId: string | null) => void;
   setHoveredInboxId: (inboxId: string | null) => void;
+
+  isLoading?: boolean;
 }
 function SemesterCard({
   semester,
@@ -28,6 +30,7 @@ function SemesterCard({
   draggedModules,
   setMouseUpInboxId,
   setHoveredInboxId,
+  isLoading = false,
 }: SemesterProps) {
   const [isHovered, setIsHovered] = useState(false);
 
@@ -157,6 +160,7 @@ function SemesterCard({
         }}
       </Droppable>
       <ModulesListSection
+        isLoading={isLoading}
         disabled={
           (isDraggingChats &&
             draggedModules[0]?.allowEarlyAssessment === false) ||
@@ -183,6 +187,7 @@ function SemesterCard({
         onAddItem={() => {}}
       />
       <ModulesListSection
+        isLoading={isLoading}
         droppableId={`droppable:semester:${semester.id}:standardAssessments`}
         onMouseUp={() =>
           setMouseUpInboxId(
@@ -204,6 +209,7 @@ function SemesterCard({
         disabled={isPastSemester || isstandardDisabled}
       />
       <ModulesListSection
+        isLoading={isLoading}
         disabled={
           (isDraggingChats &&
             draggedModules[0]?.allowAlternativeAssessment === false) ||
@@ -230,6 +236,7 @@ function SemesterCard({
         onAddItem={() => {}}
       />
       <ModulesListSection
+        isLoading={isLoading}
         droppableId={`droppable:semester:${semester.id}:reassessments`}
         onMouseUp={() =>
           setMouseUpInboxId(`droppable:semester:${semester.id}:reassessments`)
