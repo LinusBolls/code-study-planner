@@ -16,6 +16,7 @@ export interface ModulesListSectionProps extends Omit<FlexProps, "children"> {
   showAddItemButton?: boolean;
   isHovered?: boolean;
   isDragInProgress?: boolean;
+  isLoading?: boolean;
 
   onAddItem?: () => void;
 }
@@ -27,6 +28,7 @@ function ModulesListSection({
   showAddItemButton = true,
   isHovered = false,
   isDragInProgress = false,
+  isLoading = false,
 
   onAddItem,
   ...rest
@@ -116,16 +118,18 @@ function ModulesListSection({
             }}
           >
             {provided.placeholder}
-            {modules.map((module, index) => (
-              <ModulesListItem
-                key={module.id}
-                module={module.module}
-                assessment={module.assessment}
-                index={index}
-                draggableId={"draggable:semester-module:" + module.id}
-                showPopoverOn="info-icon"
-              />
-            ))}
+            {modules
+              .filter((i) => (isLoading ? true : i.module != null))
+              .map((module, index) => (
+                <ModulesListItem
+                  key={module.id}
+                  module={module.module}
+                  assessment={module.assessment}
+                  index={index}
+                  draggableId={"draggable:semester-module:" + module.id}
+                  showPopoverOn="info-icon"
+                />
+              ))}
           </div>
         </Flex>
       )}

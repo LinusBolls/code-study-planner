@@ -128,6 +128,7 @@ export default function SemestersList({
               draggedModules={draggedModules}
               setMouseUpInboxId={setMouseUpInboxId}
               setHoveredInboxId={setHoveredInboxId}
+              isLoading={isLoading}
             />
           ))}
         </Flex>
