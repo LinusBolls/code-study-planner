@@ -18,6 +18,7 @@ import { memo, useState } from "react";
 import { Assessment, Module } from "@/components/util/types";
 import { useIsDraggingChats } from "@/components/util/useChatSelection";
 import { getDepartment } from "@/data/departments";
+import { EXPERIMENTAL_MODULE_POPOVER } from "@/experimental";
 
 export interface ModulesListItemProps extends CardProps {
   module?: Module | null;
@@ -82,7 +83,10 @@ function ModulesListItem({
         title={module.shortCode + " " + module.title}
         mouseEnterDelay={0}
         mouseLeaveDelay={0}
-        open={isDraggingChats || showPopoverOn !== "hover" ? false : undefined}
+        open={
+          EXPERIMENTAL_MODULE_POPOVER &&
+          (isDraggingChats || showPopoverOn !== "hover" ? false : undefined)
+        }
       >
         {assessment != null || draggableId == null ? (
           <div>
@@ -237,7 +241,7 @@ function InnerModulesListItem({
                   {module.title}
                 </Link>
               </Typography.Text>
-              {showPopoverOn === "info-icon" && (
+              {EXPERIMENTAL_MODULE_POPOVER && showPopoverOn === "info-icon" && (
                 <Popover
                   placement="leftTop"
                   content={<ModulePopoverContent module={module} />}
