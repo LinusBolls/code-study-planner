@@ -1,3 +1,4 @@
+import { useLearningPlatformAssessmentTable } from "@/services/learningPlatform/hooks/useLearningPlatformAssessmentTable";
 import { useLearningPlatformCurrentUser } from "@/services/learningPlatform/hooks/useLearningPlatformCurrentUser";
 import { useLearningPlatformModules } from "@/services/learningPlatform/hooks/useLearningPlatformModules";
 import { useLearningPlatformModulesById } from "@/services/learningPlatform/hooks/useLearningPlatformModulesById";
@@ -26,6 +27,40 @@ export function useModulesInScope() {
   const currentSemesterModules =
     modulesQuery.data?.currentSemesterModules ?? [];
 
+  const assessmentTableQuery = useLearningPlatformAssessmentTable();
+
+  const myAssessments = assessmentTableQuery.data?.myAssessments ?? [];
+
+  /**
+   * we need this to see whether the modules a user has been assessed on in the past are mandatory.
+   *
+   * every few semesters, the learning platform api comes out with new "versions" of existing modules under the hood.
+   * for example, a new `SE_01_v3` module gets created, and `SE_01_v2` doesn't get displayed anymore.
+   *
+   * this is annoying because `currentUserQuery.data?.me.mandatoryModules` only includes the ids of the "newest version" of each module.
+   * if we only relied on these ids, `SE_01_v3` would be mandatory, but `SE_01_v2` wouldn't be.
+   * to fix this, we get the "newest" version of each module that the user has been assessed on in the past, by comparing their `simpleShortCode`.
+   *
+   */
+  const additionalMandatoryModuleIds = myAssessments.flatMap((i) => {
+    const newModule = currentSemesterModules.find(
+      (j) => j.module!.simpleShortCode === i.module!.simpleShortCode,
+    );
+    if (!newModule) return [];
+
+    if (mandatoryModuleIds.includes(newModule!.module!.id + "|MANDATORY"))
+      return [i.module!.id + "|MANDATORY"];
+
+    if (
+      mandatoryModuleIds.includes(
+        newModule!.module!.id + "|COMPULSORY_ELECTIVE",
+      )
+    )
+      return [i.module!.id + "|COMPULSORY_ELECTIVE"];
+
+    return [];
+  });
+
   const attemptedModuleIds = myPastModules
     .flatMap((i) => i.assessments!.map((j) => j.semesterModule!.id))
     .filter(isDefined)
@@ -39,7 +74,7 @@ export function useModulesInScope() {
 
   const modules = currentSemesterModules
     .concat(retiredAttemptedModules)
-    .map(toModule(mandatoryModuleIds));
+    .map(toModule(mandatoryModuleIds.concat(additionalMandatoryModuleIds)));
 
   const allPrerequisites = modules.flatMap((i) => i.prerequisites);
 
