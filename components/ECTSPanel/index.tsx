@@ -209,6 +209,7 @@ export default function ECTSPanel({
                 !isFailed(module) &&
                 module.module.isMandatory &&
                 !module.module.shortCode.startsWith("OS_") &&
+                !module.module.shortCode.startsWith("BA_") &&
                 module.module.departmentId !== "STS" &&
                 !(!previewStudyPlan && module.type === "planned"),
             )
@@ -244,6 +245,7 @@ export default function ECTSPanel({
                   module.module.isCompulsoryElective
                 ) &&
                 !module.module.shortCode.startsWith("OS_") &&
+                !module.module.shortCode.startsWith("BA_") &&
                 !(!previewStudyPlan && module.type === "planned"),
             )
             .map(toStep)}
@@ -298,14 +300,30 @@ export default function ECTSPanel({
       >
         <ECTSProgress
           title="Thesis"
-          steps={[]}
+          steps={modules
+            .filter(
+              (module) =>
+                module.module != null &&
+                !isFailed(module) &&
+                module.module.shortCode.startsWith("BA_02") &&
+                !(!previewStudyPlan && module.type === "planned"),
+            )
+            .map(toStep)}
           max={myModuleData?.thesis.totalECTSNeeded ?? 0}
           isRequired={true}
           disabled={!hasCompletedCore}
         />
         <ECTSProgress
           title="Capstone Project"
-          steps={[]}
+          steps={modules
+            .filter(
+              (module) =>
+                module.module != null &&
+                !isFailed(module) &&
+                module.module.shortCode.startsWith("BA_01") &&
+                !(!previewStudyPlan && module.type === "planned"),
+            )
+            .map(toStep)}
           max={myModuleData?.capstone.totalECTSNeeded ?? 0}
           isRequired={true}
           disabled={!hasCompletedCore}
