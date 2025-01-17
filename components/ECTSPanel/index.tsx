@@ -243,6 +243,7 @@ export default function ECTSPanel({
                   module.module.isMandatory ||
                   module.module.isCompulsoryElective
                 ) &&
+                !module.module.shortCode.startsWith("OS_") &&
                 !(!previewStudyPlan && module.type === "planned"),
             )
             .map(toStep)}
