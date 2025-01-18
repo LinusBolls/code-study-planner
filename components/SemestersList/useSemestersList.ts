@@ -31,13 +31,27 @@ export function useSemestersList(): SemestersListProps {
 
   const assessmentTableQuery = useLearningPlatformAssessmentTable();
 
-  const toPlannedModule = (i: ApiSemesterModule): SemesterModule => ({
-    type: "planned",
-    id: i.moduleId,
+  const toPlannedModule = (
+    i: ApiSemesterModule,
+  ): SemesterModule | SemesterModule[] => {
+    const matchingModule = modules.find((j) => j.id === i.moduleId);
 
-    module: modules.find((j) => j.id === i.moduleId)!,
-    assessment: null,
-  });
+    if (!matchingModule) {
+      console.warn(
+        "[useSemestersList] toPlannedModule failed to resolve moduleId:",
+        i.moduleId,
+      );
+      return [];
+    }
+
+    return {
+      type: "planned",
+      id: i.moduleId,
+
+      module: matchingModule,
+      assessment: null,
+    };
+  };
 
   const semesters =
     studyPlan.data?.semesters?.map<Semester>((semester) => {
@@ -82,12 +96,13 @@ export function useSemestersList(): SemestersListProps {
         title: getSemesterName(dayjs(semester.startDate)),
         modules: {
           earlyAssessments:
-            semester.modules.earlyAssessments.map(toPlannedModule),
+            semester.modules.earlyAssessments.flatMap(toPlannedModule),
           standardAssessments:
-            semester.modules.standardAssessments.map(toPlannedModule),
+            semester.modules.standardAssessments.flatMap(toPlannedModule),
           alternativeAssessments:
-            semester.modules.alternativeAssessments.map(toPlannedModule),
-          reassessments: semester.modules.reassessments.map(toPlannedModule),
+            semester.modules.alternativeAssessments.flatMap(toPlannedModule),
+          reassessments:
+            semester.modules.reassessments.flatMap(toPlannedModule),
         },
       };
     }) ?? [];
