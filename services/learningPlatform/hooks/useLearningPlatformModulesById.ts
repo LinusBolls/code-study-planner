@@ -32,8 +32,72 @@ export const useLearningPlatformModulesById = (moduleIds: string[]) => {
 
 const query = `query customModule($moduleId: ID!) {
   module(moduleId: $moduleId) {
+id
+  moduleIdentifier
+  shortCode
+  semesterModules {
+      id
+  isDraft
+  hasDuplicate
+  allowsRegistration
+  moduleIdentifier
+  module {
     id
-    moduleIdentifier
+    title
     shortCode
+    simpleShortCode
+    retired
+    coordinator {
+      id
+      name
+      __typename
+    }
+    __typename
+
+    # we added these fields
+    frequency
+    content
+    qualificationGoals
+    ects
+    contactTime
+    selfStudyTime
+    weeklyHours
+    graded
+    workload
+    prerequisites {
+      id
+    }
+    prerequisiteFor {
+      id
+    }
+    replacements {
+      id
+      moduleIdentifier
+    }
+    replacementFor {
+      id
+      moduleIdentifier
+    }
+
+    department {
+      # for use in the search
+      name
+      # to identify the department
+      abbreviation
+    }
+    semesterModules {
+      allowsEarlyAssessment
+      disabledAlternativeAssessment
+    }
+    # /we added these fields
+  }
+  semester {
+    id
+    name
+    isActive
+    __typename
+  }
+  __typename
+  }
   }
 }`;

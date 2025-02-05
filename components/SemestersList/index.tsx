@@ -70,11 +70,21 @@ export default function SemestersList({
       <Flex
         ref={containerRef}
         style={{
+          position: "relative",
           overflow: "scroll",
           height: "100%",
           // backgroundColor: "#F9F8F7",
         }}
       >
+        <Flex
+          style={{
+            position: "absolute",
+          }}
+        >
+          <Typography.Title level={3} style={{ margin: "1rem" }}>
+            Semesters
+          </Typography.Title>
+        </Flex>
         <Flex
           ref={childRef}
           id="main"

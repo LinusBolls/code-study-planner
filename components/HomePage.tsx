@@ -15,6 +15,7 @@ import {
   useLearningPlatform,
 } from "@/services/learningPlatform/useLearningPlatform";
 
+import BugDisclaimerModal from "./BugDisclaimerModal";
 import { loginscreenMockSemesters } from "./util/mock";
 import { useDragDropContext } from "./util/useDragDropContext";
 
@@ -91,6 +92,7 @@ export default function HomePage() {
 function AuthedPage() {
   return (
     <>
+      <BugDisclaimerModal />
       <SemestersList {...useSemestersList()} />
       <PanelResizeHandle />
       <Sidebar />

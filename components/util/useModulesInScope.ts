@@ -31,6 +31,8 @@ export function useModulesInScope() {
 
   const myAssessments = assessmentTableQuery.data?.myAssessments ?? [];
 
+  let unresolvedAssessmentModuleIds: string[] = [];
+
   /**
    * we need this to see whether the modules a user has been assessed on in the past are mandatory.
    *
@@ -46,7 +48,10 @@ export function useModulesInScope() {
     const newModule = currentSemesterModules.find(
       (j) => j.module!.simpleShortCode === i.module!.simpleShortCode,
     );
-    if (!newModule) return [];
+    if (!newModule) {
+      unresolvedAssessmentModuleIds.push(i.module!.id);
+      return [];
+    }
 
     if (mandatoryModuleIds.includes(newModule!.module!.id + "|MANDATORY"))
       return [i.module!.id + "|MANDATORY"];
@@ -82,9 +87,13 @@ export function useModulesInScope() {
     .filter(isUnique)
     .filter((i) => modules.find((j) => j.moduleId === i) == null);
 
-  const deprecatedPrerequisitesQuery = useLearningPlatformModulesById(
-    deprecatedPrerequisiteIds,
-  );
+  const unfetchedModuleIds = deprecatedPrerequisiteIds
+    .concat(unresolvedAssessmentModuleIds)
+    .filter(isUnique);
+
+  const deprecatedPrerequisitesQuery =
+    useLearningPlatformModulesById(unfetchedModuleIds);
+
   const deprecatedModules = deprecatedPrerequisitesQuery.data?.modules ?? [];
 
   return {
